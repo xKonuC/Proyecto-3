@@ -1,0 +1,14 @@
+Para esta version en desarrollo:
+
+Se tendran que crear nuevas credenciales para si quieren usar las funciones de google(iniciar sesion con google, recuperar contraseña, crear usuario), 
+debido a esto para evitar problemas al cambiar de contraseña, en la ruta /login del authserver,
+se acepta cualquier contraseña para devolver un token y un refresh token.
+
+Si se quiere volver a usar en la ruta authserver/src/email/email.js en las lineas 98-104, quitar los {/**/}.
+
+El archivo docker-compose.yml tiene ya para crear los 2 bases de datos, con datos ya predefinidos, revisar en la ruta authdb/backup.sql en las linea 52.
+Para ingresar a las bd usar este link:
+https://vijayasimhabr.medium.com/running-mysql-database-server-with-docker-ad10533473c7
+
+Primero ejecutar el Authserver antes de el Backend.
+
