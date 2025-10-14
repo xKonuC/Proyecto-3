@@ -34,10 +34,11 @@ export const validGenders = [
 export const validGenders2 = ['M', 'F', 'N', 'O'];
 
 export const roles = [
-    { value: 1, label: 'SuperAdministrador' },
+    { value: 1, label: 'SuperAdmin' },
     { value: 2, label: 'Administrador' },
     { value: 3, label: 'Académico' },
     { value: 4, label: 'Estudiante' },
+    { value: 5, label: 'Egresado' },
 ];
 
 export const validArticulation = [

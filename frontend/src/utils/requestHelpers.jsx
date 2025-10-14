@@ -8,7 +8,8 @@ export const createGETRequestConfig = (access_token, dataWithoutToken) => {
         headers: {
             'Origin': import.meta.env.VITE_APP_API_BASE_URL,
             'Authorization': access_token ? `Bearer ${access_token}` : undefined,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': 'application/json; charset=utf-8',
             'X-Data': params,
         },
     };
@@ -25,7 +26,9 @@ export const createFileRequestConfig = (method, access_token, dataWithoutToken, 
         headers: {
             'Authorization': `Bearer ${access_token}`,
             'X-Data': params,
-            'Origin': import.meta.env.VITE_APP_API_BASE_URL
+            'Origin': import.meta.env.VITE_APP_API_BASE_URL,
+            'Content-Type': 'multipart/form-data; charset=utf-8',
+            'Accept': 'application/json; charset=utf-8'
         },
         body: formData
     };
@@ -37,7 +40,8 @@ export const createJSONRequestConfig = (method, access_token, dataWithoutToken) 
         method,
         headers: {
             'Authorization': access_token ? `Bearer ${access_token}` : undefined,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': 'application/json; charset=utf-8',
             'Origin': import.meta.env.VITE_APP_API_BASE_URL
         },
         body: JSON.stringify(dataWithoutToken)
@@ -49,7 +53,8 @@ export const createSimpleRequestConfig = (method, newItem) => {
     return {
         method,
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': 'application/json; charset=utf-8',
             'Origin': import.meta.env.VITE_APP_API_BASE_URL
         },
         body: JSON.stringify(newItem)
@@ -71,7 +76,8 @@ export const GETSimpleRequest = async (url, item) => {
     const config = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': 'application/json; charset=utf-8',
             'Origin': import.meta.env.VITE_APP_API_BASE_URL
         },
     };

@@ -1810,7 +1810,7 @@ INSERT INTO `user` (`userID`,`rut`,`firstName`,`secondName`,`surname1`,`surname2
 (4,'20.123.233-4','Leonardo2','Leonardo2','Rodríguez2','Rodríguez2','M','Soltero/a','2023-01-31','Orozimbo','Leonardo.Rodríguez2@alumnos.uta.cl',123456789,'2023',NULL,NULL,NULL,NULL,1),
 (5,'20.547.055-7','Leonardo3','Leonardo3','Rodríguez3','Rodríguez3','M','Soltero/a','2000-09-12','s','Leonardo.Rodríguez3@alumnos.uta.cl',966234532,'2023',NULL,NULL,NULL,NULL,1);
 
-INSERT INTO `role` (`roleID`,`name`) VALUES (1,'SuperAdmin'),(2,'Administrador'),(3,'Académico'),(4,'Estudiante');
+INSERT INTO `role` (`roleID`,`name`) VALUES (1,'SuperAdmin'),(2,'Administrador'),(3,'Académico'),(4,'Estudiante'),(5,'Egresado');
 
 INSERT INTO `userHasRole` (`userID`,`roleID`) VALUES (1,1),(1,2),(2,1),(2,2),(2,3),(2,4),(3,2),(3,4),(4,3),(4,2),(5,3),(5,4);
 
@@ -1951,3 +1951,33 @@ INSERT INTO `studentHasElective` (`studentHasElectiveID`,`userID`,`electiveID`,`
 (4,5,9,2),
 (5,5,1,3),
 (6,5,7,4);
+
+-- -----------------------------------------------------
+-- Tablas para el módulo de Clasificación de Egresados
+-- -----------------------------------------------------
+
+-- Tabla para almacenar las clasificaciones de egresados
+CREATE TABLE IF NOT EXISTS `classification` (
+    `classificationID` INT AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(255) NOT NULL,
+    `description` TEXT,
+    `criteria` JSON,
+    `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = InnoDB;
+
+-- Tabla para asociar egresados con clasificaciones
+CREATE TABLE IF NOT EXISTS `userHasClassification` (
+    `userID` INT NOT NULL,
+    `classificationID` INT NOT NULL,
+    `classifiedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `classifiedBy` VARCHAR(255),
+    PRIMARY KEY (`userID`, `classificationID`),
+    FOREIGN KEY (`userID`) REFERENCES `user`(`userID`) ON DELETE CASCADE,
+    FOREIGN KEY (`classificationID`) REFERENCES `classification`(`classificationID`) ON DELETE CASCADE
+) ENGINE = InnoDB;
+
+-- Índices para mejorar el rendimiento
+CREATE INDEX `idx_classification_name` ON `classification`(`name`);
+CREATE INDEX `idx_user_classification` ON `userHasClassification`(`userID`);
+CREATE INDEX `idx_classification_user` ON `userHasClassification`(`classificationID`);

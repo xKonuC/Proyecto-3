@@ -7,9 +7,17 @@ const getStudents = async (req, res) => {
     const authConnection = await authPool.getConnection();
 
     try {
-      // Obtener todos los estudiantes con información completa
+      // Configurar UTF-8 en la conexión
+      await connection.execute('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
+      await connection.execute('SET CHARACTER SET utf8mb4');
+      await connection.execute('SET character_set_client = utf8mb4');
+      await connection.execute('SET character_set_connection = utf8mb4');
+      await connection.execute('SET character_set_results = utf8mb4');
+      await connection.execute('SET sql_mode = ""');
+      
+      // Obtener estudiantes y egresados con información completa
       const [students] = await connection.execute(`
-        SELECT 
+        SELECT DISTINCT
           u.userID,
           u.rut,
           u.firstName,
@@ -28,18 +36,18 @@ const getStudents = async (req, res) => {
           u.civilStatus,
           u.birthday,
           u.address,
-          ua.name as fullName,
-          ua.provider,
-          ua.password
+          CONCAT(u.firstName, ' ', IFNULL(u.secondName, ''), ' ', u.surname1, ' ', IFNULL(u.surname2, '')) as fullName
         FROM user u
-        LEFT JOIN authdb.userAccount ua ON u.userID = ua.id
-        WHERE u.userID IS NOT NULL
+        INNER JOIN userHasRole uhr ON u.userID = uhr.userID
+        WHERE u.userID IS NOT NULL 
+        AND uhr.roleID IN (4, 5)  -- Roles Estudiante (4) y Egresado (5)
         ORDER BY u.firstName, u.surname1
       `);
 
-      // Obtener información de roles para cada estudiante
+      // Procesar estudiantes y egresados
       const studentsWithRoles = await Promise.all(
         students.map(async (student) => {
+          // Obtener roles reales del usuario
           const [roles] = await connection.execute(`
             SELECT r.name as roleName, r.name as roleDescription
             FROM userHasRole uhr
@@ -47,12 +55,19 @@ const getStudents = async (req, res) => {
             WHERE uhr.userID = ?
           `, [student.userID]);
 
+          // Determinar clasificación basada en los roles
+          const isGraduate = roles.some(role => role.roleName === 'Egresado');
+          const isStudent = roles.some(role => role.roleName === 'Estudiante');
+          
+          let classification = 'Sin clasificar';
+          if (isGraduate) classification = 'Egresado';
+          else if (isStudent) classification = 'Estudiante';
+
           return {
             ...student,
             roles: roles,
-            fullName: `${student.firstName} ${student.secondName || ''} ${student.surname1} ${student.surname2 || ''}`.trim(),
             status: roles.length > 0 ? 'Activo' : 'Inactivo',
-            classification: roles.some(role => role.roleName === 'Estudiante') ? 'En Proceso' : 'Sin clasificar'
+            classification: classification
           };
         })
       );

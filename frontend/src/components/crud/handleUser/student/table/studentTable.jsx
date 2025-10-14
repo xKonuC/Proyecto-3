@@ -52,10 +52,8 @@ const StudentTable = memo((props) => {
 
     const theadContent = (
         <>
-            <th className={theadContentDiv}>ID</th>
             <th className={theadContentDiv}>RUT</th>
-            <th className={theadContentDiv}>Nombre Completo</th>
-            <th className={theadContentDiv}>Roles</th>
+            <th className={`${theadContentDiv} text-left`}>Nombre Completo</th>
             <th className={theadContentDiv}>Estado</th>
             <th className={theadContentDiv}>Clasificación</th>
             <th className={theadContentDiv}>Año Ingreso</th>
@@ -65,7 +63,7 @@ const StudentTable = memo((props) => {
     const tbodyContent = (
         <TbodyContent
             itemsLength={Array.isArray(currentItems) ? currentItems.length : 0}
-            length={8}
+            length={6}
             isLoading={false}
         >
             {Array.isArray(currentItems) && currentItems.map((item) => (
@@ -84,16 +82,15 @@ const StudentTable = memo((props) => {
                             setSelectAll(newSelectedItems.length === currentItems.length);
                         }}
                     />
-                    <ItemCell value={item.userID} />
                     <ItemCell value={item.rut} />
-                        <td className={tbodyContentTd}>
+                        <td className={`${tbodyContentTd} text-left`}>
                             <div className="flex items-center">
                                 <div className="flex-shrink-0 h-8 w-8">
                                     <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center">
                                         <FaUserGraduate className="h-4 w-4 text-orange-600" />
                                     </div>
                                 </div>
-                                <div className="ml-3">
+                                <div className="ml-3 flex-1">
                                     <div className="text-sm font-medium text-gray-900">
                                         {item.fullName || `${item.firstName || ''} ${item.surname1 || ''}`.trim() || 'Sin nombre'}
                                     </div>
@@ -101,11 +98,6 @@ const StudentTable = memo((props) => {
                                 </div>
                             </div>
                         </td>
-                    <ItemCell value={
-                        item.roles && Array.isArray(item.roles) && item.roles.length > 0 
-                            ? item.roles.map(role => role.roleName).join(', ')
-                            : 'Sin roles asignados'
-                    } />
                     <td className={tbodyContentTd}>
                         <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(item.status || 'Activo')}`}>
                             {item.status || 'Activo'}

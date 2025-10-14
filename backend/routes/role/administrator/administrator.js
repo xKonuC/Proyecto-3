@@ -9,6 +9,8 @@ import {
   handleAcademicRecordRoute,
   thesisRegistrationRoute,
   graduateRoute,
+  userPermissionsRoute,
+  roleHierarchyRoute,
 } from './administrator.modules.js';
 
 const administratorRoute = express.Router();
@@ -21,4 +23,6 @@ administratorRoute.use('/semester', semesterRoute);
 administratorRoute.use('/handleAcademicRecord', handleAcademicRecordRoute);
 administratorRoute.use('/thesisRegistration', thesisRegistrationRoute);
 administratorRoute.use('/graduate', graduateRoute);
+administratorRoute.use('/userPermissions', userPermissionsRoute);
+administratorRoute.use('/roleHierarchy', roleHierarchyRoute);
 export default administratorRoute;

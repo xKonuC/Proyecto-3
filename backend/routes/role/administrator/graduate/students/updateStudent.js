@@ -53,6 +53,12 @@ const updateStudent = async (req, res) => {
             processedValue = date.toISOString().split('T')[0]; // YYYY-MM-DD
           }
           
+          // Manejar campos numéricos que pueden estar vacíos
+          const numericFields = ['group', 'entry', 'articulation'];
+          if (numericFields.includes(key) && (value === '' || value === null)) {
+            processedValue = null; // NULL para campos numéricos vacíos
+          }
+          
           updateValues.push(processedValue);
         }
       }

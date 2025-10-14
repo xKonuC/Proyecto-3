@@ -22,6 +22,13 @@ app.use((err, req, res, next) => {
 });
 app.use(express.static('public'));
 app.use(express.json({ limit: '64mb' }));
+app.use(express.urlencoded({ extended: true, limit: '64mb' }));
+
+// Middleware para manejar codificación UTF-8
+app.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  next();
+});
 
 app.use('/api', routes);
 app.use((req, res) => {
