@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: Root123!
-      MYSQL_DATABASE: magister             # base principal inicial
+      MYSQL_DATABASE: authdb               # base principal inicial
       TZ: America/Santiago
     ports:
       - "3307:3306"                        # usa 3307 para evitar conflicto

@@ -74,3 +74,5 @@ const getClassificationCriteria = async (req, res) => {
 };
 
 export default getClassificationCriteria;
+
+

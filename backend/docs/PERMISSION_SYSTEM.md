@@ -224,3 +224,5 @@ userRoute.delete(
 - Acceso muy limitado
 - Solo pueden acceder a sus propios datos
 - No pueden realizar acciones administrativas
+
+

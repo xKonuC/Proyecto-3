@@ -25,3 +25,5 @@ class MapAuthToPosgrado {
 }
 
 export { MapAuthToPosgrado };
+
+

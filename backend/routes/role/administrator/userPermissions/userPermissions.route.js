@@ -6,3 +6,4 @@ const userPermissionsRoute = express.Router();
 userPermissionsRoute.get('/', getUserPermissions);
 
 export default userPermissionsRoute;
+

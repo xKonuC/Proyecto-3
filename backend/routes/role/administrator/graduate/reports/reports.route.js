@@ -1,9 +1,9 @@
 import express from 'express';
-import { getReportsSummary } from './getReportsSummary.js';
-import { generateGraduatesSummaryReport } from './generateGraduatesSummaryReport.js';
-import { generateGraduatesByYearReport } from './generateGraduatesByYearReport.js';
-import { generateGraduatesBySpecializationReport } from './generateGraduatesBySpecializationReport.js';
-import { generateClassificationsReport } from './generateClassificationsReport.js';
+import getReportsSummary from './getReportsSummary.js';
+import generateGraduatesSummaryReport from './generateGraduatesSummaryReport.js';
+import generateGraduatesByYearReport from './generateGraduatesByYearReport.js';
+import generateGraduatesBySpecializationReport from './generateGraduatesBySpecializationReport.js';
+import generateClassificationsReport from './generateClassificationsReport.js';
 
 const reportsRoute = express.Router();
 
@@ -23,3 +23,4 @@ reportsRoute.post('/graduates-by-specialization', generateGraduatesBySpecializat
 reportsRoute.post('/classifications-report', generateClassificationsReport);
 
 export default reportsRoute;
+

@@ -91,3 +91,5 @@ const generateGraduatesBySpecializationReport = async (req, res) => {
 };
 
 export default generateGraduatesBySpecializationReport;
+
+

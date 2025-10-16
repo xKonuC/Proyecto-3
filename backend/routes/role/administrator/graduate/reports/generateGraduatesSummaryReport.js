@@ -115,3 +115,5 @@ const generateGraduatesSummaryReport = async (req, res) => {
 };
 
 export default generateGraduatesSummaryReport;
+
+

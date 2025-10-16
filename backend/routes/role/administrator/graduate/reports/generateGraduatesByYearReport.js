@@ -77,3 +77,5 @@ const generateGraduatesByYearReport = async (req, res) => {
 };
 
 export default generateGraduatesByYearReport;
+
+

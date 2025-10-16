@@ -16,3 +16,5 @@ classificationRoute.put('/:id', updateClassification);
 classificationRoute.delete('/:id', deleteClassification);
 
 export default classificationRoute;
+
+

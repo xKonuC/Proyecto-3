@@ -1,65 +1,79 @@
--- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
+-- phpMyAdmin SQL Dump
+-- version 5.2.3
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: magister
--- ------------------------------------------------------
--- Server version	8.2.0
+-- Servidor: mysql
+-- Tiempo de generación: 16-10-2025 a las 01:50:41
+-- Versión del servidor: 8.0.43
+-- Versión de PHP: 8.3.26
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Current Database: `magister`
+-- Base de datos: `authdb`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `magister` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
-USE `magister`;
+-- --------------------------------------------------------
 
 --
--- Table structure for table `userAccount`
+-- Estructura de tabla para la tabla `userAccount`
 --
 
-DROP TABLE IF EXISTS `userAccount`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `userAccount` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `provider` varchar(255) DEFAULT NULL,
   `createdat` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `lastsignin` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+  `password` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `userAccount`
+-- Volcado de datos para la tabla `userAccount`
 --
 
-LOCK TABLES `userAccount` WRITE;
-/*!40000 ALTER TABLE `userAccount` DISABLE KEYS */;
-INSERT INTO `userAccount` VALUES (1,'Leonardo Rodríguez','Leonardo.Rodríguez@alumnos.uta.cl','Email','2024-01-16 03:40:50',NULL,''),(2,'Sebastian Torres','Sebastian.Torres@alumnos.uta.cl','Email','2024-01-16 15:49:25',NULL,'');
-/*!40000 ALTER TABLE `userAccount` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+INSERT INTO `userAccount` (`id`, `name`, `email`, `provider`, `createdat`, `lastsignin`, `password`) VALUES
+(1, 'Leonardo Rodríguez', 'Leonardo.Rodríguez@alumnos.uta.cl', 'Email', '2024-01-16 03:40:50', NULL, ''),
+(2, 'Sebastian Torres', 'Sebastian.Torres@alumnos.uta.cl', 'Email', '2024-01-16 15:49:25', NULL, ''),
+(12, 'admin@ejemplo.com', 'admin@ejemplo.com', 'Email', '2025-10-09 01:37:37', NULL, '$2b$10$fy0pawhkIzSxGCn8tXzl2e40aK/f85YkMeQMktqXr3HecAQI4KjB6'),
+(14, 'Juan Carlos Pérez González', 'admin3@ejemplo.com', 'Email', '2025-10-09 02:46:17', NULL, NULL),
+(15, 'Juan Carlos Pérez González', 'admin5@ejemplo.com', 'Email', '2025-10-09 03:02:59', NULL, '.KHAT9QHyiCsu6/oDfDaLkZFRBEdy'),
+(16, 'Admin Test User Demo', 'admin6@ejemplo.com', 'Email', '2025-10-09 03:08:51', NULL, '/YAZ6FjhVZSm'),
+(17, 'Admin New User Test', 'admin7@ejemplo.com', 'Email', '2025-10-09 03:11:17', NULL, NULL),
+(18, 'Test Debug User Password', 'test@ejemplo.com', 'Email', '2025-10-09 03:16:16', NULL, '$2b$10$lVwFv3K.9Aj4ANa5OBq9qOBs5a4TDhPhZ5mYarXd8YLk0DFxc.vY.'),
+(21, 'Super Admin Administrador Sistema', 'superadmin@magister.cl', 'Email', '2025-10-13 18:17:16', NULL, '$2b$10$3JWt0vOU3F5xlpXWTkiOEunzdoNJi9YixW5ykbfxynTZnPwBbVRqe');
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `userAccount`
+--
+ALTER TABLE `userAccount`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `userAccount`
+--
+ALTER TABLE `userAccount`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2024-01-17 11:06:45
