@@ -1,4 +1,4 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 // Eliminar ahora es degree
 class SelectDegree {
@@ -9,7 +9,7 @@ class SelectDegree {
 // ✅
 class SelectDegree_SupaBase extends SelectDegree {
   async selectDegree() {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     select * from degree;
     `);

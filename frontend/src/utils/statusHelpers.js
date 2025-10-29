@@ -9,6 +9,8 @@ export const getStatusColor = (status) => {
 
 export const getClassificationColor = (classification) => {
   switch (classification) {
+    case 'Estudiante': return 'bg-blue-100 text-blue-800';
+    case 'Egresado': return 'bg-green-100 text-green-800';
     case 'En Proceso': return 'bg-yellow-100 text-yellow-800';
     case 'Graduado': return 'bg-green-100 text-green-800';
     case 'En Evaluación': return 'bg-blue-100 text-blue-800';

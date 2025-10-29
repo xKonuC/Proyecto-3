@@ -47,7 +47,6 @@ const ResponseHandler = async ({
   } else if (response) {
     const responseData = response.result ?? response;
     onData(responseData);
-
   } else {
     onDefault(showAlert);
   }

@@ -1,8 +1,8 @@
-import pool from '../../dbConnection.js';
+import posgradoPool from '../../posgradoDbConnection.js';
 
 class DeleteDocument {
   async deleteDocument(documentIDs) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const placeholders = documentIDs.map(() => '?').join(',');
     const [result] = await connection.execute(`
     DELETE FROM document

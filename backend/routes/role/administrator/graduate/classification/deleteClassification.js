@@ -1,4 +1,4 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const deleteClassification = async (req, res) => {
   try {
@@ -11,7 +11,7 @@ const deleteClassification = async (req, res) => {
       });
     }
 
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Verificar que la clasificación existe
@@ -62,5 +62,6 @@ const deleteClassification = async (req, res) => {
 };
 
 export default deleteClassification;
+
 
 

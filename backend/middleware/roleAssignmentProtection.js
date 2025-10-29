@@ -96,6 +96,15 @@ const protectSensitiveData = async (req, res, next) => {
     const { userPermissions, userRole, userID } = req.body;
     const targetUserID = req.params.userID || req.body.targetUserID;
 
+    // Verificar que userPermissions existe
+    if (!userPermissions) {
+      console.error('protectSensitiveData: userPermissions no está definido en req.body');
+      return res.status(401).json({
+        error: 'No autenticado',
+        message: 'No se encontró información de permisos del usuario'
+      });
+    }
+
     // SuperAdmin y Administrador pueden acceder a todos los datos
     if (userPermissions.canViewAllData) {
       return next();
@@ -124,5 +133,6 @@ export {
   protectSystemSettings,
   protectSensitiveData
 };
+
 
 

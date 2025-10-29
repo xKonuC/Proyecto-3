@@ -1,9 +1,9 @@
 /* eslint-disable import/extensions */
-import pool from '../../dbConnection.js';
+import posgradoPool from '../../posgradoDbConnection.js';
 
 class CreateDocument {
   async createDocument(archiveURL, userID, formatID, category) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     insert into document (archiveURL, userID, formatID, category) values
     (?,?,?,?)

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mysql:
     image: mysql:8.0
@@ -5,14 +7,18 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: Root123!
-      MYSQL_DATABASE: authdb               # base principal inicial
+      MYSQL_DATABASE: authdb
       TZ: America/Santiago
     ports:
-      - "3307:3306"                        # usa 3307 para evitar conflicto
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./initdb:/docker-entrypoint-initdb.d
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pRoot123!"]
+      timeout: 20s
+      retries: 10
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -27,6 +33,94 @@ services:
       UPLOAD_LIMIT: 256M
     ports:
       - "8080:80"
+
+  authserver:
+    build:
+      context: ../authserver
+      dockerfile: Dockerfile.dev
+    container_name: authserver
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=Root123!
+      - DB_DATABASE=authdb
+      - DB_PORT=3306
+      - PORT=5001
+      - SECRET_ACCESS_TOKEN=abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk
+      - SECRET_PASSWORD_CRYPTO=abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk
+      - SECRET_REFRESH_TOKEN=abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk
+      - SECRET_ENCRYPT=abcdefghijk
+    ports:
+      - "5001:5001"
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile.dev
+    container_name: backend
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      authserver:
+        condition: service_started
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=Root123!
+      - DB_DATABASE=posgrado_db
+      - DB_PORT=3306
+      - PORT=5000
+      - AUTHSERVER_URL=http://authserver:5001
+      - SECRET_ACCESS_TOKEN=abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk
+      - SECRET_PASSWORD_CRYPTO=abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk
+      - SECRET_REFRESH_TOKEN=abcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijkabcdefghijk
+      - SECRET_ENCRYPT=abcdefghijk
+      - MAX_LENGHT_ARRAY_NUMBER=100
+      - MAX_LENGTH_ARRAY_DATA=100
+      - ALLOWED_ROLES_DIRECTOR=1,2,3,4
+      - ALLOWED_ROLES_MANDATED=2,3,4
+      - ALLOW_DOMAIN=http://localhost:5173
+    ports:
+      - "5000:5000"
+
+  fileserver:
+    build:
+      context: ../fileserver
+      dockerfile: Dockerfile.dev
+    container_name: fileserver
+    restart: always
+    depends_on:
+      - authserver
+    environment:
+      - NODE_ENV=development
+      - PORT=5002
+    ports:
+      - "5002:5002"
+    volumes:
+      - ../fileserver/uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.dev
+    container_name: frontend
+    restart: always
+    depends_on:
+      - backend
+      - authserver
+    environment:
+      - NODE_ENV=development
+      - VITE_BACKEND_URL=http://localhost:5000
+      - VITE_AUTHSERVER_URL=http://localhost:5001
+      - VITE_FILESERVER_URL=http://localhost:5002
+    ports:
+      - "5173:5173"
 
 volumes:
   mysql_data:

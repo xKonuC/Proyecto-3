@@ -1,4 +1,4 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const getGraduatesByClassification = async (req, res) => {
   try {
@@ -11,7 +11,7 @@ const getGraduatesByClassification = async (req, res) => {
       });
     }
 
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Obtener información de la clasificación

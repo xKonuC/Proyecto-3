@@ -62,3 +62,10 @@ const getUserPermissions = async (req, res) => {
 export default getUserPermissions;
 
 
+
+
+
+
+
+
+

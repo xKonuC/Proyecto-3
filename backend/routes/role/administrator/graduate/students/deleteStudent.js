@@ -1,4 +1,4 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 import authPool from '../../../../../authDbConnection.js';
 
 const deleteStudent = async (req, res) => {
@@ -12,7 +12,7 @@ const deleteStudent = async (req, res) => {
       });
     }
 
-    const connection = await pool.getConnection();
+    const connection = await authPool.getConnection();
     const authConnection = await authPool.getConnection();
     
     try {

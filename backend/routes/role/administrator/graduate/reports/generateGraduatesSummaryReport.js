@@ -1,9 +1,9 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const generateGraduatesSummaryReport = async (req, res) => {
   try {
     const { dateRange } = req.body;
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Configurar UTF-8 en la conexión
@@ -115,5 +115,12 @@ const generateGraduatesSummaryReport = async (req, res) => {
 };
 
 export default generateGraduatesSummaryReport;
+
+
+
+
+
+
+
 
 

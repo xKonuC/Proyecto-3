@@ -22,7 +22,7 @@ export default class CrudService extends BaseService {
                 this.showAlert({ type: 'error', content: 'No tienes una sesión' });
             }
         } catch (error) {
-            console.log(error)
+            console.error('Error en CrudService:', error);
             this.onError(error);
         }
     }

@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class CreateStudentHasSemester {
   async createStudentHasSemester(userID, semesterID, specializationID, evaluationTypeID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     try {
       const [result] = await connection.execute(`
         INSERT INTO studentHasSemester (userID, semesterID, specializationID, evaluationTypeID) 

@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class CreateStudentHasTitle {
   async createStudentHasTitle(archiveURL, userID, titleID, formatID, titleYear) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     insert into studentHasTitle (archiveURL,userID,formatID,titleID,titleYear)
     values (?,?,?,?,?);

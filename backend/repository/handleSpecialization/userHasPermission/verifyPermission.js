@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class VerifyPermission {
   async verifyPermission(userID, permissionID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     try {
       const [result] = await connection.execute(
         `

@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class SelectEvaluation {
   async selectEvaluation(evaluationTypeID) {
@@ -12,7 +12,7 @@ class SelectEvaluation {
       // Selecciona datos para la evaluación de tesis.
       query = 'SELECT * FROM thesisEvaluation';
     }
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     try {
       const [result] = await connection.execute(query);
       connection.release();

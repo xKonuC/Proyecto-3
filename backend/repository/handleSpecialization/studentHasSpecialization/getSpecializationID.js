@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class GetSpecializationID {
   async getSpecializationID(userID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     try {
       // Ordena los resultados por studentHasSpecializationID de forma descendente y limita a 1
       const [result] = await connection.execute(

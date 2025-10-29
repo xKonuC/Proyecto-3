@@ -1,4 +1,4 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class SelectAcademicsEvaluation {
   async selectAcademicsEvaluation(evaluationTypeID, userID) {
@@ -14,7 +14,7 @@ class SelectAcademicsEvaluation {
       query = 'SELECT * FROM thesisEvaluation  WHERE academicA_userID = ? OR academicB_userID = ? OR director_userID = ? OR codirector_userID = ?';
       params = [userID, userID, userID, userID];
     }
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     try {
       const [result] = await connection.execute(query, params);
       connection.release();

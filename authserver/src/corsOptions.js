@@ -7,8 +7,16 @@ const domain3 = process.env.ALLOW_DOMAIN3;
 var allowlist = [domain1, domain2, domain3];
 
 const corsOptions = function(req, callback){
+  const origin = req.get('Origin');
+  console.log('CORS Origin:', origin);
+  
   // Permitir todas las peticiones temporalmente para debug
-  callback(null, { origin: true});
+  callback(null, { 
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin']
+  });
 }
 
 export default corsOptions;

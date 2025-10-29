@@ -1,9 +1,9 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 // Exclusivo para el estudiante para registrar su tesis
 class SelectUserHasRolesAdministrative {
   async selectUserHasRolesAdministrative() {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
       SELECT DISTINCT 
         user.userID, 

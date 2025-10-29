@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `posgrado_db`
 --
+
+-- Usar la base de datos posgrado_db
+USE `posgrado_db`;
 
 -- --------------------------------------------------------
 
@@ -63,7 +66,7 @@ CREATE TABLE `academicHasTitle` (
   `userID` int NOT NULL,
   `titleID` int NOT NULL,
   `titleYear` year NOT NULL,
-  `archiveURL` varchar(2083) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `archiveURL` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `formatID` int NOT NULL,
   `studyField` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -167,7 +170,7 @@ CREATE TABLE `bookChapter` (
   `place` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `editorial` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `accessURL` varchar(2083) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `accessURL` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -246,8 +249,8 @@ CREATE TABLE `consultancy` (
   `contractingInstitution` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `grantYear` year NOT NULL,
   `executionPeriod` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `objective` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `accessURL` varchar(2083) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `objective` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `accessURL` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -280,7 +283,7 @@ CREATE TABLE `document` (
   `documentID` int NOT NULL,
   `userID` int NOT NULL,
   `category` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `archiveURL` varchar(2083) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `archiveURL` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `formatID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -333,7 +336,7 @@ CREATE TABLE `evaluation` (
   `evaluationID` int NOT NULL,
   `studentHasSemesterID` int NOT NULL,
   `evaluationStatusID` int NOT NULL DEFAULT '1',
-  `projectURL` varchar(2083) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `projectURL` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `formatID` int DEFAULT NULL,
   `creationDate` timestamp NULL DEFAULT NULL,
   `updateDate` timestamp NULL DEFAULT NULL,
@@ -471,7 +474,7 @@ CREATE TABLE `guidedThesis` (
   `program` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `institution` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sameProgram` tinyint(1) DEFAULT NULL,
-  `accessURL` varchar(2083) COLLATE utf8mb4_unicode_ci NOT NULL
+  `accessURL` TEXT COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -502,7 +505,7 @@ CREATE TABLE `object` (
   `objectID` int NOT NULL,
   `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci,
-  `photoURL` varchar(2083) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `photoURL` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `formatID` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -542,7 +545,7 @@ CREATE TABLE `patent` (
   `publicationDate` date DEFAULT NULL,
   `registrationNumber` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `accessURL` varchar(2083) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `accessURL` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -574,13 +577,13 @@ INSERT INTO `permission` (`permissionID`, `name`) VALUES
 -- (Véase abajo para la vista actual)
 --
 CREATE TABLE `preprojectEvaluation` (
-`academicA_comment1` varchar(1000)
-,`academicA_comment2` varchar(1000)
-,`academicA_comment3` varchar(1000)
-,`academicA_comment4` varchar(1000)
-,`academicA_comment5` varchar(1000)
-,`academicA_comment6` varchar(1000)
-,`academicA_comment7` varchar(1000)
+`academicA_comment1` TEXT
+,`academicA_comment2` TEXT
+,`academicA_comment3` TEXT
+,`academicA_comment4` TEXT
+,`academicA_comment5` TEXT
+,`academicA_comment6` TEXT
+,`academicA_comment7` TEXT
 ,`academicA_email` varchar(60)
 ,`academicA_fullName` varchar(183)
 ,`academicA_preprojectEvaluatorID` int
@@ -589,13 +592,13 @@ CREATE TABLE `preprojectEvaluation` (
 ,`academicA_statusDescription` varchar(255)
 ,`academicA_statusID` int
 ,`academicA_userID` int
-,`academicB_comment1` varchar(1000)
-,`academicB_comment2` varchar(1000)
-,`academicB_comment3` varchar(1000)
-,`academicB_comment4` varchar(1000)
-,`academicB_comment5` varchar(1000)
-,`academicB_comment6` varchar(1000)
-,`academicB_comment7` varchar(1000)
+,`academicB_comment1` TEXT
+,`academicB_comment2` TEXT
+,`academicB_comment3` TEXT
+,`academicB_comment4` TEXT
+,`academicB_comment5` TEXT
+,`academicB_comment6` TEXT
+,`academicB_comment7` TEXT
 ,`academicB_email` varchar(60)
 ,`academicB_fullName` varchar(183)
 ,`academicB_preprojectEvaluatorID` int
@@ -618,7 +621,7 @@ CREATE TABLE `preprojectEvaluation` (
 ,`preproject_status` varchar(60)
 ,`preproject_statusDescription` varchar(255)
 ,`preproject_statusID` int
-,`projectURL` varchar(2083)
+,`projectURL` TEXT
 ,`rubric_description` varchar(255)
 ,`rubric_name` varchar(60)
 ,`rubric_rubricID` int
@@ -647,14 +650,14 @@ CREATE TABLE `preprojectEvaluator` (
   `userID` int NOT NULL,
   `evaluatorCategoryID` int NOT NULL,
   `evaluationStatusID` int NOT NULL DEFAULT '2',
-  `comment` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment1` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment2` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment3` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment4` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment5` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment6` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `comment7` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `comment` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment1` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment2` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment3` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment4` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment5` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment6` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment7` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -672,7 +675,7 @@ CREATE TABLE `project` (
   `grantYear` year NOT NULL,
   `executionPeriod` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `accessURL` varchar(2083) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `accessURL` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -693,7 +696,7 @@ CREATE TABLE `publication` (
   `journal` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ISSN` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `accessURL` varchar(2083) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `accessURL` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1055,7 +1058,7 @@ CREATE TABLE `studentHasTitle` (
   `userID` int NOT NULL,
   `titleID` int NOT NULL,
   `titleYear` year NOT NULL,
-  `archiveURL` varchar(2083) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `archiveURL` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
   `formatID` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1302,7 +1305,7 @@ CREATE TABLE `thesisEvaluation` (
 ,`programDirector_rut` varchar(14)
 ,`programDirector_thesisEvaluatorID` int
 ,`programDirector_userID` int
-,`projectURL` varchar(2083)
+,`projectURL` TEXT
 ,`rubric_description` varchar(255)
 ,`rubric_name` varchar(60)
 ,`rubric_rubricID` int
@@ -1339,7 +1342,7 @@ CREATE TABLE `thesisEvaluator` (
   `evaluatorCategoryID` int NOT NULL,
   `grade1` float DEFAULT NULL,
   `grade2` float DEFAULT NULL,
-  `comment` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `comment` TEXT COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

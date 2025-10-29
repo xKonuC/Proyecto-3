@@ -117,7 +117,7 @@ const PasswordCRUD = ({ urls, id }) => {
             customPath={<ChangePasswordIcon />}
           >
             <TextInput
-              inputId='passwordUser'
+              inputId={`passwordUser-${id}`}
               value={newItem.password}
               onChange={(e) => setNewItem({ ...newItem, password: e.target.value })}
               placeholder={`Ingresar Contraseña`}

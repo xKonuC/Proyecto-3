@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class GetPublication {
   async getPublication(userID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     select * from publication where userID = ?;
     `, [userID]);

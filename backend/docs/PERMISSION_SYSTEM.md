@@ -226,3 +226,10 @@ userRoute.delete(
 - No pueden realizar acciones administrativas
 
 
+
+
+
+
+
+
+

@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class GetLastEvaluation {
   async getLastEvaluation(evaluationTypeID, studentHasSemesterID) {
@@ -52,7 +52,7 @@ class GetLastEvaluation {
         ev.evaluationID DESC
       LIMIT 1;`;
 
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     try {
       const [result] = await connection.execute(query, [studentHasSemesterID]);
       connection.release();

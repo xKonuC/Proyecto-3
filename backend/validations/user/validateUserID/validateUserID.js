@@ -1,7 +1,9 @@
 import { body, validationResult } from 'express-validator';
 
 const validateUserID = [
-  body('userID').isInt().withMessage('El userID no es válido'),
+  body('userID')
+    .optional({ nullable: true, checkFalsy: true })
+    .isInt().withMessage('El userID no es válido'),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

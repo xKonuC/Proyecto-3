@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class CreateUserHasRole {
   async createUserHasRole(userID, roleID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       console.log(`🔍 Intentando crear userHasRole: userID=${userID}, roleID=${roleID}`);

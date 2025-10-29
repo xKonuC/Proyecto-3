@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class SelectPreprojectEvaluator {
   async selectPreprojectEvaluator(evaluationID, evaluatorCategoryID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     select evaluationID, evaluationStatusID, evaluatorCategoryID, comment1, comment2, comment3, comment4, comment5, comment6, comment7 from preprojectEvaluator
     where evaluationID = ? and evaluatorCategoryID = ?;

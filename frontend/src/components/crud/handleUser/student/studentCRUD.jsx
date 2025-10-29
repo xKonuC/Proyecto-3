@@ -57,6 +57,9 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
 
   // Función para manejar las respuestas de los servicios
   const responseHandler = (response) => {
+    console.log('=== StudentCRUD responseHandler ===');
+    console.log('Response:', response);
+    
     ResponseHandler({
       showAlert,
       navigate,
@@ -64,11 +67,16 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
       onVerification: handleVerification,
       onRenewal: handleRenewal,
       onData: (data) => {
+        console.log('=== StudentCRUD onData ===');
+        console.log('Data received:', data);
         if (data && data.data) {
+          console.log('Dispatching setItems with:', data.data);
           dispatch(setItems(data.data));
         }
       },
       onSuccess: (message) => {
+        console.log('=== StudentCRUD onSuccess ===');
+        console.log('Success message:', message);
         showAlert({
           type: 'success',
           content: message,
@@ -204,11 +212,15 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
     };
 
     const handleRoleChangeSuccess = (data) => {
+        console.log('=== handleRoleChangeSuccess called ===');
+        console.log('Data received:', data);
         showAlert({
             type: 'success',
             content: `Rol actualizado exitosamente: ${data.roleName}`,
         });
-        handleFetch(); // Recargar la lista
+        // Recargar la lista para actualizar la clasificación
+        console.log('Calling handleFetch to reload data...');
+        handleFetch();
     };
 
     const closeRoleChangeModal = () => {

@@ -1,9 +1,9 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 import authPool from '../../../../../authDbConnection.js';
 
 const getStudents = async (req, res) => {
   try {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const authConnection = await authPool.getConnection();
 
     try {
@@ -31,7 +31,7 @@ const getStudents = async (req, res) => {
           u.workPlace,
           u.job,
           u.articulation,
-          u.\`group\`,
+          u.\`group\` as \`group\`,
           u.sex,
           u.civilStatus,
           u.birthday,
@@ -62,6 +62,8 @@ const getStudents = async (req, res) => {
           let classification = 'Sin clasificar';
           if (isGraduate) classification = 'Egresado';
           else if (isStudent) classification = 'Estudiante';
+          
+          console.log(`User ${student.userID}: roles=${JSON.stringify(roles.map(r => r.roleName))}, classification=${classification}`);
 
           return {
             ...student,

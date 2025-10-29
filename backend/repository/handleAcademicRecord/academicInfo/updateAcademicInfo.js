@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class UpdateAcademicInfo {
   async updateAcademicInfo(userID, bondType, investigationLines, bestDegreeID, workedHours, hierarchy) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     update academicInfo set
     bondType = ?, investigationLines = ?, bestDegreeID = ?, workedHours = ?, hierarchy = ?

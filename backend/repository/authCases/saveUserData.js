@@ -1,9 +1,9 @@
-import pool from '../../dbConnection.js';
+import posgradoPool from '../../posgradoDbConnection.js';
 
 class SaveUserData {
   async saveUserData(dataBase, id, email) {
     try {
-      const connection = await pool.getConnection();
+      const connection = await posgradoPool.getConnection();
       try {
         // Insert user data into the posgrado database with default values
         await connection.execute(

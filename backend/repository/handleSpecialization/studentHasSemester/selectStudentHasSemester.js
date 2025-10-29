@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class GetStudentHasSpecialization {
   async getStudentHasSpecialization() {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(
       `
       SELECT shs.studentHasSemesterID, shs.specializationID, shs.userID, shs.semesterStatusID, shs.evaluationTypeID,

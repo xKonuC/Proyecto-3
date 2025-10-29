@@ -1,8 +1,8 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const getClassifications = async (req, res) => {
   try {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Obtener todas las clasificaciones con información de egresados
@@ -77,5 +77,6 @@ const getClassifications = async (req, res) => {
 };
 
 export default getClassifications;
+
 
 

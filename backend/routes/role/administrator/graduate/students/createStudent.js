@@ -1,4 +1,4 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 import authPool from '../../../../../authDbConnection.js';
 import { hashSync } from 'bcryptjs';
 
@@ -17,7 +17,7 @@ const createStudent = async (req, res) => {
       });
     }
 
-    const connection = await pool.getConnection();
+    const connection = await authPool.getConnection();
     const authConnection = await authPool.getConnection();
     
     try {
