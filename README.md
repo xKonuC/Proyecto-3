@@ -1,34 +1,35 @@
+![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
+
 🚀 Proyecto 3 – Configuración con Docker
 
 Este proyecto utiliza Docker y Docker Compose para levantar un entorno de desarrollo que incluye dos bases de datos separadas:
 
-authdb: base de datos de autenticación y usuarios.
+🧩 authdb: base de datos de autenticación y gestión de usuarios.
 
-opsdb (posgrado_db): base de datos operativa del sistema (posgrados u operaciones principales).
+🧩 opsdb (posgrado_db): base de datos operativa y académica principal del sistema.
 
 📦 Requisitos previos
 
-Antes de iniciar, asegúrate de tener instalados los siguientes componentes:
+Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 
-# Verificar si Docker está instalado
+# Verificar instalación
 docker --version
-
-# Verificar si Docker Compose está disponible
 docker compose version
 
 
-Si no están instalados:
+Si no los tienes instalados:
 
-🔹 Windows / macOS: Descargar Docker Desktop
+Windows / macOS: Descargar Docker Desktop
 
-🔹 Linux (Ubuntu):
+Linux (Ubuntu):
 
 sudo apt update
 sudo apt install docker.io docker-compose -y
 sudo systemctl enable docker
 sudo systemctl start docker
 
-⚙️ Estructura del proyecto
+
+🧱 Estructura del proyecto
 Proyecto-3/
 │
 ├── docker-compose.yml
@@ -40,37 +41,37 @@ Proyecto-3/
     ├── Dockerfile
     └── data.sql
 
-🧩 Descripción de las bases de datos
+⚙️ Descripción de las bases de datos
 🗄️ authdb
 
-Contiene información de usuarios, roles y tokens.
+Contiene información de usuarios, roles, permisos y tokens.
 
-Configuración típica con PostgreSQL o MySQL.
+Se inicializa desde scripts.sql.
 
-Archivos .sql inicializan las tablas de autenticación.
+Ideal para manejar autenticación centralizada y control de acceso.
 
 🗃️ opsdb (posgrado_db)
 
-Contiene datos académicos y administrativos.
+Contiene la información operativa o académica del sistema.
 
-Relaciona programas, estudiantes y registros operativos.
+Se inicializa desde data.sql.
 
-Puede incluir relaciones con authdb mediante claves externas.
+Puede relacionarse con authdb mediante claves externas o vistas compartidas.
 
 🐳 Comandos principales de Docker
-1. Construir las imágenes
+1️⃣ Construir las imágenes
 docker compose build
 
-2. Levantar los contenedores
+2️⃣ Levantar los contenedores
 docker compose up -d
 
-3. Ver logs en tiempo real
+3️⃣ Ver logs en tiempo real
 docker compose logs -f
 
-4. Detener los servicios
+4️⃣ Detener los servicios
 docker compose down
 
-5. Acceder a una base de datos dentro del contenedor
+5️⃣ Acceder a una base de datos dentro del contenedor
 # Para authdb
 docker exec -it authdb bash
 psql -U usuario -d authdb
@@ -79,16 +80,16 @@ psql -U usuario -d authdb
 docker exec -it opsdb bash
 psql -U usuario -d posgrado_db
 
-🧱 Variables de entorno (ejemplo)
+🔧 Variables de entorno (.env)
 
-En un archivo .env (ubicado junto a tu docker-compose.yml):
+Crea un archivo .env junto al docker-compose.yml con el siguiente contenido:
 
 POSTGRES_USER=admin
 POSTGRES_PASSWORD=admin123
 AUTH_DB=authdb
 OPS_DB=posgrado_db
 
-✅ Puesta en marcha rápida
+🚀 Puesta en marcha rápida
 # Clonar el repositorio
 git clone https://github.com/tuusuario/Proyecto-3.git
 cd Proyecto-3
@@ -97,9 +98,25 @@ cd Proyecto-3
 docker compose up -d
 
 
-Una vez iniciado, verifica el estado:
+Verifica el estado de los contenedores:
 
 docker ps
 
 
-Deberías ver los contenedores authdb y opsdb corriendo.
+Deberías ver los contenedores:
+
+authdb
+
+opsdb
+
+corriendo correctamente ✅
+
+🧩 Notas adicionales
+
+Puedes modificar los archivos .sql para personalizar los datos iniciales.
+
+Si cambias los nombres de los servicios, recuerda actualizarlos también en el docker-compose.yml.
+
+Para limpiar los contenedores e imágenes:
+
+docker compose down --volumes --rmi all
