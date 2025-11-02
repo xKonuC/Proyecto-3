@@ -6,19 +6,6 @@ import jwt from 'jsonwebtoken';
 import encrypt from '../functions/encrypt.js';
 
 const emailRouter = express.Router();
-
-// Endpoint de prueba para verificar la conexión a la base de datos
-emailRouter.get("/test", async (req, res) => {
-    try {
-        const connection = await pool.getConnection();
-        const [rows] = await connection.execute("SELECT COUNT(*) as count FROM userAccount");
-        connection.release();
-        res.json({ message: "Conexión exitosa", userCount: rows[0].count });
-    } catch (error) {
-        console.log("Error de conexión:", error);
-        res.status(500).json({ error: error.message });
-    }
-});
 // emailRouter.get("/", async (req, res) => {
 //     pool.getConnection((err, connection) => {
 //         if (err) {
@@ -98,26 +85,28 @@ emailRouter.post("/login", async (req, res) => {
         const [existingUser] = await connection.execute(`
             SELECT * FROM userAccount WHERE email = ?
         `, [email]);
-        // const [existingUser2] = await connection2.execute(`
-        // SELECT * FROM user WHERE email = ?
-        // `, [email]);
+        const [existingUser2] = await connection2.execute(`
+        SELECT * FROM user WHERE email = ?
+    `, [email]);
         connection.release();
-        // connection2.release();
-        if (!existingUser[0]) {
+        connection2.release();
+        if (!existingUser[0] || !existingUser2[0]) {
             return res.status(404).json(encrypt({ message: "User not found" }));
         }
         const user = existingUser[0]
-        const userData = {} // existingUser2[0] || {}
-        if (!user.password) {
+        const userData = existingUser2[0]
+        {/*
+                if (!user.password) {
             return res.status(401).json(encrypt({ message: "User without password" }));
         }        
         if (!compareSync(password, user.password)) {
             return res.status(401).json(encrypt({ message: "Incorrect password" }));
         }
+            */}
         const payload = {
             id: user.id, ...userData
         }
-        const token = jwt.sign(payload, process.env.SECRET_ACCESS_TOKEN, { expiresIn: "1h" });
+        const token = jwt.sign(payload, process.env.SECRET_ACCESS_TOKEN, { expiresIn: "1m" });
         const refreshToken = jwt.sign({ counter: 0, ...payload }, process.env.SECRET_REFRESH_TOKEN, { expiresIn: "2d" });
         return res.json(encrypt({
             message: "logged in successfully",
@@ -128,10 +117,7 @@ emailRouter.post("/login", async (req, res) => {
     }
     catch (error) {
         console.log(error);
-        res.status(500).json(encrypt({ 
-            message: "Internal server error",
-            error: error.message 
-        }));
+        res.status(500).json(encrypt(error));
     }
 
 });

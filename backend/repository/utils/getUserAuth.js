@@ -1,16 +1,19 @@
-import jwt from 'jsonwebtoken';
+import axios from 'axios';
+import origin from '../../Origin.js';
+// import signTokenData from '../../functions/signTokenData.js';
 
 class GetUserAuth {
   async getUserAuth(token) {
-    try {
-      const decoded = jwt.verify(token, process.env.SECRET_ACCESS_TOKEN);
-      return { userID: decoded.id, ...decoded };
-    } catch (error) {
-      if (error.name === 'TokenExpiredError') {
-        return null;
-      }
-      throw error;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`, ...origin,
+      },
+    };
+    const result = await axios.post(`${process.env.AUTHSERVER_URL}/token/user`, {}, config);
+    if (result.data.message && result.data.message.includes('jwt expired')) {
+      return null;
     }
+    return result.data;
   }
 }
 

@@ -3,12 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const domain = process.env.ALLOW_DOMAIN;
-var allowlist = [
-  domain,
-  'http://localhost:5173', // Vite
-  'http://localhost:3000', // React
-  'http://localhost',      // genérico
-];
+var allowlist = [domain];
 
 const corsOptions = function(req, callback){
 
@@ -17,11 +12,6 @@ const corsOptions = function(req, callback){
   const error = new Error(`ORS origin not allowed ${origin} ${referer}`);
   let originToCheck = origin;  
 
-  if(!origin && !referer){
-    // Permitir solicitudes sin Origin ni Referer (ejemplo: Postman)
-    callback(null, { origin: true });
-    return;
-  }
   if(!origin){
     if(referer){
       const refererUrl = new URL(referer);

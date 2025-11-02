@@ -13,10 +13,9 @@ class CreateUser {
       },
     };
     const formattedBirthday = convertToTime(birthday);
-    const result = await axios.post(`${process.env.AUTHSERVER_URL}/auth/mailer/invite`, {
+    const result = await axios.post(`${process.env.AUTHSERVER_URL}/mailer/invite`, {
       rut, firstName, secondName, surname1, surname2, sex, civilStatus, birthday: formattedBirthday, address, email, personalEmail, phone, workPlace, phoneWork, job, entry, articulation, group,
     }, config);
-    console.log("Authserver response:", result.data);
     return result.data;
   }
 }

@@ -1,10 +1,22 @@
 /* eslint-disable no-prototype-builtins */
+import { VerifyRole } from '../../../../../../repository/verifyRole/verifyRole.js';
 
 const validateAllowedRoles = [
   async (req, res, next) => {
-    // Simplificar la validación - permitir todos los roles
-    console.log('🔍 validateAllowedRoles: Validando roles', req.body.roleIDs);
-    next();
+    const allowedRoles = [1, 2];
+
+    const roleIDs = req.body.roleIDs;
+    const rolesNotAllowed = roleIDs.filter((role) => allowedRoles.includes(role));
+    if (rolesNotAllowed.length === 0) {
+      next();
+    } else {
+      const VerifyRoleInstance = new VerifyRole();
+      const data = await VerifyRoleInstance.verifyRole(1, req.body.administratorID);
+      if (!data) {
+        return res.status(403).json({ error: 'No tienes permiso para realizar esta acción' });
+      }
+      next();
+    }
   },
 ];
 

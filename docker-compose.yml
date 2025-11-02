@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  #-----------------------------------Base de datos operacional-----------------------------------
+  posgrado:
+    image: mysql:8.0.36
+    environment:
+      MYSQL_ROOT_PASSWORD: posgrado_password
+      MYSQL_USER: posgrado
+      MYSQL_PASSWORD: posgrado_password
+      MYSQL_DATABASE: posgrado_db
+      LANG: en_US.UTF-8
+    networks:
+      - netmagister
+    ports:
+      - 3307:3306
+    volumes:
+      - ./opsdb/backup.sql:/docker-entrypoint-initdb.d/backup.sql
+  #-----------------------------------Base de datos Autenticación-----------------------------------
+  authdb:
+    image: mysql:8.0.36
+    environment:
+      MYSQL_ROOT_PASSWORD: auth_password
+      MYSQL_USER: auth
+      MYSQL_PASSWORD: auth_password
+      MYSQL_DATABASE: auth_db
+      LANG: en_US.UTF-8
+    ports:
+      - 3308:3306
+    networks:
+      - netmagister
+    volumes:
+      - ./authdb/backup.sql:/docker-entrypoint-initdb.d/backup.sql
+networks:
+  netmagister:
+    driver: bridge

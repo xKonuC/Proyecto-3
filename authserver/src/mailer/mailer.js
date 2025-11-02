@@ -12,7 +12,7 @@ dotenv.config();
 
 const mailerRouter = express.Router();
 
-mailerRouter.post("/invite", async (req, res) => {
+mailerRouter.post("/invite", verifyAccess, async (req, res) => {
     try {
         const { rut, 
             firstName, 
@@ -51,17 +51,10 @@ mailerRouter.post("/invite", async (req, res) => {
             return res.json({ message: "Rut already registered" });
         }
 
-        // Generar contraseña por defecto
-        const defaultPassword = 'Password123!';
-        const hashedPassword = hashSync(defaultPassword, 10);
-        console.log('Default password:', defaultPassword);
-        console.log('Hashed password:', hashedPassword);
-        
         const [result] = await connection.execute(`
-    INSERT INTO userAccount (name, email, provider, password)
-    VALUES (?,?,?,?)
-    `, [`${firstName} ${secondName} ${surname1} ${surname2}`, email, "Email", hashedPassword]);
-        console.log('UserAccount insert result:', result);
+    INSERT INTO userAccount (name, email, provider)
+    VALUES (?,?,?)
+    `, [`${firstName} ${secondName} ${surname1} ${surname2}`, email, "Email"]);
         const [result2] = await connection2.execute(`
     INSERT INTO user (userID, rut, firstName, secondName, surname1, surname2, sex, civilStatus, birthday, address, email, personalEmail, phone, entry, workPlace, phoneWork, job, articulation, \`group\`)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
@@ -117,16 +110,9 @@ mailerRouter.post("/invite", async (req, res) => {
                 subject: "Invitación al sistema de Magister",
                 html
             };
-            try {
-                const info = await transporter.sendMail(mailOptions);
-                console.log("Response: ", info.response);
-                console.log("Sending response with id:", id);
-                res.json({ message: "User created successfully and email sent", id });
-            } catch (emailError) {
-                console.log("Email sending failed, but user was created:", emailError.message);
-                console.log("Sending response with id:", id);
-                res.json({ message: "User created successfully, but email could not be sent", id });
-            }
+            const info = await transporter.sendMail(mailOptions);
+            console.log("Response: ", info.response);
+            res.json({ message: info.response, id });
         } else {
             res.json({ message: "Failed to register user" });
         }

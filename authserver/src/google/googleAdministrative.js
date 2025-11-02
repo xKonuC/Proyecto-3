@@ -14,44 +14,44 @@ dotenv.config();
 
 const GoogleStrategy = passportGoogleOauth20.Strategy;
 
-// passport.use('admin', new GoogleStrategy({
-//     clientID: process.env.CLIENT_ID,
-//     clientSecret: process.env.CLIENT_SECRET,
-//     callbackURL: process.env.CALLBACK_ADMINISTRATIVE_GOOGLE,
-//     passReqToCallback: true
-// }, async (request, accessToken, refreshToken, profile, done) => {
-//     try {
-//         const email = profile._json.email;
-//         const connection = await pool.getConnection();
-//         const connection2 = await pool2.getConnection();
-//
-//         const [existingUser] = await connection.execute(`
-//             SELECT * FROM userAccount WHERE email = ?
-//         `, [email]);
-//         const [existingUser2] = await connection2.execute(`
-//             SELECT * FROM user WHERE email = ?
-//         `, [email]);
-//
-//         const [administrative] = await connection2.execute(`
-//             SELECT * FROM administrative WHERE email = ?
-//         `, [email]);
-//         if(administrative.length === 0){
-//             return done(null, false, { message: 'Administrativo inválido'});
-//         }
-//         connection.release();
-//         connection2.release();
-//
-//         if (!existingUser[0] || !existingUser2[0]) {
-//             return done(null, false, { message: 'Correo electrónico no registrado.' });
-//         }
-//         const payload = {
-//             id: existingUser[0].id, ...existingUser2[0]
-//         };
-//         return done(null, payload);
-//     } catch (error) {
-//         return done(error, null);
-//     }
-// }));
+passport.use('admin', new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: process.env.CALLBACK_ADMINISTRATIVE_GOOGLE,
+    passReqToCallback: true
+}, async (request, accessToken, refreshToken, profile, done) => {
+    try {
+        const email = profile._json.email;
+        const connection = await pool.getConnection();
+        const connection2 = await pool2.getConnection();
+
+        const [existingUser] = await connection.execute(`
+            SELECT * FROM userAccount WHERE email = ?
+        `, [email]);
+        const [existingUser2] = await connection2.execute(`
+            SELECT * FROM user WHERE email = ?
+        `, [email]);
+
+        const [administrative] = await connection2.execute(`
+            SELECT * FROM administrative WHERE email = ?
+        `, [email]);
+        if(administrative.length === 0){
+            return done(null, false, { message: 'Administrativo inválido'});
+        }
+        connection.release();
+        connection2.release();
+
+        if (!existingUser[0] || !existingUser2[0]) {
+            return done(null, false, { message: 'Correo electrónico no registrado.' });
+        }
+        const payload = {
+            id: existingUser[0].id, ...existingUser2[0]
+        };
+        return done(null, payload);
+    } catch (error) {
+        return done(error, null);
+    }
+}));
 passport.serializeUser((user, done) => {
     done(null, user);
 });

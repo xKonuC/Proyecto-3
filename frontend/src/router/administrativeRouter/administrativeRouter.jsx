@@ -8,7 +8,6 @@ import NotFound from '../../pages/notFound';
 
 import AdministratorRouter from './administrator/administratorRouter';
 import AcademicRouter from './academic/academicRouter';
-import GraduateRouter from './graduate/graduateRouter';
 
 
 const AdministrativeRouter = () => {
@@ -17,10 +16,9 @@ const AdministrativeRouter = () => {
       <Route path="/" element={<SidebarAdministrative />}>
         <Route index element={<HomeAdministrative />} />
         <Route path="Profile" element={<Profile />} />
-        <Route path="Administrator/*" element={<AdministratorRouter />} />
-        <Route path="Academic/*" element={<AcademicRouter />} />
-        <Route path="Graduate/*" element={<GraduateRouter />} />
       </Route>
+      <Route path="Administrator/*" element={<AdministratorRouter />} />
+      <Route path="Academic/*" element={<AcademicRouter />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

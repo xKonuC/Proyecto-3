@@ -2,7 +2,6 @@ import React from "react";
 import SectionsAdministrative from "../../components/sections/home/sectionsAdministrative";
 import AdministratorIcon from "../../components/icon/role/administratorIcon";
 import AcademicIcon from "../../components/icon/role/academicIcon";
-import GraduateIcon from "../../components/icon/role/graduateIcon";
 
 export const HomeAdministrative = () => {
 
@@ -21,14 +20,6 @@ export const HomeAdministrative = () => {
       link: '/Administrative/Academic',
       icon: (
         <AcademicIcon size={16} opacity={100} />
-      ),
-    },
-    {
-      title: 'Gestión de Egresados',
-      description: '',
-      link: '/Administrative/Graduate',
-      icon: (
-        <GraduateIcon size={16} opacity={100} />
       ),
     },
   ];

@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 import {
   setItems,
   clearFilteredItems,
   setNewItem,
-  clearNewItem,
-  setSelectedRoles
-} from '../../../../redux/slice/handleUser/user/userSlice';
+  clearNewItem
+} from '../../../../redux/slice/handleUser/student/studentSlice';
 
 // Bibliotecas externas
 import HandleAlert from '../../../alert/handleAlert';
@@ -23,7 +22,6 @@ import ScreenWrapper from '../../../shared/screenWrapper';
 import ItemListHeader from '../../../forms/header/itemListHeader';
 import StudentForm from './form/studentForm';
 import StudentTable from './table/studentTable';
-import ChangeRoleModal from './modal/changeRoleModal';
 
 // Constantes y utilidades
 import { clearCheckbox } from '../../../../utils/crudHelpers/handleCheckbox';
@@ -36,23 +34,55 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
 
   const [alertComponent, showAlert] = HandleAlert();
 
-    // Estado local del componente
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [updateId, setUpdateId] = useState(null);
-    const [selectAll, setSelectAll] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [roleChangeModalOpen, setRoleChangeModalOpen] = useState(false);
-    const [selectedStudent, setSelectedStudent] = useState(null);
+  // Estado local del componente
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [updateId, setUpdateId] = useState(null);
+  const [selectAll, setSelectAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // -------------------------------Funciones Para CRUD-------------------------------
+
+  // Función para obtener datos
   const [fetchHandler] = useState(() => async () => {
     await handleFetch();
   });
 
-  // Función para obtener datos
   const handleFetch = async () => {
-    const fetchService = new FetchService(urls[0], name, showAlert, responseHandler);
-    await fetchService.execute();
+    const fetchService = new FetchService(urls[1], name, showAlert, responseHandler);
+    await fetchService.execute({});
+  }
+
+  // Función para manejar la eliminación de elementos seleccionados
+  const handleDeleteSelected = async () => {
+    const deleteService = new DeleteUtilsService(urls[0], name, showAlert, responseHandler);
+    await deleteService.execute({}, selectedItems, 'userID', 'userIDs', MAX_LENGTH_ARRAY_NUMBER);
+  };
+
+  // Función para manejar la verificación
+  const handleVerification = async (message) => {
+    showAlert({
+      type: 'verification',
+      content: message,
+    });
+    await handleFetch();
+    closeModal();
+  };
+
+  // Función para manejar la renovación
+  const handleRenewal = async (message) => {
+    showAlert({
+      type: 'verification',
+      content: message,
+    });
+    handleFetch();
+  };
+
+  // Función para manejar los datos obtenidos
+  const handleData = (data) => {
+    const sortedItems = sortItems(data, 'userID');
+    dispatch(setItems(sortedItems));
+    dispatch(clearFilteredItems());
+    clearCheckbox(setSelectedItems, setSelectAll);
   };
 
   // Función para manejar las respuestas de los servicios
@@ -63,211 +93,94 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
       response,
       onVerification: handleVerification,
       onRenewal: handleRenewal,
-      onData: (data) => {
-        if (data && data.data) {
-          dispatch(setItems(data.data));
-        }
-      },
-      onSuccess: (message) => {
-        showAlert({
-          type: 'success',
-          content: message,
-        });
-        closeModal();
-        handleFetch(); // Recargar la lista
-      },
+      onData: handleData,
     });
   };
 
-  // Función para manejar la verificación
-  const handleVerification = async (message) => {
-    showAlert({
-      type: 'verification',
-      content: message,
-    });
-    closeModal();
+  // Función para manejar la edición de un elemento
+  const handleEdit = (item) => {
+    const birthday = new Date(item.birthday);
+    birthday.setDate(birthday.getDate() + 1);
+
+    setUpdateId(item.userID);
+    dispatch(setNewItem({
+      rut: item.rut,
+      firstName: item.firstName,
+      secondName: item.secondName,
+      surname1: item.surname1,
+      surname2: item.surname2,
+      sex: item.sex,
+      civilStatus: item.civilStatus,
+      birthday: birthday.toISOString().split('T')[0],
+      address: item.address,
+      email: item.email,
+      personalEmail: item.personalEmail,
+      previousEmail: item.email,
+      phone: item.phone,
+      workPlace: item.workPlace || '',
+      phoneWork: item.phoneWork || '',
+      job: item.job || '',
+      entry: item.entry || null,
+      group: item.group || null,
+      articulation: item.articulation || null,
+    }));
+    openModal();
   };
 
-  // Función para manejar la renovación
-  const handleRenewal = async (message) => {
-    showAlert({
-      type: 'verification',
-      content: message,
-    });
+  // Función para limpiar el elemento en edición
+  const clearItem = () => {
+    dispatch(clearNewItem());
+    setUpdateId(null);
   };
 
   // -------------------------------Funciones para los Modal-------------------------------
   const { modalOpen, openModal, closeModal } = useModal(
     false,
     {
-      onClose: () => {
-        dispatch(clearNewItem());
-        setUpdateId(null);
-        setSelectedRoles([]);
-      },
-    }
-  );
-
-  const { items, filteredItems } = useSelector((state) => state.handleUser.user);
-
-  // -------------------------------Funciones para el CRUD-------------------------------
-  const handleCreate = () => {
-    dispatch(clearNewItem());
-    openModal();
-  };
-
-  const handleUpdate = (id) => {
-    const studentToEdit = items.find(item => item.userID === id);
-    
-    if (studentToEdit) {
-      // Cargar los datos del estudiante en el formulario
-      dispatch(setNewItem({
-        email: studentToEdit.email || '',
-        personalEmail: studentToEdit.personalEmail || '',
-        rut: studentToEdit.rut || '',
-        firstName: studentToEdit.firstName || '',
-        secondName: studentToEdit.secondName || '',
-        surname1: studentToEdit.surname1 || '',
-        surname2: studentToEdit.surname2 || '',
-        phone: studentToEdit.phone || '',
-        entry: studentToEdit.entry || '',
-        group: studentToEdit.group || '',
-        articulation: studentToEdit.articulation || '',
-        sex: studentToEdit.sex || '',
-        civilStatus: studentToEdit.civilStatus || '',
-        birthday: studentToEdit.birthday || '',
-        address: studentToEdit.address || '',
-        workPlace: studentToEdit.workPlace || '',
-        phoneWork: studentToEdit.phoneWork || '',
-        job: studentToEdit.job || ''
-      }));
-    }
-    
-    setUpdateId(id);
-    openModal();
-  };
-
-  const handleDelete = async () => {
-    if (selectedItems.length === 0) {
-      showAlert({
-        type: 'error',
-        content: 'Selecciona al menos un elemento para eliminar',
-      });
-      return;
-    }
-
-    const deleteService = new DeleteUtilsService(urls[0], name, showAlert, responseHandler);
-    await deleteService.execute(selectedItems);
-  };
-
-  const handleRefresh = () => {
-    handleFetch();
-    clearCheckbox(setSelectedItems, setSelectAll);
-  };
-
-  const handleExport = () => {
-    showAlert({
-      type: 'success',
-      content: 'Funcionalidad de exportación en desarrollo',
+      onClose: clearItem,
     });
-  };
 
-  const handleSearch = (searchTerm) => {
-    dispatch(clearFilteredItems());
-    if (searchTerm.trim() === '') {
-      return;
-    }
-    // Implementar búsqueda específica para estudiantes
-    const filteredItems = sortItems(searchTerm, 'student');
-    dispatch(setItems(filteredItems));
-  };
-
-  const handleSort = (sortBy) => {
-    // Implementar ordenamiento específico para estudiantes
-    showAlert({
-      type: 'info',
-      content: `Ordenando por: ${sortBy}`,
-    });
-  };
-
-    const handleDateFilter = (dateRange) => {
-        // Implementar filtro por fechas específico para estudiantes
-        showAlert({
-            type: 'info',
-            content: `Filtrando por fechas: ${dateRange}`,
-        });
-    };
-
-    const handleRoleChange = (student) => {
-        setSelectedStudent(student);
-        setRoleChangeModalOpen(true);
-    };
-
-    const handleRoleChangeSuccess = (data) => {
-        showAlert({
-            type: 'success',
-            content: `Rol actualizado exitosamente: ${data.roleName}`,
-        });
-        handleFetch(); // Recargar la lista
-    };
-
-    const closeRoleChangeModal = () => {
-        setRoleChangeModalOpen(false);
-        setSelectedStudent(null);
-    };
-
-  // -------------------------------Efectos-------------------------------
-  useEffect(() => {
-    handleFetch();
-  }, []);
+  // -------------------------------Funciones de Extra-------------------------------
+  const isMounted = useRef(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (selectedItems.length === 0) {
-      setSelectAll(false);
+    // Iniciar carga de datos
+    if (!isMounted.current) {
+      isMounted.current = true;
+      setIsLoading(true);
+      const fetchData = async () => {
+        await fetchHandler();
+        setIsLoading(false);
+      };
+      fetchData();
     }
-  }, [selectedItems]);
+  }, [fetchHandler]);
 
   return (
     <>
+      {/* Componente para mostrar mensajes de alerta */}
       {alertComponent}
 
+      {/* Modal para CRUD de usuarios */}
+      <StudentForm updateId={updateId} url={urls[0]} itemName={name} showAlert={showAlert} modalOpen={modalOpen} closeModal={closeModal} responseHandler={responseHandler} />
+
+      {/* Contenedor principal con altura mínima de pantalla */}
       <ScreenWrapper>
-        <ItemListHeader
-          title={title}
-          subtitle={subtitle}
-          itemName={name}
-          openModal={handleCreate}
-          fetchItems={handleRefresh}
-          handleDeleteSelected={handleDelete}
-        />
+        {/* Encabezado de la lista de usuarios */}
+        <ItemListHeader title={title} subtitle={subtitle} itemName={name} openModal={openModal} fetchItems={handleFetch} handleDeleteSelected={handleDeleteSelected} />
 
-            <StudentTable
-                selectedItems={selectedItems}
-                setSelectedItems={setSelectedItems}
-                selectAll={selectAll}
-                setSelectAll={setSelectAll}
-                onUpdate={handleUpdate}
-                onRoleChange={handleRoleChange}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
-
-        <StudentForm
-          modalOpen={modalOpen}
-          closeModal={closeModal}
-          updateId={updateId}
-          setUpdateId={setUpdateId}
-          url={urls[0]}
-          itemName={name}
-          showAlert={showAlert}
-          responseHandler={responseHandler}
-        />
-
-        <ChangeRoleModal
-          isOpen={roleChangeModalOpen}
-          onClose={closeRoleChangeModal}
-          student={selectedStudent}
-          onRoleChange={handleRoleChangeSuccess}
+        {/* Tabla de usuarios */}
+        <StudentTable
+          urls={urls}
+          isLoading={isLoading}
+          currentPage={currentPage}
+          selectedItems={selectedItems}
+          selectAll={selectAll}
+          setCurrentPage={setCurrentPage}
+          setSelectedItems={setSelectedItems}
+          setSelectAll={setSelectAll}
+          handleEdit={handleEdit}
         />
       </ScreenWrapper>
     </>

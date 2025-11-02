@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom";
 import DirectorIcon from '../../icon/role/directorIcon';
 import AdministratorIcon from '../../icon/role/administratorIcon';
 import AcademicIcon from '../../icon/role/academicIcon';
-import GraduateIcon from '../../icon/role/graduateIcon';
 
 const navigationUser = [
   {
@@ -83,33 +82,6 @@ const navigation = [
       {
         title: 'Gestión de Títulos',
         link: '/Administrative/Academic/AcademicHasTitle/',
-      },
-    ],
-  },
-  {
-    id: 4,
-    label: 'Egresados',
-    url: '/Administrative/Graduate',
-    icon: (
-      <GraduateIcon />
-    ),
-    width: 'w-24',
-    sectionsData: [
-      {
-        title: 'Lista de Estudiantes',
-        link: '/Administrative/Graduate/Students',
-      },
-      {
-        title: 'Clasificación de Egresados',
-        link: '/Administrative/Graduate/Classification',
-      },
-      {
-        title: 'Reportes y Estadísticas',
-        link: '/Administrative/Graduate/Reports',
-      },
-      {
-        title: 'Exportar Datos',
-        link: '/Administrative/Graduate/Export',
       },
     ],
   },

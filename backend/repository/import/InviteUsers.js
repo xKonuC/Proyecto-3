@@ -9,7 +9,7 @@ class InviteUsers {
       },
     };
     const response = await axios.post(
-      `${process.env.AUTHSERVER_URL}/auth/mailer/invite`,
+      `${process.env.AUTHSERVER_URL}/mailer/invite`,
       excelData,
       config,
     );

@@ -7,7 +7,6 @@ import changePassword from './changePassword/changePassword.js';
 import signinAdministrative from './signinAdministrative/signinAdministrative.js';
 import signinWithGoogleAdministrative from './signinWithGoogleAdministrative/signinWithGoogleAdministrative.js';
 import verifyAdministrative from './verifyAdministrative/verifyAdministrative.js';
-import signup from './signup/signup.js';
 
 import validateToken from '../../token/validateToken/validateToken.js';
 import validateRefreshToken from '../../validations/auth/validateRefreshToken/validateRefreshToken.js';
@@ -26,7 +25,6 @@ export {
   signinAdministrative,
   signinWithGoogleAdministrative,
   verifyAdministrative,
-  signup,
   validateRefreshToken,
   validateEmail,
   validatePassword,

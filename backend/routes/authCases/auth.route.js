@@ -1,7 +1,6 @@
 import {
-  express, signin, signinWithGoogle, recoverPassword, changePassword, refreshToken, signinAdministrative, signinWithGoogleAdministrative, verifyAdministrative, signup, validateEmail, validatePassword,
+  express, signin, signinWithGoogle, recoverPassword, changePassword, refreshToken, signinAdministrative, signinWithGoogleAdministrative, verifyAdministrative, validateEmail, validatePassword,
 } from './auth.modules.js';
-import validateLoginPassword from '../../validations/auth/validateLoginPassword/validateLoginPassword.js';
 import signinStudent from './signinStudent/signinStudent.js';
 
 const authRoute = express.Router();
@@ -9,19 +8,19 @@ const authRoute = express.Router();
 authRoute.post(
   '/signinWithEmail',
   validateEmail,
-  validateLoginPassword,
+  validatePassword,
   signin,
 );
 authRoute.post(
   '/administrative/signinWithEmail',
   validateEmail,
-  validateLoginPassword,
+  validatePassword,
   signinAdministrative,
 );
 authRoute.post(
   '/student/signinWithEmail',
   validateEmail,
-  validateLoginPassword,
+  validatePassword,
   signinStudent,
 );
 authRoute.get('/signinWithGoogle', signinWithGoogle);
@@ -30,7 +29,6 @@ authRoute.post(
   '/verifyAdministrative',
   verifyAdministrative,
 );
-authRoute.post('/signup', validateEmail, validatePassword, signup);
 authRoute.post('/recoverPassword', validateEmail, recoverPassword);
 authRoute.post('/changePassword', validatePassword, changePassword);
 authRoute.post('/refreshToken', refreshToken);

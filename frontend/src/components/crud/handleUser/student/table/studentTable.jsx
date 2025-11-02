@@ -1,19 +1,19 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, { useMemo, memo } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaUserGraduate, FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 
 // Componentes
 import PaginationButtons from '../../../../button/table/paginationButtons';
 import StyledButton from '../../../../button/styledButton';
 import EnhancedTable from '../../../../table/enhancedTable';
 import TbodyContent from '../../../../table/tableComponent/bodyContent';
+import PermissionCRUD from '../permission/permissionCRUD';
 
 // Utilidades
 import { getCurrentPageItems } from '../../../../../utils/crudHelpers/paginationHelper';
 import { handleCheckboxChange, handleSelectAllChange } from '../../../../../utils/crudHelpers/handleCheckbox';
 import { ActionsCell, CheckboxCell, ItemCell } from '../../../../table/tableComponent/tableComponent';
 import { formatDateValue, isArray } from '../../../../../utils/crudHelpers/utils';
-import { getStatusColor, getClassificationColor } from '../../../../../utils/statusHelpers';
 
 // Constantes
 import { ITEMS_PER_PAGE } from '../../../../../utils/crudHelpers/constants';
@@ -21,6 +21,8 @@ import { ITEMS_PER_PAGE } from '../../../../../utils/crudHelpers/constants';
 //Estilos
 import { theadContentTr, theadContentDiv, tbodyContentTr, tbodyContentTd, tbodyContentButton } from '../../../../../utils/style/crud/classes';
 import EditIcon from '../../../../icon/crud/editIcon';
+import TitleIcon from '../../../../icon/utils/titleIcon';
+import DocumentIcon from '../../../../icon/utils/documentIcon'
 
 const options = [
     { label: `ID`, value: 'userID' },
@@ -30,15 +32,78 @@ const options = [
     { label: `Primer Nombre`, value: 'firstName' },
     { label: `Segundo Nombre`, value: 'secondName' },
     { label: `Email`, value: 'email' },
-    { label: `Email Personal`, value: 'personalEmail' },
+    { label: 'Email Personal', value: 'personalEmail' },
+    { label: `Sexo`, value: 'sex' },
+    { label: `Estado Civil`, value: 'civilStatus' },
+    { label: `Fecha de Nacimiento`, value: 'birthday' },
+    { label: `Dirección`, value: 'address' },
+    { label: `Lugar de Trabajo`, value: 'workPlace' },
+    { label: `Número de Teléfono`, value: 'phone' },
+    { label: `Teléfono de Trabajo`, value: 'phoneWork' },
+    { label: `Cargo de Trabajo`, value: 'job' },
+    { label: `Linea de Formación`, value: 'specializationName' },
+    { label: `1° Electivo`, value: 'electiveName1' },
+    { label: `2° Electivo`, value: 'electiveName2' },
+    { label: `Cohorte`, value: 'entry' },
+    { label: `Grupo`, value: 'group' },
+    { label: `Articulación`, value: 'articulation' },
+    { label: `Títulos`, value: 'titlesName' },
 ];
 
+const optionsRow = [
+    { value: 'userID' },
+    { value: 'rut' },
+    { value: 'surname1' },
+    { value: 'surname2' },
+    { value: 'firstName' },
+    { value: 'secondName' },
+    { value: 'email' },
+    { value: 'personalEmail' },
+    { value: 'sex' },
+    { value: 'civilStatus' },
+    { value: 'birthday' },
+    { value: 'address' },
+    { value: 'workPlace' },
+    { value: 'phone' },
+    { value: 'phoneWork' },
+    { value: 'job' },
+    { value: 'specializationName' },
+    { value: 'electiveName1' },
+    { value: 'electiveName2' },
+    { value: 'entry' },
+    { value: 'group' },
+];
+
+
+const renderTitles = (titlesName) => {
+    if (titlesName == null) {
+        return null;
+    }
+
+    const titlesArray = titlesName.split(';').map((title) => title.trim());
+
+    const groups = [];
+    for (let i = 0; i < titlesArray.length; i += 1) {
+        groups.push(titlesArray.slice(i, i + 1));
+    }
+
+    return groups.map((group, index) => (
+        <div key={index} className="flex gap-1.5 whitespace-normal items-center justify-center">
+            {group.map((title, index) => (
+                <div key={index} className="break-words whitespace-nowrap text-xs font-medium w-max h-max px-2 py-1.5 rounded-lg bg-orange-main text-white mb-1">
+                    {title}
+                </div>
+            ))}
+        </div>
+    ));
+};
+
 const StudentTable = memo((props) => {
-    const { selectedItems, selectAll, setSelectedItems, setSelectAll, onUpdate, onRoleChange } = props;
-    const { items, filteredItems } = useSelector((state) => state.handleUser.user);
-    const [currentPage, setCurrentPage] = useState(1);
+    const { urls, isLoading, currentPage, selectedItems, selectAll, setCurrentPage, setSelectedItems, setSelectAll, handleEdit } = props;
+    const { items, filteredItems } = useSelector((state) => state.handleUser.student);
 
     const currentItems = useMemo(() => {
+        // Usar la función para verificar si filteredItems es un array
         const isFiltered = isArray(filteredItems);
         return isFiltered ?
             getCurrentPageItems(ITEMS_PER_PAGE, currentPage, filteredItems) :
@@ -46,87 +111,79 @@ const StudentTable = memo((props) => {
     }, [filteredItems, currentPage, items]);
 
     const numberFiltered = useMemo(() => {
+        // Usar la función para verificar si filteredItems es un array
         const isFiltered = isArray(filteredItems);
         return isFiltered ? filteredItems.length : items.length;
     }, [filteredItems, items]);
 
     const theadContent = (
         <>
-            <th className={theadContentDiv}>RUT</th>
-            <th className={`${theadContentDiv} text-left`}>Nombre Completo</th>
-            <th className={theadContentDiv}>Estado</th>
-            <th className={theadContentDiv}>Clasificación</th>
-            <th className={theadContentDiv}>Año Ingreso</th>
+            {options.map((option, index) => (
+                <th key={option.value}
+                className={`whitespace-nowrap px-4 py-2 font-medium text-gray-900 ${index === 2 ? 'sticky left-0 bg-white' : index === 4 ? 'sticky left-32 bg-white' : ''}`}
+            >
+                <div className={theadContentDiv}>
+                    {option.label}
+                </div>
+            </th>
+            ))}
         </>
     );
 
     const tbodyContent = (
-        <TbodyContent
-            itemsLength={Array.isArray(currentItems) ? currentItems.length : 0}
-            length={6}
-            isLoading={false}
-        >
-            {Array.isArray(currentItems) && currentItems.map((item) => (
+        <TbodyContent itemsLength={items.length} isLoading={isLoading} length={options.length}>
+            {currentItems.map((item) => (
                 <tr key={item.userID} className={tbodyContentTr}>
-                    <CheckboxCell
-                        id={item.userID}
-                        checked={selectedItems.includes(item.userID)}
-                        onChange={(e) => {
-                            let newSelectedItems;
-                            if (e.target.checked) {
-                                newSelectedItems = [...selectedItems, item.userID];
-                            } else {
-                                newSelectedItems = selectedItems.filter(id => id !== item.userID);
-                            }
-                            setSelectedItems(newSelectedItems);
-                            setSelectAll(newSelectedItems.length === currentItems.length);
-                        }}
-                    />
-                    <ItemCell value={item.rut} />
-                        <td className={`${tbodyContentTd} text-left`}>
-                            <div className="flex items-center">
-                                <div className="flex-shrink-0 h-8 w-8">
-                                    <div className="h-8 w-8 rounded-full bg-orange-100 flex items-center justify-center">
-                                        <FaUserGraduate className="h-4 w-4 text-orange-600" />
-                                    </div>
-                                </div>
-                                <div className="ml-3 flex-1">
-                                    <div className="text-sm font-medium text-gray-900">
-                                        {item.fullName || `${item.firstName || ''} ${item.surname1 || ''}`.trim() || 'Sin nombre'}
-                                    </div>
-                                    <div className="text-sm text-gray-500">{item.email || 'Sin email'}</div>
-                                </div>
-                            </div>
+                    <CheckboxCell id={`deleteInput-${item.userID}`} checked={selectedItems.some((selectedItem) => selectedItem.userID === item.userID)} onChange={(e) => handleCheckboxChange(e, setSelectedItems, 'userID', item)} />
+                    {optionsRow.map((option, index) => (
+                        <td
+                            key={option.value}
+                            className={`whitespace-nowrap px-2 py-2 ${index === 2 ? 'group-hover:bg-gray-200 sticky left-0 bg-white' : index === 4 ? 'group-hover:bg-gray-200 sticky left-32 bg-white' : ''}`}
+                        >
+                            {formatDateValue(item[option.value], option.value)}
                         </td>
+                    ))}
                     <td className={tbodyContentTd}>
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(item.status || 'Activo')}`}>
-                            {item.status || 'Activo'}
+                        <span className={`mr-1 px-2.5 py-0.5 rounded ${item.articulation === 1 ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600'} `} >
+                            {item.articulation === 1 ? 'Si' : 'No'}
                         </span>
                     </td>
                     <td className={tbodyContentTd}>
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getClassificationColor(item.classification || 'Sin clasificar')}`}>
-                            {item.classification || 'Sin clasificar'}
-                        </span>
+                        {renderTitles(item.titles)}
                     </td>
-                    <ItemCell value={item.entry || 'N/A'} />
                     <ActionsCell>
-                        <div className="flex gap-1">
-                            <StyledButton
-                                onClick={() => onUpdate(item.userID)}
-                                className={tbodyContentButton}
-                                title="Editar"
-                            >
+                        <div className={tbodyContentButton}>
+                            <StyledButton onClick={() => handleEdit(item)} >
                                 <EditIcon />
+                                Actualizar Información
                             </StyledButton>
-                            <StyledButton
-                                onClick={() => onRoleChange(item)}
-                                className={tbodyContentButton}
-                                title="Cambiar Rol"
+                        </div>
+                        <div className={tbodyContentButton}>
+                            <PermissionCRUD url={urls[3]} userID={item.userID} />
+                        </div>
+                        <div className={tbodyContentButton}>
+                            <Link
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                to={`${urls[4]}${item.userID}`}
                             >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                                </svg>
-                            </StyledButton>
+                                <StyledButton>
+                                    <DocumentIcon />
+                                    Gestionar Documentos
+                                </StyledButton>
+                            </Link>
+                        </div>
+                        <div className={tbodyContentButton}>
+                            <Link
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                to={`${urls[5]}${item.userID}`}
+                            >
+                                <StyledButton>
+                                    <TitleIcon />
+                                    Gestionar Títulos
+                                </StyledButton>
+                            </Link>
                         </div>
                     </ActionsCell>
                 </tr>
@@ -135,24 +192,11 @@ const StudentTable = memo((props) => {
     );
 
     return (
-        <div className="space-y-4">
-            <EnhancedTable
-                theadContent={theadContent}
-                tbodyContent={tbodyContent}
-                selectAll={selectAll}
-                    onChange={(e) => {
-                        setSelectAll(e.target.checked);
-                        setSelectedItems(e.target.checked ? currentItems.map(item => item.userID) : []);
-                    }}
-            />
-            <PaginationButtons
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                totalItems={numberFiltered}
-                itemsPerPage={ITEMS_PER_PAGE}
-            />
-        </div>
-    );
+        <>
+            <PaginationButtons currentPage={currentPage} setCurrentPage={setCurrentPage} length={items.length} itemsPerPage={ITEMS_PER_PAGE} numberFiltered={numberFiltered} />
+            <EnhancedTable theadContent={theadContent} tbodyContent={tbodyContent} selectAll={selectAll} onChange={(event) => handleSelectAllChange(event, setSelectAll, setSelectedItems, items)} />
+        </>
+    )
 });
 
 export default StudentTable;

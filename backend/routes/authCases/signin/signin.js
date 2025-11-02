@@ -6,7 +6,7 @@ const signin = async (req, res) => {
   const authUser = new AuthUser();
   try {
     const result = await authUser.authUser(email, password);
-    res.status(200).json(result);
+    res.status(200).json({ result });
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {

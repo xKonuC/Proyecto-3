@@ -12,7 +12,6 @@ const ResponseHandler = async ({
   onErrors = handleValidationErrors,
   onError = handleUnknownError,
   onData = () => {},
-  onSuccess = () => {},
   onDefault = handleUnexpectedError,
 }) => {
   if (response === null) {
@@ -34,12 +33,7 @@ const ResponseHandler = async ({
     }
   } else if (response.message) {
     const message = response.message?.error?.message || response.message;
-    // Detectar si es un mensaje de éxito
-    if (response.success || message.includes('exitosamente') || message.includes('successfully')) {
-      onSuccess(message);
-    } else {
-      onMessage(message, showAlert);
-    }
+    onMessage(message, showAlert);
   } else if (response.error) {
     onError(response.error, showAlert);
   } else if (response.errors) {

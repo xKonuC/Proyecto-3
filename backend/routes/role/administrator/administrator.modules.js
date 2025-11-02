@@ -8,9 +8,6 @@ import semesterRoute from './semester/semesterRoute.js';
 import handleRubricRoute from './handleRubric/handleRubricRoute.js';
 import handleAcademicRecordRoute from './handleAcademicRecord/handleAcademicRecordRoute.js';
 import thesisRegistrationRoute from './thesisRegistration/thesisRegistrationRoute.js';
-import graduateRoute from './graduate/graduate.route.js';
-import userPermissionsRoute from './userPermissions/userPermissions.route.js';
-import roleHierarchyRoute from './roleHierarchy/roleHierarchy.route.js';
 
 export {
   express,
@@ -22,7 +19,4 @@ export {
   semesterRoute,
   handleAcademicRecordRoute,
   thesisRegistrationRoute,
-  graduateRoute,
-  userPermissionsRoute,
-  roleHierarchyRoute,
 };

@@ -11,16 +11,9 @@ export default defineConfig(() => {
     build: {
       outDir: 'build',
     },
-    server: {
-      port: 5173,
-      proxy: {
-        '/api': {
-          target: 'http://localhost:5000',
-          changeOrigin: true,
-          secure: false,
-        }
-      }
-    },
+    // server: {
+    //   port: 80
+    // },
     plugins: [
       react(),
     ],

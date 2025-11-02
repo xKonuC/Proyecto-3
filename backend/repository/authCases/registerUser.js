@@ -1,30 +1,15 @@
-import bcrypt from 'bcrypt';
-import authPool from '../../authDbConnection.js';
-
 class RegisterUser {
-  async registerUser(dataBase, email, password) {
-    // Hash the password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    
-    // Insert user into auth database
-    const connection = await authPool.getConnection();
-    try {
-      const [result] = await connection.execute(
-        'INSERT INTO userAccount (name, email, provider, password) VALUES (?, ?, ?, ?)',
-        [email, email, 'Email', hashedPassword]
-      );
-      
-      return {
-        user: {
-          id: result.insertId,
-          email: email
-        }
-      };
-    } finally {
-      connection.release();
-    }
+  async registerUser() {
+    throw new Error('Sobrescribir para obtener la instancia de la Base de datos');
   }
 }
 
-export { RegisterUser };
+class RegisterUser_SupaBase extends RegisterUser {
+  async registerUser(dataBase, email, password) {
+    const { data, error } = await dataBase.auth.signUp({ email, password });
+    if (error) { throw error; }
+    return data;
+  }
+}
+
+export { RegisterUser_SupaBase as RegisterUser };
