@@ -57,8 +57,8 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
 
   // Función para manejar las respuestas de los servicios
   const responseHandler = (response) => {
-    console.log('=== StudentCRUD responseHandler ===');
-    console.log('Response:', response);
+    // console.log('=== StudentCRUD responseHandler ===');
+    // console.log('Response:', response);
     
     ResponseHandler({
       showAlert,
@@ -67,10 +67,10 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
       onVerification: handleVerification,
       onRenewal: handleRenewal,
       onData: (data) => {
-        console.log('=== StudentCRUD onData ===');
-        console.log('Data received:', data);
+        // console.log('=== StudentCRUD onData ===');
+        // console.log('Data received:', data);
         if (data && data.data) {
-          console.log('Dispatching setItems with:', data.data);
+          // console.log('Dispatching setItems with:', data.data);
           dispatch(setItems(data.data));
         }
       },

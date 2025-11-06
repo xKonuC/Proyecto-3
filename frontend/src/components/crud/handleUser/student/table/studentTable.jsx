@@ -38,17 +38,17 @@ const StudentTable = (props) => {
     const { items, filteredItems } = useSelector((state) => state.handleUser.user);
     const [currentPage, setCurrentPage] = useState(1);
     
-    console.log('=== StudentTable render ===');
-    console.log('Items:', items);
-    console.log('FilteredItems:', filteredItems);
+    // console.log('=== StudentTable render ===');
+    // console.log('Items:', items);
+    // console.log('FilteredItems:', filteredItems);
 
     const currentItems = useMemo(() => {
         const isFiltered = isArray(filteredItems);
         const result = isFiltered ?
             getCurrentPageItems(ITEMS_PER_PAGE, currentPage, filteredItems) :
             getCurrentPageItems(ITEMS_PER_PAGE, currentPage, items);
-        console.log('=== StudentTable currentItems ===');
-        console.log('Current items:', result);
+        // console.log('=== StudentTable currentItems ===');
+        // console.log('Current items:', result);
         return result;
     }, [filteredItems, currentPage, items]);
 

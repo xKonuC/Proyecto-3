@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "start:dev": "dotenv --file .env.development node index.js",
-    "dev": "nodemon index.js",
+    "dev": "cross-env NODE_ENV=development dotenv -e .env.local -- nodemon index.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -35,6 +35,8 @@
     "@babel/preset-env": "^7.23.9",
     "@types/crypto-js": "^4.2.2",
     "babel-jest": "^29.7.0",
+    "cross-env": "^10.1.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^8.48.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.28.1",

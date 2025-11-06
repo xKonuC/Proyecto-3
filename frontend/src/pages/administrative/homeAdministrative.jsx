@@ -24,7 +24,7 @@ export const HomeAdministrative = () => {
       ),
     },
     {
-      title: 'Gestión de Egresados',
+      title: 'Gestión de Graduados',
       description: '',
       link: '/Administrative/Graduate',
       icon: (

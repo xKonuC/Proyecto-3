@@ -1,0 +1,37 @@
+# Docker Compose para levantar MySQL y phpMyAdmin para desarrollar localmente
+# Levantar con: docker compose -f docker-compose.dev.yml up -d
+# Bajar con: docker compose -f docker-compose.dev.yml down
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_local
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Root123!
+      MYSQL_DATABASE: posgrado_db
+      TZ: America/Santiago
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./initdb:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_local
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: Root123!
+      UPLOAD_LIMIT: 256M
+    ports:
+      - "8080:80"
+
+volumes:
+  mysql_data:
