@@ -1,5 +1,4 @@
-```markdown
-# 🧩 Proyecto-3  
+# Proyecto-3  
 **Sistema de magíster de la Universidad de Tarapacá**
 
 ---
