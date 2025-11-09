@@ -57,22 +57,22 @@ const ChangeRoleModal = ({ isOpen, onClose, student, onRoleChange }) => {
         newRoleID: parseInt(selectedRole)
       };
       
-      console.log('=== Frontend Debug ===');
-      console.log('Student object:', student);
-      console.log('URL:', url);
-      console.log('Body:', body);
-      console.log('Access Token:', access_token);
-      console.log('Access Token length:', access_token ? access_token.length : 'null');
-      console.log('Access Token type:', typeof access_token);
+      // console.log('=== Frontend Debug ===');
+      // console.log('Student object:', student);
+      // console.log('URL:', url);
+      // console.log('Body:', body);
+      // console.log('Access Token:', access_token);
+      // console.log('Access Token length:', access_token ? access_token.length : 'null');
+      // console.log('Access Token type:', typeof access_token);
       
-      console.log('=== Making fetch request ===');
-      console.log('URL:', url);
-      console.log('Method: PUT');
-      console.log('Headers:', {
-        'Authorization': `Bearer ${access_token}`,
-        'Content-Type': 'application/json'
-      });
-      console.log('Body:', JSON.stringify(body));
+      // console.log('=== Making fetch request ===');
+      // console.log('URL:', url);
+      // console.log('Method: PUT');
+      // console.log('Headers:', {
+      //   'Authorization': `Bearer ${access_token}`,
+      //   'Content-Type': 'application/json'
+      // });
+      // console.log('Body:', JSON.stringify(body));
       
       const response = await fetch(url, {
         method: 'PUT',
@@ -83,19 +83,19 @@ const ChangeRoleModal = ({ isOpen, onClose, student, onRoleChange }) => {
         body: JSON.stringify(body)
       });
       
-      console.log('=== Fetch completed ===');
-      console.log('Response received:', response);
-      console.log('Response status:', response.status);
-      console.log('Response ok:', response.ok);
+      // console.log('=== Fetch completed ===');
+      // console.log('Response received:', response);
+      // console.log('Response status:', response.status);
+      // console.log('Response ok:', response.ok);
 
-      console.log('=== Response Status ===');
-      console.log('Status:', response.status);
-      console.log('Status Text:', response.statusText);
-      console.log('OK:', response.ok);
+      // console.log('=== Response Status ===');
+      // console.log('Status:', response.status);
+      // console.log('Status Text:', response.statusText);
+      // console.log('OK:', response.ok);
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Role change response:', data);
+        // console.log('Role change response:', data);
         showAlert({
           type: 'success',
           content: data.message || 'Rol actualizado exitosamente'

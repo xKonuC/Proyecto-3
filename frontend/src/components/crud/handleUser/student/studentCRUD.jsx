@@ -75,8 +75,8 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
         }
       },
       onSuccess: (message) => {
-        console.log('=== StudentCRUD onSuccess ===');
-        console.log('Success message:', message);
+        // console.log('=== StudentCRUD onSuccess ===');
+        // console.log('Success message:', message);
         showAlert({
           type: 'success',
           content: message,
@@ -212,14 +212,14 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
     };
 
     const handleRoleChangeSuccess = (data) => {
-        console.log('=== handleRoleChangeSuccess called ===');
-        console.log('Data received:', data);
+        // console.log('=== handleRoleChangeSuccess called ===');
+        // console.log('Data received:', data);
         showAlert({
             type: 'success',
             content: `Rol actualizado exitosamente: ${data.roleName}`,
         });
         // Recargar la lista para actualizar la clasificación
-        console.log('Calling handleFetch to reload data...');
+        // console.log('Calling handleFetch to reload data...');
         handleFetch();
     };
 

@@ -4,7 +4,7 @@ import authPool from '../../../../../authDbConnection.js';
 const deleteStudent = async (req, res) => {
   try {
     const { userIDs } = req.body;
-    
+    console.log(userIDs)
     if (!userIDs || !Array.isArray(userIDs) || userIDs.length === 0) {
       return res.status(400).json({
         success: false,
@@ -12,7 +12,7 @@ const deleteStudent = async (req, res) => {
       });
     }
 
-    const connection = await authPool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const authConnection = await authPool.getConnection();
     
     try {

@@ -17,7 +17,7 @@ const createStudent = async (req, res) => {
       });
     }
 
-    const connection = await authPool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const authConnection = await authPool.getConnection();
     
     try {
