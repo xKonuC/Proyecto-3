@@ -60,7 +60,7 @@ const generateClassificationsReport = async (req, res) => {
         ORDER BY c.createdAt DESC
       `);
 
-      // Obtener distribución de egresados por clasificación
+      // Obtener distribución de graduados por clasificación
       const [graduatesByClassification] = await connection.execute(`
         SELECT 
           c.name as classificationName,

@@ -19,13 +19,13 @@ const ChangeRoleModal = ({ isOpen, onClose, student, onRoleChange }) => {
 
   const fetchRoles = async () => {
     try {
-      // Solo permitir roles Estudiante (4) y Egresado (5)
+      // Solo permitir roles Estudiante (4) y Graduado (5)
       const allowedRoles = [
         { roleID: 4, name: 'Estudiante' },
-        { roleID: 5, name: 'Egresado' }
+        { roleID: 5, name: 'Graduado' }
       ];
-      
-      // Para estudiantes, siempre mostrar ambos roles (Estudiante y Egresado)
+
+      // Para estudiantes, siempre mostrar ambos roles (Estudiante y Graduado)
       // El backend se encarga de eliminar el rol actual y asignar el nuevo
       setRoles(allowedRoles);
     } catch (error) {

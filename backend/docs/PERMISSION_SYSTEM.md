@@ -13,7 +13,7 @@ El sistema de permisos implementa una jerarquía de roles donde cada rol tiene p
   - ✅ Gestionar roles (incluyendo SuperAdmin)
   - ✅ Gestionar sistema
   - ✅ Gestionar contenido académico
-  - ✅ Gestionar egresados
+  - ✅ Gestionar graduados
   - ✅ Ver todos los datos
   - ✅ Eliminar usuarios
   - ✅ Modificar configuraciones del sistema
@@ -25,11 +25,11 @@ El sistema de permisos implementa una jerarquía de roles donde cada rol tiene p
   - ❌ Gestionar roles de SuperAdmin
   - ❌ Gestionar sistema
   - ✅ Gestionar contenido académico
-  - ✅ Gestionar egresados
+  - ✅ Gestionar graduados
   - ✅ Ver todos los datos
   - ❌ Eliminar usuarios
   - ❌ Modificar configuraciones del sistema
-- **Roles que puede asignar:** Administrador, Académico, Estudiante, Egresado
+- **Roles que puede asignar:** Administrador, Académico, Estudiante, Graduado
 
 ### 3. Académico (ID: 3)
 - **Puede evaluar y gestionar contenido académico**
@@ -38,7 +38,7 @@ El sistema de permisos implementa una jerarquía de roles donde cada rol tiene p
   - ❌ Gestionar roles
   - ❌ Gestionar sistema
   - ✅ Gestionar contenido académico
-  - ❌ Gestionar egresados
+  - ❌ Gestionar graduados
   - ❌ Ver todos los datos
   - ❌ Eliminar usuarios
   - ❌ Modificar configuraciones del sistema
@@ -51,25 +51,25 @@ El sistema de permisos implementa una jerarquía de roles donde cada rol tiene p
   - ❌ Gestionar roles
   - ❌ Gestionar sistema
   - ❌ Gestionar contenido académico
-  - ❌ Gestionar egresados
+  - ❌ Gestionar graduados
   - ❌ Ver todos los datos
   - ❌ Eliminar usuarios
   - ❌ Modificar configuraciones del sistema
   - ✅ Solo acceder a sus propios datos
 
-### 5. Egresado (ID: 5)
+### 5. Graduado (ID: 5)
 - **Acceso muy limitado**
 - **Permisos:**
   - ❌ Gestionar usuarios
   - ❌ Gestionar roles
   - ❌ Gestionar sistema
   - ❌ Gestionar contenido académico
-  - ❌ Gestionar egresados
+  - ❌ Gestionar graduados
   - ❌ Ver todos los datos
   - ❌ Eliminar usuarios
   - ❌ Modificar configuraciones del sistema
   - ✅ Solo acceder a sus propios datos
-  - ✅ Ver reportes de egresados
+  - ✅ Ver reportes de graduados
 
 ## Middlewares de Protección
 
@@ -128,7 +128,7 @@ Obtiene los permisos del usuario actual.
     "2": "Administrador",
     "3": "Académico",
     "4": "Estudiante",
-    "5": "Egresado"
+    "5": "Graduado"
   }
 }
 ```
@@ -144,7 +144,7 @@ Obtiene información sobre la jerarquía de roles y permisos.
     "2": "Administrador",
     "3": "Académico",
     "4": "Estudiante",
-    "5": "Egresado"
+    "5": "Graduado"
   },
   "permissions": {
     "SuperAdmin": { "canManageUsers": true, ... },
@@ -220,7 +220,7 @@ userRoute.delete(
 - No puede asignar roles
 - Solo puede acceder a sus propios datos
 
-### Estudiante/Egresado
+### Estudiante/Graduado
 - Acceso muy limitado
 - Solo pueden acceder a sus propios datos
 - No pueden realizar acciones administrativas

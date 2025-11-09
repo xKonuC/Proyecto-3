@@ -15,7 +15,7 @@ const getStudents = async (req, res) => {
       await connection.execute('SET character_set_results = utf8mb4');
       await connection.execute('SET sql_mode = ""');
       
-      // Obtener estudiantes y egresados con información completa
+      // Obtener estudiantes y graduados con información completa
       const [students] = await connection.execute(`
         SELECT DISTINCT
           u.userID,
@@ -40,11 +40,11 @@ const getStudents = async (req, res) => {
         FROM user u
         INNER JOIN userHasRole uhr ON u.userID = uhr.userID
         WHERE u.userID IS NOT NULL 
-        AND uhr.roleID IN (4, 5)  -- Roles Estudiante (4) y Egresado (5)
+        AND uhr.roleID IN (4, 5)  -- Roles Estudiante (4) y Graduado (5)
         ORDER BY u.firstName, u.surname1
       `);
 
-      // Procesar estudiantes y egresados
+      // Procesar estudiantes y graduados
       const studentsWithRoles = await Promise.all(
         students.map(async (student) => {
           // Obtener roles reales del usuario
@@ -56,11 +56,11 @@ const getStudents = async (req, res) => {
           `, [student.userID]);
 
           // Determinar clasificación basada en los roles
-          const isGraduate = roles.some(role => role.roleName === 'Egresado');
+          const isGraduate = roles.some(role => role.roleName === 'Graduado');
           const isStudent = roles.some(role => role.roleName === 'Estudiante');
           
           let classification = 'Sin clasificar';
-          if (isGraduate) classification = 'Egresado';
+          if (isGraduate) classification = 'Graduado';
           else if (isStudent) classification = 'Estudiante';
           
           console.log(`User ${student.userID}: roles=${JSON.stringify(roles.map(r => r.roleName))}, classification=${classification}`);

@@ -26,7 +26,7 @@ const deleteClassification = async (req, res) => {
         });
       }
 
-      // Eliminar asociaciones de egresados
+      // Eliminar asociaciones de graduados
       await connection.execute(`
         DELETE FROM userHasClassification WHERE classificationID = ?
       `, [id]);

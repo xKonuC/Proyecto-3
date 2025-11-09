@@ -11,20 +11,20 @@ export const HomeGraduate = () => {
       icon: <FaList size={30} />,
     },
     {
-      title: 'Clasificación de Egresados',
-      description: 'Clasifica y categoriza a los egresados según diferentes criterios como especialización, año de egreso, estado académico, etc.',
+      title: 'Clasificación de Graduados',
+      description: 'Clasifica y categoriza a los graduados según diferentes criterios como especialización, año de egreso, estado académico, etc.',
       link: '/Administrative/Graduate/Classification',
       icon: <FaUserGraduate size={30} />,
     },
     {
       title: 'Reportes y Estadísticas',
-      description: 'Genera reportes y visualiza estadísticas sobre los egresados del programa. Análisis de tendencias y métricas.',
+      description: 'Genera reportes y visualiza estadísticas sobre los graduados del programa. Análisis de tendencias y métricas.',
       link: '/Administrative/Graduate/Reports',
       icon: <FaChartBar size={30} />,
     },
     {
       title: 'Exportar Datos',
-      description: 'Exporta información de egresados en diferentes formatos (Excel, PDF, CSV) para análisis externos.',
+      description: 'Exporta información de graduados en diferentes formatos (Excel, PDF, CSV) para análisis externos.',
       link: '/Administrative/Graduate/Export',
       icon: <FaFileExport size={30} />,
     },
@@ -32,8 +32,8 @@ export const HomeGraduate = () => {
 
   return (
     <SectionsAdministrative
-      title={'Panel de Gestión de Egresados'}
-      description={'Bienvenido al Panel de Gestión de Egresados para el programa de Magíster en Educación de la Universidad de Tarapacá. Aquí podrás visualizar, clasificar y gestionar toda la información relacionada con los estudiantes y egresados del programa.'}
+      title={'Panel de Gestión de Graduados'}
+      description={'Bienvenido al Panel de Gestión de Graduados para el programa de Magíster en Educación de la Universidad de Tarapacá. Aquí podrás visualizar, clasificar y gestionar toda la información relacionada con los estudiantes y graduados del programa.'}
       sections={sectionsData}
     />
   );

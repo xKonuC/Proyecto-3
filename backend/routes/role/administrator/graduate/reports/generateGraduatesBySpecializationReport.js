@@ -74,7 +74,7 @@ const generateGraduatesBySpecializationReport = async (req, res) => {
       res.json({
         success: true,
         data: reportData,
-        message: 'Reporte de egresados por especialización generado exitosamente'
+        message: 'Reporte de graduado por especialización generado exitosamente'
       });
 
     } finally {
@@ -84,7 +84,7 @@ const generateGraduatesBySpecializationReport = async (req, res) => {
     console.error('Error generating graduates by specialization report:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al generar el reporte de egresados por especialización',
+      message: 'Error al generar el reporte de graduados por especialización',
       error: error.message
     });
   }

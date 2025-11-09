@@ -9,7 +9,7 @@ const ROLE_HIERARCHY = {
   2: 'Administrador', // Puede gestionar usuarios y contenido
   3: 'Académico',     // Puede evaluar y gestionar contenido académico
   4: 'Estudiante',    // Acceso limitado a sus propios datos
-  5: 'Egresado'       // Acceso muy limitado
+  5: 'Graduado'       // Acceso muy limitado
 };
 
 // Permisos por rol
@@ -59,7 +59,7 @@ const ROLE_PERMISSIONS = {
     allowedRoles: [],
     canOnlyAccessOwnData: true
   },
-  Egresado: {
+  Graduado: {
     canManageUsers: false,
     canManageRoles: false,
     canManageSystem: false,

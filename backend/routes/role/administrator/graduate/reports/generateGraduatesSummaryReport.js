@@ -19,7 +19,7 @@ const generateGraduatesSummaryReport = async (req, res) => {
         dateFilter = `AND u.createdAt BETWEEN '${dateRange.startDate}' AND '${dateRange.endDate}'`;
       }
 
-      // Obtener estadísticas detalladas de egresados
+      // Obtener estadísticas detalladas de graduados
       const [graduatesStats] = await connection.execute(`
         SELECT 
           COUNT(*) as totalGraduates,
@@ -59,7 +59,7 @@ const generateGraduatesSummaryReport = async (req, res) => {
         ORDER BY count DESC
       `);
 
-      // Obtener lista detallada de egresados
+      // Obtener lista detallada de graduados
       const [graduatesList] = await connection.execute(`
         SELECT 
           u.userID,
@@ -108,7 +108,7 @@ const generateGraduatesSummaryReport = async (req, res) => {
     console.error('Error generating graduates summary report:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al generar el reporte de resumen de egresados',
+      message: 'Error al generar el reporte de resumen de graduados',
       error: error.message
     });
   }

@@ -321,7 +321,7 @@ CREATE TABLE `classification` (
 
 LOCK TABLES `classification` WRITE;
 /*!40000 ALTER TABLE `classification` DISABLE KEYS */;
-INSERT INTO `classification` VALUES (2,'Especializaci????n en Investigaci????n','Egresados que se dedicaron a la investigaci??n','{\"publications\": true, \"researchFocus\": true}','2025-10-13 22:47:28','2025-10-13 23:27:49'),(3,'Liderazgo Empresarial','Egresados que ocupan cargos directivos','{\"leadership\": true, \"management\": true}','2025-10-13 22:47:28','2025-10-13 22:47:28'),(4,'Egresados ','alumnos egresados con nota 6,0','{\"jobs\": [], \"groups\": [\"1\"], \"entryYears\": [\"2021\"], \"workPlaces\": [], \"articulations\": [\"0\"], \"specializations\": [\"Did??ctica y Evaluaci??n\"]}','2025-10-14 01:40:13','2025-10-14 03:36:11');
+INSERT INTO `classification` VALUES (2,'Especialización en Investigación','Graduados que se dedicaron a la investigación','{\"publications\": true, \"researchFocus\": true}','2025-10-13 22:47:28','2025-10-13 23:27:49'),(3,'Liderazgo Empresarial','Graduados que ocupan cargos directivos','{\"leadership\": true, \"management\": true}','2025-10-13 22:47:28','2025-10-13 22:47:28'),(4,'Graduados ','alumnos graduados con nota 6,0','{\"jobs\": [], \"groups\": [\"1\"], \"entryYears\": [\"2021\"], \"workPlaces\": [], \"articulations\": [\"0\"], \"specializations\": [\"Didáctica y Evaluación\"]}','2025-10-14 01:40:13','2025-10-14 03:36:11');
 /*!40000 ALTER TABLE `classification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1005,7 +1005,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'SuperAdmin'),(2,'Administrador'),(3,'Acad??mico'),(4,'Estudiante'),(5,'Egresado');
+INSERT INTO `role` VALUES (1,'SuperAdmin'),(2,'Administrador'),(3,'Académico'),(4,'Estudiante'),(5,'Graduado');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 

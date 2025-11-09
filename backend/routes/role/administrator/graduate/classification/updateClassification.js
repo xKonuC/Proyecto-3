@@ -55,7 +55,7 @@ const updateClassification = async (req, res) => {
         `, updateValues);
       }
 
-      // Actualizar egresados asociados si se proporcionan
+      // Actualizar graduados asociados si se proporcionan
       if (graduateIds !== undefined) {
         // Eliminar asociaciones existentes
         await connection.execute(`

@@ -22,7 +22,7 @@ const createClassification = async (req, res) => {
 
       const classificationId = classificationResult.insertId;
 
-      // Asociar egresados a la clasificación si se proporcionan
+      // Asociar graduados a la clasificación si se proporcionan
       if (graduateIds && Array.isArray(graduateIds) && graduateIds.length > 0) {
         for (const graduateId of graduateIds) {
           await connection.execute(`

@@ -38,7 +38,7 @@ export const roles = [
     { value: 2, label: 'Administrador' },
     { value: 3, label: 'Académico' },
     { value: 4, label: 'Estudiante' },
-    { value: 5, label: 'Egresado' },
+    { value: 5, label: 'Graduado' },
 ];
 
 export const validArticulation = [

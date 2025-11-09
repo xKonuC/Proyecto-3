@@ -1,11 +1,11 @@
 import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const updateStudentRole = async (req, res) => {
-  console.log('=== updateStudentRole called ===');
-  console.log('Request body:', req.body);
-  console.log('Request headers:', req.headers);
-  console.log('Request method:', req.method);
-  console.log('Request URL:', req.url);
+  // console.log('=== updateStudentRole called ===');
+  // console.log('Request body:', req.body);
+  // console.log('Request headers:', req.headers);
+  // console.log('Request method:', req.method);
+  // console.log('Request URL:', req.url);
   try {
     const { userID, newRoleID } = req.body;
     
@@ -45,7 +45,7 @@ const updateStudentRole = async (req, res) => {
         });
       }
 
-      // Eliminar solo los roles de estudiante/egresado (4 y 5), mantener roles administrativos
+      // Eliminar solo los roles de estudiante/graduado (4 y 5), mantener roles administrativos
       await connection.execute(
         'DELETE FROM userHasRole WHERE userID = ? AND roleID IN (4, 5)',
         [userID]
