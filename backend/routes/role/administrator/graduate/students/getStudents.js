@@ -16,6 +16,11 @@ const getStudents = async (req, res) => {
       await connection.execute('SET sql_mode = ""');
       
       // Obtener estudiantes y graduados con información completa
+      /*
+      ! Para obtener los graduados y estudiantes se usa un JOIN de user con userHasRole para ver comprobar si es estudiante o graduado
+      TODO: Crear tabla graduado, ver la opción de crear una vista que junte student y graduado
+      ?: Ver donde se inserta en student porque no tiene atributo roleID
+      */
       const [students] = await connection.execute(`
         SELECT DISTINCT
           u.userID,

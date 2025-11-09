@@ -67,9 +67,9 @@ const getFormattedRoles = (roles) => {
 const UserTable = memo(({ urls, isLoading, currentPage, selectedItems, selectAll, setCurrentPage, setSelectedItems, setSelectAll, handleFetch, handleEdit }) => {
     const { items, filteredItems } = useSelector((state) => state.handleUser.user);
     
-    console.log('UserTable - items:', items);
-    console.log('UserTable - filteredItems:', filteredItems);
-    console.log('UserTable - isLoading:', isLoading);
+    // console.log('UserTable - items:', items);
+    // console.log('UserTable - filteredItems:', filteredItems);
+    // console.log('UserTable - isLoading:', isLoading);
 
     const currentItems = useMemo(() => {
         // Usar la función para verificar si filteredItems es un array
@@ -78,7 +78,7 @@ const UserTable = memo(({ urls, isLoading, currentPage, selectedItems, selectAll
             getCurrentPageItems(ITEMS_PER_PAGE, currentPage, filteredItems) :
             getCurrentPageItems(ITEMS_PER_PAGE, currentPage, items);
         
-        console.log('UserTable - currentItems:', result);
+        // console.log('UserTable - currentItems:', result);
         return result;
     }, [filteredItems, currentPage, items]);
 
@@ -87,7 +87,7 @@ const UserTable = memo(({ urls, isLoading, currentPage, selectedItems, selectAll
         const isFiltered = isArray(filteredItems);
         const result = isFiltered ? filteredItems.length : items.length;
         
-        console.log('UserTable - numberFiltered:', result);
+        // console.log('UserTable - numberFiltered:', result);
         return result;
     }, [filteredItems, items]);
 

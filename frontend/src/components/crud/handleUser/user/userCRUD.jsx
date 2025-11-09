@@ -79,7 +79,7 @@ const UserCRUD = ({ name, urls, title, subtitle }) => {
 
   // Función para manejar los datos obtenidos
   const handleData = (data) => {
-    console.log('Datos recibidos en handleData:', data);
+    // console.log('Datos recibidos en handleData:', data);
     
     // Verificar si data es un array válido
     if (Array.isArray(data)) {
