@@ -99,11 +99,11 @@ DROP TABLE IF EXISTS `academicInfo`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `academicInfo` (
   `userID` int NOT NULL,
-  `bondType` enum('Claustro','N??cleo','Colaborador/a') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bondType` enum('Claustro','Núcleo','Colaborador/a') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `investigationLines` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `bestDegreeID` int NOT NULL,
   `workedHours` enum('Jornada Completa','Media Jornada','Profesor Hora/Part-Time') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `hierarchy` enum('Sin jerarqu??a','Titular','Asistente','Asociado','Instructor') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Sin jerarqu??a',
+  `hierarchy` enum('Sin jerarquía','Titular','Asistente','Asociado','Instructor') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Sin jerarquía',
   PRIMARY KEY (`userID`),
   KEY `fk_academicInfo_bestDegreeID_idx` (`bestDegreeID`),
   CONSTRAINT `fk_academicInfo_bestDegreeID` FOREIGN KEY (`bestDegreeID`) REFERENCES `academicHasTitle` (`academicHasTitleID`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -171,7 +171,7 @@ CREATE TABLE `area` (
 
 LOCK TABLES `area` WRITE;
 /*!40000 ALTER TABLE `area` DISABLE KEYS */;
-INSERT INTO `area` VALUES (1,'Salud'),(2,'Ingenier??a'),(3,'Ciencias Sociales'),(4,'Ciencias Naturales'),(5,'Educaci??n'),(6,'Comunicaci??n y Medios'),(7,'Negocios y Econom??a');
+INSERT INTO `area` VALUES (1,'Salud'),(2,'Ingeniería'),(3,'Ciencias Sociales'),(4,'Ciencias Naturales'),(5,'Educación'),(6,'Comunicación y Medios'),(7,'Negocios y Economía');
 /*!40000 ALTER TABLE `area` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,7 +264,7 @@ CREATE TABLE `building` (
 
 LOCK TABLES `building` WRITE;
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
-INSERT INTO `building` VALUES (1,1,'Edificio de computaci??n');
+INSERT INTO `building` VALUES (1,1,'Edificio de computación');
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,7 +377,7 @@ CREATE TABLE `degree` (
 
 LOCK TABLES `degree` WRITE;
 /*!40000 ALTER TABLE `degree` DISABLE KEYS */;
-INSERT INTO `degree` VALUES (1,'Mag??ster','Postgrado'),(2,'Licenciatura','Grado');
+INSERT INTO `degree` VALUES (1,'Magíster','Postgrado'),(2,'Licenciatura','Grado');
 /*!40000 ALTER TABLE `degree` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -408,7 +408,7 @@ CREATE TABLE `document` (
 
 LOCK TABLES `document` WRITE;
 /*!40000 ALTER TABLE `document` DISABLE KEYS */;
-INSERT INTO `document` VALUES (1,1,'Certificado de Nacimiento','link1',1),(2,2,'Curr??culum','link2',2);
+INSERT INTO `document` VALUES (1,1,'Certificado de Nacimiento','link1',1),(2,2,'Currículum','link2',2);
 /*!40000 ALTER TABLE `document` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -436,7 +436,7 @@ CREATE TABLE `elective` (
 
 LOCK TABLES `elective` WRITE;
 /*!40000 ALTER TABLE `elective` DISABLE KEYS */;
-INSERT INTO `elective` VALUES (1,2,1,'Gesti??n e Innovaci??n Educativa.'),(2,2,1,'Evaluaci??n de Sistemas e Instituciones Educativas.'),(3,3,1,'Curr??culo.'),(4,3,1,'Did??ctica de los aprendizajes.'),(5,4,1,'El enfoque Intercultural en Educaci??n.'),(6,4,1,'Ciudadan??a Democr??tica y Educaci??n.'),(7,2,2,'Direcci??n de Organizaciones Educativas.'),(8,2,2,'Gesti??n Financiera Educacional.'),(9,3,2,'Gesti??n e Innovaci??n Curricular.'),(10,3,2,'Evaluaci??n de los Aprendizajes.'),(11,4,2,'Migraci??n y Desigualdad en Educaci??n.'),(12,4,2,'Diversidad e Identidad ??tnica.');
+INSERT INTO `elective` VALUES (1,2,1,'Gestión e Innovación Educativa.'),(2,2,1,'Evaluación de Sistemas e Instituciones Educativas.'),(3,3,1,'Currículo.'),(4,3,1,'Didáctica de los aprendizajes.'),(5,4,1,'El enfoque Intercultural en Educación.'),(6,4,1,'Ciudadanía Democrática y Educación.'),(7,2,2,'Dirección de Organizaciones Educativas.'),(8,2,2,'Gestión Financiera Educacional.'),(9,3,2,'Gestión e Innovación Curricular.'),(10,3,2,'Evaluación de los Aprendizajes.'),(11,4,2,'Migración y Desigualdad en Educación.'),(12,4,2,'Diversidad e Identidad Étnica.');
 /*!40000 ALTER TABLE `elective` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -503,7 +503,7 @@ CREATE TABLE `evaluationStatus` (
 
 LOCK TABLES `evaluationStatus` WRITE;
 /*!40000 ALTER TABLE `evaluationStatus` DISABLE KEYS */;
-INSERT INTO `evaluationStatus` VALUES (1,'Sin asignaci??n','Proceso de revisi??n creado, pero sin acad??micos asignados.'),(2,'Sin revisi??n','Los acad??micos asignados a??n no terminan de evaluar.'),(3,'Aprobado','Evaluaci??n aprobada.'),(4,'Rechazado','Evaluaci??n rechazada.'),(5,'Aprobado con observaciones','Se deben corregir las observaciones indicadas.'),(6,'Rechazado en primer intento','Evaluaci??n rechazada en el primer intento, tiene otra oportunidad para entregarlo.'),(7,'Corregido','El anteproyecto fue corregido por el evaluador correspondiente');
+INSERT INTO `evaluationStatus` VALUES (1,'Sin asignación','Proceso de revisión creado, pero sin académicos asignados.'),(2,'Sin revisión','Los académicos asignados aún no terminan de evaluar.'),(3,'Aprobado','Evaluación aprobada.'),(4,'Rechazado','Evaluación rechazada.'),(5,'Aprobado con observaciones','Se deben corregir las observaciones indicadas.'),(6,'Rechazado en primer intento','Evaluación rechazada en el primer intento, tiene otra oportunidad para entregarlo.'),(7,'Corregido','El anteproyecto fue corregido por el evaluador correspondiente');
 /*!40000 ALTER TABLE `evaluationStatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -580,7 +580,7 @@ CREATE TABLE `evaluatorCategory` (
 
 LOCK TABLES `evaluatorCategory` WRITE;
 /*!40000 ALTER TABLE `evaluatorCategory` DISABLE KEYS */;
-INSERT INTO `evaluatorCategory` VALUES (1,'Gu??a'),(2,'A'),(3,'B'),(4,'Director'),(5,'Codirector'),(6,'Director del programa');
+INSERT INTO `evaluatorCategory` VALUES (1,'Guía'),(2,'A'),(3,'B'),(4,'Director'),(5,'Codirector'),(6,'Director del programa');
 /*!40000 ALTER TABLE `evaluatorCategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -619,8 +619,8 @@ CREATE TABLE `guidedThesis` (
   `guidedThesisID` int NOT NULL AUTO_INCREMENT,
   `userID` int NOT NULL,
   `author` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` enum('Mag??ster','Doctorado') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` enum('Gu??a','Co-Gu??a') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('Magíster','Doctorado') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('Guía','Co-Guía') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `year` year NOT NULL,
   `title` varchar(350) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `program` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -774,7 +774,7 @@ CREATE TABLE `permission` (
 
 LOCK TABLES `permission` WRITE;
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
-INSERT INTO `permission` VALUES (1,'Permiso para Escoger L??nea de Formaci??n'),(2,'Permiso para Escoger 1?? Electivo'),(3,'Permiso para Escoger 2?? Electivo'),(4,'Permiso para Subir Anteproyecto'),(5,'Permiso para Subir Tesis');
+INSERT INTO `permission` VALUES (1,'Permiso para Escoger Línea de Formación'),(2,'Permiso para Escoger 1º Electivo'),(3,'Permiso para Escoger 2º Electivo'),(4,'Permiso para Subir Anteproyecto'),(5,'Permiso para Subir Tesis');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -981,7 +981,7 @@ CREATE TABLE `question` (
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
-INSERT INTO `question` VALUES (1,NULL,'Presenta un desarrollo sistem??tico, interesante y actual, relacionado con el ??mbito educativo.',1),(2,NULL,'Presenta argumentos te??ricos suficientes y relevantes en relaci??n a la tem??tica tratada.',1),(3,NULL,'Las ideas expuestas son claras y existe cohesi??n entre las partes del Anteproyecto (T??tulo, Problema, Objetivo, Metodolog??a, Marco te??rico)',1),(4,NULL,'La redacci??n es adecuada y sustenta la idea central del Anteproyecto.',1),(5,NULL,'La propuesta metodol??gica es pertinente y conecta con el tipo y dise??o de investigaci??n.',1),(6,NULL,'Utiliza fuentes te??ricas suficientes que soporten los argumentos del autor, autora o autores.',1),(7,NULL,'Interpreta las citaciones de sus fuentes te??ricas y sustentan la idea central del art??culo.',1),(8,NULL,'Todas las citas est??n en el listado de Referencias y todas las referencias son utilizadas en el art??culo.',1);
+INSERT INTO `question` VALUES (1,NULL,'Presenta un desarrollo sistemático, interesante y actual, relacionado con el ámbito educativo.',1),(2,NULL,'Presenta argumentos teóricos suficientes y relevantes en relación a la temática tratada.',1),(3,NULL,'Las ideas expuestas son claras y existe cohesión entre las partes del Anteproyecto (Título, Problema, Objetivo, Metodología, Marco teórico)',1),(4,NULL,'La redacción es adecuada y sustenta la idea central del Anteproyecto.',1),(5,NULL,'La propuesta metodológica es pertinente y conecta con el tipo y diseño de investigación.',1),(6,NULL,'Utiliza fuentes teóricas suficientes que soporten los argumentos del autor, autora o autores.',1),(7,NULL,'Interpreta las citaciones de sus fuentes teóricas y sustentan la idea central del artículo.',1),(8,NULL,'Todas las citas están en el listado de Referencias y todas las referencias son utilizadas en el artículo.',1);
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1098,7 +1098,7 @@ CREATE TABLE `rubric` (
 
 LOCK TABLES `rubric` WRITE;
 /*!40000 ALTER TABLE `rubric` DISABLE KEYS */;
-INSERT INTO `rubric` VALUES (1,'Rubrica 1','Esta es la descripci??n de la Rubrica 3',NULL),(2,'Rubrica 2','Rubrica para el Anteproyecto',NULL),(3,'Rubrica 3','Rubrica para la evaluaci??n de la Tesis',NULL);
+INSERT INTO `rubric` VALUES (1,'Rubrica 1','Esta es la descripción de la Rubrica 3',NULL),(2,'Rubrica 2','Rubrica para el Anteproyecto',NULL),(3,'Rubrica 3','Rubrica para la evaluación de la Tesis',NULL);
 /*!40000 ALTER TABLE `rubric` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1181,7 +1181,7 @@ CREATE TABLE `section` (
 
 LOCK TABLES `section` WRITE;
 /*!40000 ALTER TABLE `section` DISABLE KEYS */;
-INSERT INTO `section` VALUES (1,'Preguntas',1),(2,'Pertenencia y relevancia te??rica',1),(3,'Coherencia argumentativa',1),(4,'Referencia bibliogr??ficas',1);
+INSERT INTO `section` VALUES (1,'Preguntas',1),(2,'Pertenencia y relevancia teórica',1),(3,'Coherencia argumentativa',1),(4,'Referencia bibliográficas',1);
 /*!40000 ALTER TABLE `section` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1233,7 +1233,7 @@ CREATE TABLE `semesterStatus` (
 
 LOCK TABLES `semesterStatus` WRITE;
 /*!40000 ALTER TABLE `semesterStatus` DISABLE KEYS */;
-INSERT INTO `semesterStatus` VALUES (1,'En proceso','Est?? en desarrollo.'),(2,'Aprobado','El estudiante ha sido aprobado.'),(3,'Rechazado','El estudiante ha sido rechazado.'),(4,'Cancelado','El estudiante ha cancelado su matr??cula.'),(5,'En evaluaci??n','El estudiante est?? realizando alguna de las evaluaciones o esperando su revisi??n.');
+INSERT INTO `semesterStatus` VALUES (1,'En proceso','Estudiante en desarrollo.'),(2,'Aprobado','El estudiante ha sido aprobado.'),(3,'Rechazado','El estudiante ha sido rechazado.'),(4,'Cancelado','El estudiante ha cancelado su matrícula.'),(5,'En evaluación','El estudiante está realizando alguna de las evaluaciones o esperando su revisión.');
 /*!40000 ALTER TABLE `semesterStatus` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1257,7 +1257,7 @@ CREATE TABLE `specialization` (
 
 LOCK TABLES `specialization` WRITE;
 /*!40000 ALTER TABLE `specialization` DISABLE KEYS */;
-INSERT INTO `specialization` VALUES (1,'Sin especializaci??n'),(2,'Gesti??n e Innovaci??n'),(3,'Did??ctica y Evaluaci??n'),(4,'Diversidad e Interculturalidad en Educaci??n');
+INSERT INTO `specialization` VALUES (1,'Sin especialización'),(2,'Gestión e Innovación'),(3,'Didáctica y Evaluación'),(4,'Diversidad e Interculturalidad en Educación');
 /*!40000 ALTER TABLE `specialization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1749,7 +1749,7 @@ CREATE TABLE `template` (
 
 LOCK TABLES `template` WRITE;
 /*!40000 ALTER TABLE `template` DISABLE KEYS */;
-INSERT INTO `template` VALUES (1,'Plantilla por defecto','Plantilla utilizada por defecto para las r??bricas de anteproyecto.',1);
+INSERT INTO `template` VALUES (1,'Plantilla por defecto','Plantilla utilizada por defecto para las rubricas de anteproyecto.',1);
 /*!40000 ALTER TABLE `template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2004,7 +2004,7 @@ CREATE TABLE `title` (
 
 LOCK TABLES `title` WRITE;
 /*!40000 ALTER TABLE `title` DISABLE KEYS */;
-INSERT INTO `title` VALUES (1,1,1,'Mag??ster en Historia',NULL),(2,1,1,'Mag??ster en Ciencias con Menci??n en Matem??tica',NULL);
+INSERT INTO `title` VALUES (1,1,1,'Magíster en Historia',NULL),(2,1,1,'Magíster en Ciencias con Mención en Matemática',NULL);
 /*!40000 ALTER TABLE `title` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2051,7 +2051,7 @@ CREATE TABLE `university` (
 
 LOCK TABLES `university` WRITE;
 /*!40000 ALTER TABLE `university` DISABLE KEYS */;
-INSERT INTO `university` VALUES (1,'Universidad de Tarapac??','Arica','Chile');
+INSERT INTO `university` VALUES (1,'Universidad de Tarapacá','Arica','Chile');
 /*!40000 ALTER TABLE `university` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2094,7 +2094,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'20.123.233-1','Leonardo','Leonardo','Rodr??guez','Fernandez','M','Soltero/a','2023-01-31','Psje. Paine 2827','Leonardo.Rodr??guez@alumnos.uta.cl',NULL,'121345567',2023,1,NULL,NULL,NULL,0),(2,'20.123.455-7','Sebastian','Sebastian','torres','Torres','M','Soltero/a','2023-08-01','Linderos 3731','Sebastian.Torres@alumnos.uta.cl',NULL,'123456781',2023,1,NULL,NULL,NULL,0),(3,'20.123.233-3','Leonardo1','Leonardo1','Rodr??guez1','Rodr??guez1','M','Soltero/a','2023-01-01','Orozimbo Barbosa 3720','Leonardo.Rodr??guez1@alumnos.uta.cl',NULL,'912134556',2023,1,'Universidad de Tarapac??','964873634','Docente de Historia',1),(4,'20.123.233-4','Leonardo2','Leonardo2','Rodr??guez2','Rodr??guez2','M','Soltero/a','2023-01-31','Orozimbo','Leonardo.Rodr??guez2@alumnos.uta.cl',NULL,'123456789',2023,1,NULL,NULL,NULL,NULL),(5,'20.547.055-7','Leonardo3','Leonardo3','Rodr??guez3','Rodr??guez3','M','Soltero/a','2000-09-12','s','Leonardo.Rodr??guez3@alumnos.uta.cl',NULL,'966234532',2023,1,NULL,NULL,NULL,NULL),(12,'12.000.000-1','Admin',NULL,'Principal',NULL,'M',NULL,'1990-01-01',NULL,'admin@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(14,'14.000.000-2','Admin3',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'admin3@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(15,'15.000.000-3','Admin5',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'admin5@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(16,'16.000.000-4','Admin6',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'admin6@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(17,'17.000.000-5','Admin7',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'admin7@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(18,'18.000.000-6','Test',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'test@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,'12.345.678-9','Carlos','Alberto','Mart??nez','L??pez','M','Casado','1985-12-03','Calle Secundaria 456','carlos.martinez@alumnos.uta.cl','carlos@personal.com','987654322',2021,1,'Corporaci??n XYZ','','Analista',1),(20,'18.765.432-1','Mar??a','Elena','Gonz??lez','P??rez','F','Soltera','1988-05-15','Av. Principal 123','maria.gonzalez@alumnos.uta.cl','maria@personal.com','987654321',2022,2,'Empresa ABC','123456789','Ingeniera',1),(21,'19.876.543-2','Carlos','Alberto','Mart??nez','L??pez','M','Casado','1985-12-03','Calle Secundaria 456','carlos.martinez@alumnos.uta.cl','carlos@personal.com','987654322',2021,1,'Corporaci??n XYZ','123456790','Analista',1);
+INSERT INTO `user` VALUES (1,'20.123.233-1','Leonardo','Leonardo','Rodríguez','Fernandez','M','Soltero/a','2023-01-31','Psje. Paine 2827','Leonardo.Rodríguez@alumnos.uta.cl',NULL,'121345567',2023,1,NULL,NULL,NULL,0),(2,'20.123.455-7','Sebastian','Sebastian','torres','Torres','M','Soltero/a','2023-08-01','Linderos 3731','Sebastian.Torres@alumnos.uta.cl',NULL,'123456781',2023,1,NULL,NULL,NULL,0),(3,'20.123.233-3','Leonardo1','Leonardo1','Rodríguez1','Rodríguez1','M','Soltero/a','2023-01-01','Orozimbo Barbosa 3720','Leonardo.Rodríguez1@alumnos.uta.cl',NULL,'912134556',2023,1,'Universidad de Tarapacá','964873634','Docente de Historia',1),(4,'20.123.233-4','Leonardo2','Leonardo2','Rodríguez2','Rodríguez2','M','Soltero/a','2023-01-31','Orozimbo','Leonardo.Rodríguez2@alumnos.uta.cl',NULL,'123456789',2023,1,NULL,NULL,NULL,NULL),(5,'20.547.055-7','Leonardo3','Leonardo3','Rodríguez3','Rodríguez3','M','Soltero/a','2000-09-12','s','Leonardo.Rodríguez3@alumnos.uta.cl',NULL,'966234532',2023,1,NULL,NULL,NULL,NULL),(12,'12.000.000-1','Admin',NULL,'Principal',NULL,'M',NULL,'1990-01-01',NULL,'admin@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(14,'14.000.000-2','Admin3',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'admin3@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(15,'15.000.000-3','Admin5',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'admin5@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(16,'16.000.000-4','Admin6',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'admin6@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(17,'17.000.000-5','Admin7',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'admin7@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(18,'18.000.000-6','Test',NULL,'User',NULL,'M',NULL,'1990-01-01',NULL,'test@ejemplo.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(19,'12.345.678-9','Carlos','Alberto','Martínez','López','M','Casado','1985-12-03','Calle Secundaria 456','carlos.martinez@alumnos.uta.cl','carlos@personal.com','987654322',2021,1,'Corporación XYZ','','Analista',1),(20,'18.765.432-1','María','Elena','González','Pérez','F','Soltera','1988-05-15','Av. Principal 123','maria.gonzalez@alumnos.uta.cl','maria@personal.com','987654321',2022,2,'Empresa ABC','123456789','Ingeniera',1),(21,'19.876.543-2','Carlos','Alberto','Martínez','López','M','Casado','1985-12-03','Calle Secundaria 456','carlos.martinez@alumnos.uta.cl','carlos@personal.com','987654322',2021,1,'Corporación XYZ','123456790','Analista',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2265,7 +2265,7 @@ USE `posgrado_db`;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `academic` AS select `a`.`userID` AS `userID`,`a`.`rut` AS `rut`,`a`.`firstName` AS `firstName`,`a`.`secondName` AS `secondName`,`a`.`surname1` AS `surname1`,`a`.`surname2` AS `surname2`,`a`.`sex` AS `sex`,`a`.`civilStatus` AS `civilStatus`,`a`.`birthday` AS `birthday`,`a`.`address` AS `address`,`a`.`email` AS `email`,`a`.`personalEmail` AS `personalEmail`,`a`.`phone` AS `phone`,`a`.`entry` AS `entry`,`a`.`group` AS `group`,`a`.`workPlace` AS `workPlace`,`a`.`phoneWork` AS `phoneWork`,`a`.`job` AS `job`,`a`.`articulation` AS `articulation`,`tt`.`titlesID` AS `titlesID`,`tt`.`titles` AS `titles`,`tt`.`academicHasTitlesID` AS `academicHasTitlesID` from ((select `u`.`userID` AS `userID`,`u`.`rut` AS `rut`,`u`.`firstName` AS `firstName`,`u`.`secondName` AS `secondName`,`u`.`surname1` AS `surname1`,`u`.`surname2` AS `surname2`,`u`.`sex` AS `sex`,`u`.`civilStatus` AS `civilStatus`,`u`.`birthday` AS `birthday`,`u`.`address` AS `address`,`u`.`email` AS `email`,`u`.`personalEmail` AS `personalEmail`,`u`.`phone` AS `phone`,`u`.`entry` AS `entry`,`u`.`group` AS `group`,`u`.`workPlace` AS `workPlace`,`u`.`phoneWork` AS `phoneWork`,`u`.`job` AS `job`,`u`.`articulation` AS `articulation` from (`usersWithRoles` `uwr` join `user` `u` on((`u`.`userID` = `uwr`.`userID`))) where (`uwr`.`role` = 'Acad??mico')) `a` left join (select `aht`.`userID` AS `userID`,group_concat(`t`.`titleID` order by `t`.`titleID` ASC separator ';') AS `titlesID`,group_concat(`t`.`name` order by `t`.`titleID` ASC separator ';') AS `titles`,group_concat(`aht`.`academicHasTitleID` order by `t`.`titleID` ASC separator ';') AS `academicHasTitlesID` from (`academicHasTitle` `aht` join `title` `t` on((`t`.`titleID` = `aht`.`titleID`))) group by `aht`.`userID`) `tt` on((`a`.`userID` = `tt`.`userID`))) */;
+/*!50001 VIEW `academic` AS select `a`.`userID` AS `userID`,`a`.`rut` AS `rut`,`a`.`firstName` AS `firstName`,`a`.`secondName` AS `secondName`,`a`.`surname1` AS `surname1`,`a`.`surname2` AS `surname2`,`a`.`sex` AS `sex`,`a`.`civilStatus` AS `civilStatus`,`a`.`birthday` AS `birthday`,`a`.`address` AS `address`,`a`.`email` AS `email`,`a`.`personalEmail` AS `personalEmail`,`a`.`phone` AS `phone`,`a`.`entry` AS `entry`,`a`.`group` AS `group`,`a`.`workPlace` AS `workPlace`,`a`.`phoneWork` AS `phoneWork`,`a`.`job` AS `job`,`a`.`articulation` AS `articulation`,`tt`.`titlesID` AS `titlesID`,`tt`.`titles` AS `titles`,`tt`.`academicHasTitlesID` AS `academicHasTitlesID` from ((select `u`.`userID` AS `userID`,`u`.`rut` AS `rut`,`u`.`firstName` AS `firstName`,`u`.`secondName` AS `secondName`,`u`.`surname1` AS `surname1`,`u`.`surname2` AS `surname2`,`u`.`sex` AS `sex`,`u`.`civilStatus` AS `civilStatus`,`u`.`birthday` AS `birthday`,`u`.`address` AS `address`,`u`.`email` AS `email`,`u`.`personalEmail` AS `personalEmail`,`u`.`phone` AS `phone`,`u`.`entry` AS `entry`,`u`.`group` AS `group`,`u`.`workPlace` AS `workPlace`,`u`.`phoneWork` AS `phoneWork`,`u`.`job` AS `job`,`u`.`articulation` AS `articulation` from (`usersWithRoles` `uwr` join `user` `u` on((`u`.`userID` = `uwr`.`userID`))) where (`uwr`.`role` = 'Académico')) `a` left join (select `aht`.`userID` AS `userID`,group_concat(`t`.`titleID` order by `t`.`titleID` ASC separator ';') AS `titlesID`,group_concat(`t`.`name` order by `t`.`titleID` ASC separator ';') AS `titles`,group_concat(`aht`.`academicHasTitleID` order by `t`.`titleID` ASC separator ';') AS `academicHasTitlesID` from (`academicHasTitle` `aht` join `title` `t` on((`t`.`titleID` = `aht`.`titleID`))) group by `aht`.`userID`) `tt` on((`a`.`userID` = `tt`.`userID`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
