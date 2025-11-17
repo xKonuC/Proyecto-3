@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
-import pool from '../../../../dbConnection.js';
+import posgradoPool from '../../../../posgradoDbConnection.js';
 
 class CreateStudentHasElective {
   async createStudentHasElective(userID, semesterID, electiveID) {
     let connection;
     try {
-      connection = await pool.getConnection();
+      connection = await posgradoPool.getConnection();
       const [result] = await connection.execute(`
         INSERT INTO studentHasElective (userID, semesterID, electiveID) VALUES (?, ?, ?)
       `, [userID, semesterID, electiveID]);

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import pool from '../../dbConnection.js';
+import posgradoPool from '../../posgradoDbConnection.js';
 import dotenv from 'dotenv'
 import origin from '../../Origin.js';
 dotenv.config()
@@ -7,7 +7,7 @@ dotenv.config()
 class DeleteStorage {
   async deleteStorage(documentIDs, access_token) {
     const placeholders = documentIDs.map(() => '?').join(', ');
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [files] = await connection.execute(`
     select archiveURL from document where documentID in (${placeholders})
     `, documentIDs);

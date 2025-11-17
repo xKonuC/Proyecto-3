@@ -1,4 +1,4 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 import authPool from '../../../../../authDbConnection.js';
 import { hashSync } from 'bcryptjs';
 
@@ -17,9 +17,15 @@ const createStudent = async (req, res) => {
       });
     }
 
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const authConnection = await authPool.getConnection();
     
+    /*
+    !Este createStudent está creando estudiante en userAccount
+    TODO: Cambiar lógica para crear estudiante en la tabla correcta
+    ?: ¿Cuál es la tabla correcta para crear el estudiante? Creo que es la Vista student
+    * Quitar password, student no necesita password
+    */
     try {
       // Verificar si el usuario ya existe
       const [existingUser] = await connection.execute(

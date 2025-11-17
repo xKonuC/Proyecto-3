@@ -1,4 +1,4 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const getGraduatesByClassification = async (req, res) => {
   try {
@@ -11,7 +11,7 @@ const getGraduatesByClassification = async (req, res) => {
       });
     }
 
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Obtener información de la clasificación
@@ -35,7 +35,7 @@ const getGraduatesByClassification = async (req, res) => {
         });
       }
 
-      // Obtener egresados de esta clasificación
+      // Obtener graduados de esta clasificación
       const [graduates] = await connection.execute(`
         SELECT 
           u.userID,
@@ -66,7 +66,7 @@ const getGraduatesByClassification = async (req, res) => {
         ORDER BY u.firstName, u.surname1
       `, [classificationId]);
 
-      // Obtener roles de cada egresado
+      // Obtener roles de cada graduados
       const graduatesWithRoles = await Promise.all(
         graduates.map(async (graduate) => {
           const [roles] = await connection.execute(`
@@ -98,7 +98,7 @@ const getGraduatesByClassification = async (req, res) => {
     console.error('Error getting graduates by classification:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al obtener los egresados de la clasificación',
+      message: 'Error al obtener los graduados de la clasificación',
       error: error.message
     });
   }

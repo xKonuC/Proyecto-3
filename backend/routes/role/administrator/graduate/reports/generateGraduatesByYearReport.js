@@ -1,9 +1,9 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const generateGraduatesByYearReport = async (req, res) => {
   try {
     const { dateRange } = req.body;
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Configurar UTF-8 en la conexión
@@ -19,7 +19,7 @@ const generateGraduatesByYearReport = async (req, res) => {
         dateFilter = `AND u.createdAt BETWEEN '${dateRange.startDate}' AND '${dateRange.endDate}'`;
       }
 
-      // Obtener distribución de egresados por año
+      // Obtener distribución de graduados por año
       const [graduatesByYear] = await connection.execute(`
         SELECT 
           u.entry as year,
@@ -60,7 +60,7 @@ const generateGraduatesByYearReport = async (req, res) => {
       res.json({
         success: true,
         data: reportData,
-        message: 'Reporte de egresados por año generado exitosamente'
+        message: 'Reporte de graduados por año generado exitosamente'
       });
 
     } finally {
@@ -70,12 +70,19 @@ const generateGraduatesByYearReport = async (req, res) => {
     console.error('Error generating graduates by year report:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al generar el reporte de egresados por año',
+      message: 'Error al generar el reporte de graduados por año',
       error: error.message
     });
   }
 };
 
 export default generateGraduatesByYearReport;
+
+
+
+
+
+
+
 
 

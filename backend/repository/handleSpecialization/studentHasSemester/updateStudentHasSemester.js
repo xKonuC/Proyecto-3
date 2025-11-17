@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class UpdateStudentHasSemester {
   async updateStudentHasSemester(studentHasSemesterID, semesterID, specializationID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     try {
       const [result] = await connection.execute(`
         UPDATE studentHasSemester 

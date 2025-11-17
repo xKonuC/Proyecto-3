@@ -1,9 +1,9 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const generateGraduatesBySpecializationReport = async (req, res) => {
   try {
     const { dateRange } = req.body;
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Configurar UTF-8 en la conexión
@@ -74,7 +74,7 @@ const generateGraduatesBySpecializationReport = async (req, res) => {
       res.json({
         success: true,
         data: reportData,
-        message: 'Reporte de egresados por especialización generado exitosamente'
+        message: 'Reporte de graduado por especialización generado exitosamente'
       });
 
     } finally {
@@ -84,12 +84,18 @@ const generateGraduatesBySpecializationReport = async (req, res) => {
     console.error('Error generating graduates by specialization report:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al generar el reporte de egresados por especialización',
+      message: 'Error al generar el reporte de graduados por especialización',
       error: error.message
     });
   }
 };
 
 export default generateGraduatesBySpecializationReport;
+
+
+
+
+
+
 
 

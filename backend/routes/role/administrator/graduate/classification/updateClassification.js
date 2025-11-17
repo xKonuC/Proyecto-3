@@ -1,4 +1,4 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const updateClassification = async (req, res) => {
   try {
@@ -12,7 +12,7 @@ const updateClassification = async (req, res) => {
       });
     }
 
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Verificar que la clasificación existe
@@ -55,7 +55,7 @@ const updateClassification = async (req, res) => {
         `, updateValues);
       }
 
-      // Actualizar egresados asociados si se proporcionan
+      // Actualizar graduados asociados si se proporcionan
       if (graduateIds !== undefined) {
         // Eliminar asociaciones existentes
         await connection.execute(`
@@ -92,5 +92,6 @@ const updateClassification = async (req, res) => {
 };
 
 export default updateClassification;
+
 
 

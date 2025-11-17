@@ -1,8 +1,8 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const getClassificationCriteria = async (req, res) => {
   try {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Obtener criterios de clasificación disponibles
@@ -74,5 +74,6 @@ const getClassificationCriteria = async (req, res) => {
 };
 
 export default getClassificationCriteria;
+
 
 

@@ -4,13 +4,13 @@ import {
 
 const titleRoute = express.Router();
 
-titleRoute.get('/degree', listDegree);// ✅
-titleRoute.get('/university', listUniversity);// ✅
+titleRoute.get('/degree', listDegree);
+titleRoute.get('/university', listUniversity);
 
 titleRoute.route('/')
-  .get(listTitle)// ✅
-  .post(validateName, validateUniversityID, validateDegreeID, validateAreaID, createTitle)// ✅
-  .put(validateTitleID, validateName, validateUniversityID, validateDegreeID, validateAreaID, updateTitle)// ✅
-  .delete(validateArrayTitleID, deleteTitle);// ✅
+  .get(listTitle)
+  .post(validateName, validateUniversityID, validateDegreeID, validateAreaID, createTitle)
+  .put(validateTitleID, validateName, validateUniversityID, validateDegreeID, validateAreaID, updateTitle)
+  .delete(validateArrayTitleID, deleteTitle);
 
 export default titleRoute;

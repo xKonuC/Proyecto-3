@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class CreateTemplateHasQuestion {
   async createTemplateHasQuestion(dataArray) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     insert into templateHasQuestion (questionID, templateHasSectionID, positionNumber) 
     values (?,?,?);

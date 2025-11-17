@@ -1,0 +1,25 @@
+FROM node:20-alpine3.19
+WORKDIR /app
+
+# Copiar archivos de dependencias
+COPY package*.json ./
+
+# Instalar dependencias
+RUN npm install
+
+# Instalar dotenv-cli globalmente
+RUN npm install --global dotenv-cli
+
+# Copiar el código fuente
+COPY . .
+
+# Exponer el puerto
+EXPOSE 5000
+
+# Comando para desarrollo
+CMD ["dotenv", "--file", ".env.development", "node", "index.js"]
+
+
+
+
+

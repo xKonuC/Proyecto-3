@@ -1,6 +1,11 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const updateStudentRole = async (req, res) => {
+  // console.log('=== updateStudentRole called ===');
+  // console.log('Request body:', req.body);
+  // console.log('Request headers:', req.headers);
+  // console.log('Request method:', req.method);
+  // console.log('Request URL:', req.url);
   try {
     const { userID, newRoleID } = req.body;
     
@@ -11,7 +16,7 @@ const updateStudentRole = async (req, res) => {
       });
     }
 
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Verificar que el usuario existe
@@ -40,10 +45,16 @@ const updateStudentRole = async (req, res) => {
         });
       }
 
-      // Actualizar el rol del usuario
+      // Eliminar solo los roles de estudiante/graduado (4 y 5), mantener roles administrativos
       await connection.execute(
-        'UPDATE userHasRole SET roleID = ? WHERE userID = ?',
-        [newRoleID, userID]
+        'DELETE FROM userHasRole WHERE userID = ? AND roleID IN (4, 5)',
+        [userID]
+      );
+
+      // Asignar el nuevo rol
+      await connection.execute(
+        'INSERT INTO userHasRole (userID, roleID) VALUES (?, ?)',
+        [userID, newRoleID]
       );
 
       res.json({

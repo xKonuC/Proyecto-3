@@ -1,8 +1,8 @@
-import pool from '../../dbConnection.js';
+import posgradoPool from '../../posgradoDbConnection.js';
 
 class VerifyStudent {
   async verifyStudent(userID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     select * from userHasRole, user, role
     where userHasRole.userID = user.userID and

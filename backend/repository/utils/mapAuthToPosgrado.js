@@ -1,8 +1,8 @@
-import pool from '../../dbConnection.js';
+import posgradoPool from '../../posgradoDbConnection.js';
 
 class MapAuthToPosgrado {
   async mapAuthToPosgrado(authdbId) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Buscar el mapeo de ID
@@ -25,5 +25,6 @@ class MapAuthToPosgrado {
 }
 
 export { MapAuthToPosgrado };
+
 
 

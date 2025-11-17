@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class SelectTemplateByID {
   async selectTemplateByID(templateID, questionIsActive, sectionIsActive) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
       SELECT 
         ts.sectionID,

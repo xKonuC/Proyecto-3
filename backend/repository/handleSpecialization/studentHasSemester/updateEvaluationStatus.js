@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class UpdateEvaluationStatus {
   async updateEvaluationStatus(studentHasSemesterID, evaluationStatusID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     update studentHasSemester set
     evaluationStatusID = ?

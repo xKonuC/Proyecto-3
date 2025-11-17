@@ -1,4 +1,4 @@
-import pool from '../../dbConnection.js';
+import posgradoPool from '../../posgradoDbConnection.js';
 
 class GetFormat {
   async getFormat() {
@@ -8,7 +8,7 @@ class GetFormat {
 
 class GetFormat_SupaBase extends GetFormat {
   async getFormat(name) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(
       `select * from format
       where name = ?;`,

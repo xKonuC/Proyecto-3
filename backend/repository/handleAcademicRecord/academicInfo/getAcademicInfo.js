@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class GetAcademicInfo {
   async getAcademicInfo(userID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
       SELECT
         CONCAT_WS(' ', a.firstName, a.secondName, a.surname1, a.surname2) AS fullName,

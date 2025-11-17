@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class SelectRubricOverview {
   async selectRubricOverview(rubricID, evaluatorID, userID, evaluationTypeID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     try {
       let query = `
       SELECT 

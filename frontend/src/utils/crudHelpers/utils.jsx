@@ -53,14 +53,12 @@ export const formatDateValue = (value, optionValue) => {
     'grade3',
   ];
 
-  // Verifica si el valor de fecha no es null
-  if (value !== null) {
+  // Verifica si el valor no es null, undefined o vacío
+  if (value !== null && value !== undefined && value !== '') {
     // Verifica si optionValue está en la lista de fechas
     if (dateOptions.includes(optionValue)) {
       try {
-        if (value === null) {
-          return null;
-        } else if (optionValue === 'sex') {
+        if (optionValue === 'sex') {
           return sexValuesMap[value] || value; // Retorna la descripción completa o el valor original si no se encuentra
         } else if (optionValue === 'articulation' || optionValue === 'sameProgram' || optionValue === 'isIndexed') {
           return articulationValuesMap[value] || value
@@ -71,13 +69,20 @@ export const formatDateValue = (value, optionValue) => {
         } else if (optionValue === 'creationDate' || optionValue === 'updateDate') {
           // Formatea la fecha con hora y minutos
           const date = new Date(value);
+          // Verificar si la fecha es válida
+          if (isNaN(date.getTime())) {
+            return value; // Retorna el valor original si la fecha es inválida
+          }
           // Suma 4 horas
           date.setHours(date.getHours() + 4);
-
           return format(date, 'yyyy-MM-dd HH:mm');
         } else {
-          // Formatea la fecha con hora y minutos
+          // Formatea la fecha sin hora ni minutos
           const date = new Date(value);
+          // Verificar si la fecha es válida
+          if (isNaN(date.getTime())) {
+            return value; // Retorna el valor original si la fecha es inválida
+          }
           // Suma 4 horas
           date.setHours(date.getHours() + 4);
           // Formatea la fecha sin hora ni minutos
@@ -91,7 +96,7 @@ export const formatDateValue = (value, optionValue) => {
       return value; // Si no es una fecha, retorna el valor sin cambios
     }
   } else {
-    return value;
+    return value || ''; // Retorna el valor o cadena vacía si es null/undefined
   }
 };
 

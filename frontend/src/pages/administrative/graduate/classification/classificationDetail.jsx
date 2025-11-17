@@ -200,7 +200,7 @@ const ClassificationDetail = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <h4 className="text-sm font-medium text-orange-main mb-2">Total de Egresados</h4>
+              <h4 className="text-sm font-medium text-orange-main mb-2">Total de Graduados</h4>
               <p className="text-2xl font-bold text-orange-main">{graduates.length}</p>
             </div>
             <div>
@@ -232,13 +232,13 @@ const ClassificationDetail = () => {
           <div className="p-6 border-b-2 border-orange-main">
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-semibold text-orange-main">
-                Egresados ({graduates.length})
+                Graduados ({graduates.length})
               </h3>
               <div className="flex space-x-4">
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Buscar egresados..."
+                    placeholder="Buscar graduados..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10 pr-4 py-2 border-2 border-orange-main rounded-xl focus:ring-2 focus:ring-orange-main focus:border-transparent"
@@ -254,7 +254,7 @@ const ClassificationDetail = () => {
               <thead className="bg-orange-main bg-opacity-10">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-orange-main uppercase tracking-wider">
-                    Egresado
+                    Graduado
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-orange-main uppercase tracking-wider">
                     Email
@@ -312,13 +312,13 @@ const ClassificationDetail = () => {
 
           {filteredGraduates.length === 0 && graduates.length > 0 && (
             <div className="text-center py-8">
-              <p className="text-gray-500">No se encontraron egresados con ese criterio de búsqueda</p>
+              <p className="text-gray-500">No se encontraron graduados con ese criterio de búsqueda</p>
             </div>
           )}
 
           {graduates.length === 0 && (
             <div className="text-center py-8">
-              <p className="text-gray-500">No hay egresados en esta clasificación</p>
+              <p className="text-gray-500">No hay graduados en esta clasificación</p>
             </div>
           )}
         </div>

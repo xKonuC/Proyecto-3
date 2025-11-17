@@ -191,7 +191,7 @@ const EditClassification = () => {
           value={formData.name || ''}
           onChange={handleInputChange}
           className="w-full px-3 py-2 border-2 border-orange-main rounded-xl focus:ring-2 focus:ring-orange-main focus:border-transparent"
-          placeholder="Ej: Egresados 2023 - Especialización en Educación"
+          placeholder="Ej: Graduados 2023 - Especialización en Educación"
           required
         />
       </div>
@@ -296,12 +296,12 @@ const EditClassification = () => {
 
   const renderStep3 = () => (
     <div className="space-y-6">
-      <h3 className="text-lg font-semibold text-orange-main mb-4">Seleccionar Egresados</h3>
+      <h3 className="text-lg font-semibold text-orange-main mb-4">Seleccionar Graduados</h3>
       
       <div className="bg-orange-main bg-opacity-10 p-4 rounded-xl border-2 border-orange-main">
         <div className="flex justify-between items-center mb-4">
           <span className="text-sm text-orange-main font-medium">
-            {selectedGraduates.length} egresados seleccionados
+            {selectedGraduates.length} graduados seleccionados
           </span>
           <button
             type="button"
@@ -355,7 +355,7 @@ const EditClassification = () => {
           </button>
           <div>
             <h1 className="text-3xl font-bold text-orange-main sm:text-5xl">Editar Clasificación</h1>
-            <p className="mt-4 text-gray-600 font-normal">Modifica los criterios y selecciona los egresados</p>
+            <p className="mt-4 text-gray-600 font-normal">Modifica los criterios y selecciona los graduados</p>
           </div>
         </div>
 
@@ -380,7 +380,7 @@ const EditClassification = () => {
           <div className="flex justify-between mt-2 text-sm text-gray-600">
             <span>Información Básica</span>
             <span>Criterios</span>
-            <span>Egresados</span>
+            <span>Graduados</span>
           </div>
         </div>
 

@@ -1,8 +1,8 @@
-import pool from '../../dbConnection.js';
+import posgradoPool from '../../posgradoDbConnection.js';
 
 class CreateStudents {
   async createStudents(excelData) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     insert into userHasRole (userID, roleID) values (?,?)
     `, [excelData.userID, excelData.roleID]);

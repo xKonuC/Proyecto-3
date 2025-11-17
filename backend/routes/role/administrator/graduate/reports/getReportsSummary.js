@@ -1,8 +1,8 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const getReportsSummary = async (req, res) => {
   try {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Configurar UTF-8 en la conexión
@@ -13,7 +13,7 @@ const getReportsSummary = async (req, res) => {
       await connection.execute('SET character_set_results = utf8mb4');
       await connection.execute('SET sql_mode = ""');
 
-      // Obtener total de egresados
+      // Obtener total de graduados
       const [graduatesCount] = await connection.execute(`
         SELECT COUNT(*) as total
         FROM user u
@@ -35,7 +35,7 @@ const getReportsSummary = async (req, res) => {
         FROM classification
       `);
 
-      // Obtener egresados por año
+      // Obtener graduados por año
       const [graduatesByYear] = await connection.execute(`
         SELECT 
           u.entry as year,
@@ -47,7 +47,7 @@ const getReportsSummary = async (req, res) => {
         ORDER BY u.entry DESC
       `);
 
-      // Obtener egresados por especialización (si existe la tabla)
+      // Obtener graduados por especialización (si existe la tabla)
       const [graduatesBySpecialization] = await connection.execute(`
         SELECT 
           'General' as specialization,
@@ -58,7 +58,7 @@ const getReportsSummary = async (req, res) => {
         GROUP BY 'General'
       `);
 
-      // Obtener egresados recientes
+      // Obtener graduados recientes
       const [recentGraduates] = await connection.execute(`
         SELECT 
           u.userID,
@@ -103,5 +103,12 @@ const getReportsSummary = async (req, res) => {
 };
 
 export default getReportsSummary;
+
+
+
+
+
+
+
 
 

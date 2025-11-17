@@ -148,28 +148,28 @@ const Reports = () => {
 
     switch (reportType) {
       case 'graduates-summary':
-        content += 'RESUMEN DE EGRESADOS\n';
-        content += `Total de Egresados: ${reportData.totalGraduates}\n`;
+        content += 'RESUMEN DE GRADUADOS\n';
+        content += `Total de Graduados: ${reportData.totalGraduates}\n`;
         content += `Total de Estudiantes: ${reportData.totalStudents}\n`;
         content += `Total de Clasificaciones: ${reportData.totalClassifications}\n\n`;
         
         content += 'DISTRIBUCIÓN POR AÑO:\n';
         reportData.graduatesByYear.forEach(item => {
-          content += `- ${item.year}: ${item.count} egresados\n`;
+          content += `- ${item.year}: ${item.count} graduados\n`;
         });
         break;
 
       case 'graduates-by-year':
-        content += 'EGRESADOS POR AÑO\n';
+        content += 'GRADUADOS POR AÑO\n';
         reportData.graduatesByYear.forEach(item => {
-          content += `Año ${item.year}: ${item.count} egresados\n`;
+          content += `Año ${item.year}: ${item.count} graduados\n`;
         });
         break;
 
       case 'graduates-by-specialization':
-        content += 'EGRESADOS POR ESPECIALIZACIÓN\n';
+        content += 'GRADUADOS POR ESPECIALIZACIÓN\n';
         reportData.graduatesBySpecialization.forEach(item => {
-          content += `${item.specialization}: ${item.count} egresados\n`;
+          content += `${item.specialization}: ${item.count} graduados\n`;
         });
         break;
 
@@ -182,7 +182,7 @@ const Reports = () => {
         content += 'REPORTE GENERAL\n';
     }
 
-    content += '\nEGRESADOS RECIENTES:\n';
+    content += '\nGRADUADOS RECIENTES:\n';
     reportData.recentGraduates.forEach(graduate => {
       content += `- ${graduate.fullName} (${graduate.email}) - Año: ${graduate.entry}\n`;
     });
@@ -197,21 +197,21 @@ const Reports = () => {
   const reportTypes = [
     {
       id: 'graduates-summary',
-      title: 'Resumen de Egresados',
-      description: 'Estadísticas generales de egresados',
+      title: 'Resumen de Graduados',
+      description: 'Estadísticas generales de graduados',
       icon: FaUsers,
       color: 'bg-blue-500'
     },
     {
       id: 'graduates-by-year',
-      title: 'Egresados por Año',
-      description: 'Distribución de egresados por año de graduación',
+      title: 'Graduados por Año',
+      description: 'Distribución de graduados por año de graduación',
       icon: FaCalendarAlt,
       color: 'bg-green-500'
     },
     {
       id: 'graduates-by-specialization',
-      title: 'Egresados por Especialización',
+      title: 'Graduados por Especialización',
       description: 'Distribución por especialización',
       icon: FaGraduationCap,
       color: 'bg-purple-500'
@@ -219,7 +219,7 @@ const Reports = () => {
     {
       id: 'classifications-report',
       title: 'Reporte de Clasificaciones',
-      description: 'Análisis de clasificaciones de egresados',
+      description: 'Análisis de clasificaciones de graduados',
       icon: FaChartBar,
       color: 'bg-orange-500'
     }
@@ -239,7 +239,7 @@ const Reports = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-orange-main sm:text-5xl">Reportes de Graduados</h1>
-          <p className="mt-4 text-gray-600 font-normal">Genera reportes y estadísticas de egresados</p>
+          <p className="mt-4 text-gray-600 font-normal">Genera reportes y estadísticas de graduados</p>
         </div>
 
         {/* Summary Cards */}
@@ -247,7 +247,7 @@ const Reports = () => {
           <div className="bg-orange-main text-white p-6 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-orange-200 text-sm font-medium">Total Egresados</p>
+                <p className="text-orange-200 text-sm font-medium">Total Graduados</p>
                 <p className="text-3xl font-bold">{reportData.totalGraduates}</p>
               </div>
               <FaUsers className="h-8 w-8 text-orange-200" />
@@ -369,7 +369,7 @@ const Reports = () => {
         {/* Recent Graduates Table */}
         {reportData.recentGraduates.length > 0 && (
           <div className="mt-8">
-            <h3 className="text-xl font-semibold text-orange-main mb-4">Egresados Recientes</h3>
+            <h3 className="text-xl font-semibold text-orange-main mb-4">Graduados Recientes</h3>
             <div className="bg-white border-2 border-orange-main rounded-xl overflow-hidden">
               <table className="w-full">
                 <thead className="bg-orange-main text-white">

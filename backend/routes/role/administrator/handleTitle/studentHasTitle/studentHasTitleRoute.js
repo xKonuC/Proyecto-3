@@ -4,12 +4,12 @@ import {
 
 const studentHasTitleRoute = express.Router();
 
-studentHasTitleRoute.get('/title', listTitle);// ✅
+studentHasTitleRoute.get('/title', listTitle);
 
 studentHasTitleRoute.route('/')
-  .get(validateUserID, listStudentHasTitle)// ✅
-  .post(validateUserID, validateTitleID, validateTitleYear, handleFileUpload, uploadArchiveToBucket, createStudentHasTitle)// ✅
-  .put(validateStudentHasTitleID, validateTitleID, validateTitleYear, updateStudentHasTitle)// ✅
-  .delete(validateArrayStudentHasTitleID, deleteStudentHasTitle);// ✅
+  .get(validateUserID, listStudentHasTitle)
+  .post(validateUserID, validateTitleID, validateTitleYear, handleFileUpload, uploadArchiveToBucket, createStudentHasTitle)
+  .put(validateStudentHasTitleID, validateTitleID, validateTitleYear, updateStudentHasTitle)
+  .delete(validateArrayStudentHasTitleID, deleteStudentHasTitle);
 
 export default studentHasTitleRoute;

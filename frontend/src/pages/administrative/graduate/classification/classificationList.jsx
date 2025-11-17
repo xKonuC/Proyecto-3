@@ -189,8 +189,8 @@ const ClassificationList = () => {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-orange-main sm:text-5xl">Clasificación de Egresados</h1>
-            <p className="mt-4 text-gray-600 font-normal">Gestiona las clasificaciones y categorías de los egresados</p>
+            <h1 className="text-3xl font-bold text-orange-main sm:text-5xl">Clasificación de Graduados</h1>
+            <p className="mt-4 text-gray-600 font-normal">Gestiona las clasificaciones y categorías de los graduados</p>
           </div>
           <button
             onClick={() => navigate('/Administrative/Graduate/Classification/Create')}
@@ -265,7 +265,7 @@ const ClassificationList = () => {
                   </p>
                   
                   <div className="flex justify-between items-center text-sm text-white group-hover:text-orange-main">
-                    <span>{classification.graduateCount} egresados</span>
+                    <span>{classification.graduateCount} graduados</span>
                     <span>{formatDate(classification.createdAt)}</span>
                   </div>
                   
@@ -345,10 +345,10 @@ const ClassificationList = () => {
                   </select>
                 </div>
 
-                {/* Filtro por Cantidad de Egresados */}
+                {/* Filtro por Cantidad de Graduados */}
                 <div>
                   <label className="block text-sm font-medium text-orange-main mb-2">
-                    Mínimo de Egresados
+                    Mínimo de Graduados
                   </label>
                   <select
                     value={filters.graduateCount}
@@ -356,10 +356,10 @@ const ClassificationList = () => {
                     className="w-full px-3 py-2 border-2 border-orange-main rounded-xl focus:ring-2 focus:ring-orange-main focus:border-transparent"
                   >
                     <option value="">Cualquier cantidad</option>
-                    <option value="1">1+ egresados</option>
-                    <option value="5">5+ egresados</option>
-                    <option value="10">10+ egresados</option>
-                    <option value="20">20+ egresados</option>
+                    <option value="1">1+ graduados</option>
+                    <option value="5">5+ graduados</option>
+                    <option value="10">10+ graduados</option>
+                    <option value="20">20+ graduados</option>
                   </select>
                 </div>
 
@@ -375,7 +375,7 @@ const ClassificationList = () => {
                   >
                     <option value="name">Nombre (A-Z)</option>
                     <option value="date">Fecha (Más reciente)</option>
-                    <option value="graduates">Cantidad de egresados</option>
+                    <option value="graduates">Cantidad de graduados</option>
                   </select>
                 </div>
               </div>

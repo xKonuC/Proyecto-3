@@ -9,7 +9,9 @@ const decrypt = (decoded) => {
 
     return decryptedObject;
   } catch (error) {
-    console.log(error);
+    console.log('Error decrypting data:', error);
+    console.log('Decoded data:', decoded);
+    return { message: 'Error decrypting data', error: error.message };
   }
 };
 

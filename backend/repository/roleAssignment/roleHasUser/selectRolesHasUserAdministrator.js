@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class SelectRolesHasUserAdministrator {
   async selectRolesHasUserAdministrator() {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`select * from userHasRole, role, user
     where userHasRole.userID = user.userID and
     userHasRole.roleID = role.roleID and

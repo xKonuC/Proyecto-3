@@ -8,9 +8,10 @@ export default class FetchService extends CrudService {
   }
 
   onError(error) {
+    console.error(`Error en FetchService para ${this.itemName}:`, error);
     handleErrorResponse({
       error,
-      customMessage: `Error searching ${this.itemName}`,
+      customMessage: `Error buscando ${this.itemName}`,
       showAlert: this.showAlert,
     });
   }

@@ -1,4 +1,4 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class SelectStudentHasSpecialization {
   async selectStudentHasSpecialization() {

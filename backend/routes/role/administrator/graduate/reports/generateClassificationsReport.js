@@ -1,9 +1,9 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const generateClassificationsReport = async (req, res) => {
   try {
     const { dateRange } = req.body;
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Configurar UTF-8 en la conexión
@@ -60,7 +60,7 @@ const generateClassificationsReport = async (req, res) => {
         ORDER BY c.createdAt DESC
       `);
 
-      // Obtener distribución de egresados por clasificación
+      // Obtener distribución de graduados por clasificación
       const [graduatesByClassification] = await connection.execute(`
         SELECT 
           c.name as classificationName,
@@ -114,5 +114,12 @@ const generateClassificationsReport = async (req, res) => {
 };
 
 export default generateClassificationsReport;
+
+
+
+
+
+
+
 
 

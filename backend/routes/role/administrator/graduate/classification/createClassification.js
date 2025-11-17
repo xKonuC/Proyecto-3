@@ -1,4 +1,4 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const createClassification = async (req, res) => {
   try {
@@ -11,7 +11,7 @@ const createClassification = async (req, res) => {
       });
     }
 
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
       // Crear la clasificación
@@ -22,7 +22,7 @@ const createClassification = async (req, res) => {
 
       const classificationId = classificationResult.insertId;
 
-      // Asociar egresados a la clasificación si se proporcionan
+      // Asociar graduados a la clasificación si se proporcionan
       if (graduateIds && Array.isArray(graduateIds) && graduateIds.length > 0) {
         for (const graduateId of graduateIds) {
           await connection.execute(`
@@ -57,5 +57,6 @@ const createClassification = async (req, res) => {
 };
 
 export default createClassification;
+
 
 

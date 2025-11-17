@@ -1,11 +1,11 @@
-import pool from '../../../../../dbConnection.js';
+import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const getClassifications = async (req, res) => {
   try {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     
     try {
-      // Obtener todas las clasificaciones con información de egresados
+      // Obtener todas las clasificaciones con información de graduados
       const [classifications] = await connection.execute(`
         SELECT 
           c.classificationID,
@@ -21,7 +21,7 @@ const getClassifications = async (req, res) => {
         ORDER BY c.createdAt DESC
       `);
 
-      // Para cada clasificación, obtener los egresados asociados
+      // Para cada clasificación, obtener los graduados asociados
       const classificationsWithGraduates = await Promise.all(
         classifications.map(async (classification) => {
           const [graduates] = await connection.execute(`
@@ -77,5 +77,6 @@ const getClassifications = async (req, res) => {
 };
 
 export default getClassifications;
+
 
 

@@ -79,14 +79,25 @@ const UserCRUD = ({ name, urls, title, subtitle }) => {
 
   // Función para manejar los datos obtenidos
   const handleData = (data) => {
-    const sortedItems = sortItems(data, 'userID');
-    dispatch(setItems(sortedItems));
-    dispatch(clearFilteredItems());
-    clearCheckbox(setSelectedItems, setSelectAll);
+    // console.log('Datos recibidos en handleData:', data);
+    
+    // Verificar si data es un array válido
+    if (Array.isArray(data)) {
+      const sortedItems = sortItems(data, 'userID');
+      dispatch(setItems(sortedItems));
+      dispatch(clearFilteredItems());
+      clearCheckbox(setSelectedItems, setSelectAll);
+    } else {
+      console.warn('Los datos recibidos no son un array válido:', data);
+      dispatch(setItems([]));
+      dispatch(clearFilteredItems());
+      clearCheckbox(setSelectedItems, setSelectAll);
+    }
   };
 
   // Función para manejar las respuestas de los servicios
   const responseHandler = (response) => {
+    console.log('Respuesta recibida en responseHandler:', response);
     ResponseHandler({
       showAlert,
       response,
@@ -151,6 +162,7 @@ const UserCRUD = ({ name, urls, title, subtitle }) => {
       isMounted.current = true;
       setIsLoading(true);
       const fetchData = async () => {
+        console.log('Iniciando fetchData en useEffect');
         await fetchHandler();
         setIsLoading(false);
       };

@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class QuestionActivator {
   async questionActivator(questionIDs, isActive) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const placeholders = questionIDs.map(() => '?').join(',');
     const [result] = await connection.execute(`
       UPDATE question 

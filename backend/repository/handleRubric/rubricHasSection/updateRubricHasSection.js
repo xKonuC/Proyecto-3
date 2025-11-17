@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class UpdateRubricHasSection {
   async updateRubricHasSection(dataArray, rubricID) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     update rubricHasSection set
       sectionID = ?, positionNumber = ?

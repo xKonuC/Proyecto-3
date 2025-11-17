@@ -66,19 +66,29 @@ const getFormattedRoles = (roles) => {
 
 const UserTable = memo(({ urls, isLoading, currentPage, selectedItems, selectAll, setCurrentPage, setSelectedItems, setSelectAll, handleFetch, handleEdit }) => {
     const { items, filteredItems } = useSelector((state) => state.handleUser.user);
+    
+    // console.log('UserTable - items:', items);
+    // console.log('UserTable - filteredItems:', filteredItems);
+    // console.log('UserTable - isLoading:', isLoading);
 
     const currentItems = useMemo(() => {
         // Usar la función para verificar si filteredItems es un array
         const isFiltered = isArray(filteredItems);
-        return isFiltered ?
+        const result = isFiltered ?
             getCurrentPageItems(ITEMS_PER_PAGE, currentPage, filteredItems) :
             getCurrentPageItems(ITEMS_PER_PAGE, currentPage, items);
+        
+        // console.log('UserTable - currentItems:', result);
+        return result;
     }, [filteredItems, currentPage, items]);
 
     const numberFiltered = useMemo(() => {
         // Usar la función para verificar si filteredItems es un array
         const isFiltered = isArray(filteredItems);
-        return isFiltered ? filteredItems.length : items.length;
+        const result = isFiltered ? filteredItems.length : items.length;
+        
+        // console.log('UserTable - numberFiltered:', result);
+        return result;
     }, [filteredItems, items]);
 
 
@@ -98,8 +108,8 @@ const UserTable = memo(({ urls, isLoading, currentPage, selectedItems, selectAll
 
     const tbodyContent = (
         <TbodyContent itemsLength={items.length} isLoading={isLoading} length={options.length}>
-            {currentItems.map((item) => (
-                <tr key={item.userID} className={tbodyContentTr}>
+            {currentItems.map((item, index) => (
+                <tr key={`${item.userID}-${index}`} className={tbodyContentTr}>
                     <CheckboxCell id={`deleteInput-${item.userID}`} checked={selectedItems.some((selectedItem) => selectedItem.userID === item.userID)} onChange={(e) => handleCheckboxChange(e, setSelectedItems, 'userID', item)} />
 
                     {optionsRow.map((option, index) => (

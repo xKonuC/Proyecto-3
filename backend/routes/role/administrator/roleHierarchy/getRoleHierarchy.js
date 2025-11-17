@@ -11,7 +11,7 @@ const getRoleHierarchy = async (req, res) => {
         Administrador: 'Puede gestionar usuarios y contenido, pero no puede asignar SuperAdmin',
         Académico: 'Puede evaluar y gestionar contenido académico',
         Estudiante: 'Acceso limitado a sus propios datos',
-        Egresado: 'Acceso muy limitado, puede ver reportes de egresados'
+        Graduado: 'Acceso muy limitado, puede ver reportes de graduados'
       }
     });
   } catch (error) {
@@ -21,5 +21,12 @@ const getRoleHierarchy = async (req, res) => {
 };
 
 export default getRoleHierarchy;
+
+
+
+
+
+
+
 
 

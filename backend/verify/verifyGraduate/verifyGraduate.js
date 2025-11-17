@@ -17,17 +17,24 @@ const verifyGraduate = async (req, res, next) => {
         return res.status(403).json({ errorDenied: 'No tienes permiso para ingresar' });
       }
       req.body.graduateID = data.userID;
-      req.body.userRole = 'Egresado';
+      req.body.userRole = 'Graduado';
       next();
     } else {
       res.status(400).json({ expirationError: 'La sesión ha expirado o las credenciales son inválidas' });
     }
   } catch (error) {
-    console.error('Error en la verificación de Egresado:', error);
+    console.error('Error en la verificación de Graduado:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
 export default verifyGraduate;
+
+
+
+
+
+
+
 
 

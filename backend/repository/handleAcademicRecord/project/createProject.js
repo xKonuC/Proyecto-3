@@ -1,8 +1,8 @@
-import pool from '../../../dbConnection.js';
+import posgradoPool from '../../../posgradoDbConnection.js';
 
 class CreateProject {
   async createProject(userID, title, type, fundingSource, grantYear, executionPeriod, role, accessURL) {
-    const connection = await pool.getConnection();
+    const connection = await posgradoPool.getConnection();
     const [result] = await connection.execute(`
     insert into project (userID, title, type, fundingSource, grantYear, executionPeriod, role, accessURL)
     values (?,?,?,?,?,?,?,?)

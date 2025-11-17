@@ -3,19 +3,18 @@ import mysql from "mysql2/promise.js";
 
 const pool = mysql.createPool(dbConfig);
 
-pool.getConnection((err, connection) => {
+pool.getConnection(async (err, connection) => {
     if (err) {
       console.error('Error connecting to the database:', err);
       return;
     }  
-    const query = 'SELECT 1 + 1 AS result';  
-    connection.query(query, (error, results) => {
-      connection.release();  
-      if (error) {
-        console.error('Error executing query:', error);
-        return;
-      }
-    });
+    try {
+      // Configurar UTF-8 en cada conexión
+      await connection.execute('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
+    } catch (error) {
+      console.error('Error setting charset:', error);
+    }
+    connection.release();
 });
   
 

@@ -9,7 +9,7 @@ const ROLE_HIERARCHY = {
   2: 'Administrador', // Puede gestionar usuarios y contenido
   3: 'Académico',     // Puede evaluar y gestionar contenido académico
   4: 'Estudiante',    // Acceso limitado a sus propios datos
-  5: 'Egresado'       // Acceso muy limitado
+  5: 'Graduado'       // Acceso muy limitado
 };
 
 // Permisos por rol
@@ -59,7 +59,7 @@ const ROLE_PERMISSIONS = {
     allowedRoles: [],
     canOnlyAccessOwnData: true
   },
-  Egresado: {
+  Graduado: {
     canManageUsers: false,
     canManageRoles: false,
     canManageSystem: false,
@@ -93,10 +93,11 @@ const verifyRoleHierarchy = (requiredPermission) => async (req, res, next) => {
     }
 
     // Mapear el ID del AuthServer al userID de posgrado_db
-    const posgradoUserID = await mapAuthToPosgrado.mapAuthToPosgrado(user.userID);
+    let posgradoUserID = await mapAuthToPosgrado.mapAuthToPosgrado(user.userID);
     
+    // Si no hay mapeo, usar el mismo ID (usuarios creados directamente en ambas DBs)
     if (!posgradoUserID) {
-      return res.status(403).json({ error: 'Usuario no encontrado en el sistema' });
+      posgradoUserID = user.userID;
     }
 
     // Obtener el rol más alto del usuario
@@ -132,6 +133,7 @@ const verifyRoleHierarchy = (requiredPermission) => async (req, res, next) => {
     // Agregar información del usuario a la request
     req.body.authenticatedUserID = user.userID; // ID del AuthServer
     req.body.authenticatedPosgradoUserID = posgradoUserID; // ID de posgrado_db
+    req.body.userID = posgradoUserID; // Para compatibilidad con endpoints que esperan userID
     req.body.userRole = userRole;
     req.body.userRoleID = userRoleID;
     req.body.userPermissions = userPermissions;

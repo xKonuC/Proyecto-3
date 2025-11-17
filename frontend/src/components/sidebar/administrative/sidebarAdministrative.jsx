@@ -88,7 +88,7 @@ const navigation = [
   },
   {
     id: 4,
-    label: 'Egresados',
+    label: 'Graduados',
     url: '/Administrative/Graduate',
     icon: (
       <GraduateIcon />
@@ -100,7 +100,7 @@ const navigation = [
         link: '/Administrative/Graduate/Students',
       },
       {
-        title: 'Clasificación de Egresados',
+        title: 'Clasificación de Graduados',
         link: '/Administrative/Graduate/Classification',
       },
       {
