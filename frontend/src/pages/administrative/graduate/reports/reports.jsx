@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FaChartBar, FaDownload, FaFilePdf, FaFileExcel, FaUsers, FaGraduationCap, FaCalendarAlt, FaFilter } from 'react-icons/fa';
+import { FaChartBar, FaFilePdf, FaFileExcel, FaUsers, FaGraduationCap, FaCalendarAlt, FaEye } from 'react-icons/fa';
+import PreviewModal from './previewModel';
+import { getExportData, exportToExcel, generatePDFFromData } from './reportUtils';
 import { getAccessToken } from '../../../../utils/cookieUtils';
 
 const Reports = () => {
@@ -12,11 +14,10 @@ const Reports = () => {
     graduatesBySpecialization: [],
     recentGraduates: []
   });
-  const [selectedReport, setSelectedReport] = useState('');
-  const [dateRange, setDateRange] = useState({
-    startDate: '',
-    endDate: ''
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState('');
+  const [modalTitle, setModalTitle] = useState('');
+  const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
 
   useEffect(() => {
     fetchReportData();
@@ -25,20 +26,14 @@ const Reports = () => {
   const fetchReportData = async () => {
     try {
       setLoading(true);
-      
-      // Por ahora, usar datos de prueba para demostrar la funcionalidad
-      // En producción, esto se conectaría con el backend real
-      console.log('📊 Loading report data...');
-      
-      // Simular delay de carga
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Datos de prueba realistas
       setReportData({
         totalGraduates: 15,
         totalStudents: 8,
         totalClassifications: 3,
         graduatesByYear: [
+          { year: new Date().getFullYear(), count: 0 }, 
           { year: 2023, count: 8 },
           { year: 2022, count: 5 },
           { year: 2021, count: 2 }
@@ -47,182 +42,65 @@ const Reports = () => {
           { specialization: 'General', count: 15 }
         ],
         recentGraduates: [
-          {
-            userID: 1,
-            fullName: 'Carlos Alberto Martínez López',
-            email: 'carlos.martinez@alumnos.uta.cl',
-            entry: 2021,
-            specialization: 'General'
-          },
-          {
-            userID: 2,
-            fullName: 'María Elena González Pérez',
-            email: 'maria.gonzalez@alumnos.uta.cl',
-            entry: 2022,
-            specialization: 'General'
-          },
-          {
-            userID: 3,
-            fullName: 'Leonardo Rodríguez',
-            email: 'leonardo.rodriguez@alumnos.uta.cl',
-            entry: 2023,
-            specialization: 'General'
-          },
-          {
-            userID: 4,
-            fullName: 'Sebastian Torres',
-            email: 'sebastian.torres@alumnos.uta.cl',
-            entry: 2023,
-            specialization: 'General'
-          },
-          {
-            userID: 5,
-            fullName: 'Ana Patricia Silva',
-            email: 'ana.silva@alumnos.uta.cl',
-            entry: 2022,
-            specialization: 'General'
-          }
+          { userID: 1, fullName: 'Carlos Alberto Martínez López', email: 'carlos.martinez@alumnos.uta.cl', entry: 2021, specialization: 'General' },
+          { userID: 2, fullName: 'María Elena González Pérez', email: 'maria.gonzalez@alumnos.uta.cl', entry: 2022, specialization: 'General' },
+          { userID: 3, fullName: 'Leonardo Rodríguez', email: 'leonardo.rodriguez@alumnos.uta.cl', entry: 2023, specialization: 'General' },
+          { userID: 4, fullName: 'Sebastian Torres', email: 'sebastian.torres@alumnos.uta.cl', entry: 2023, specialization: 'General' },
+          { userID: 5, fullName: 'Ana Patricia Silva', email: 'ana.silva@alumnos.uta.cl', entry: 2022, specialization: 'General' },
+          { userID: 11, fullName: 'Carlos Alberto Martínez López', email: 'carlos.martinez@alumnos.uta.cl', entry: 2021, specialization: 'General' },
+          { userID: 21, fullName: 'María Elena González Pérez', email: 'maria.gonzalez@alumnos.uta.cl', entry: 2022, specialization: 'General' },
+          { userID: 31, fullName: 'Leonardo Rodríguez', email: 'leonardo.rodriguez@alumnos.uta.cl', entry: 2023, specialization: 'General' },
+          { userID: 41, fullName: 'Sebastian Torres', email: 'sebastian.torres@alumnos.uta.cl', entry: 2023, specialization: 'General' },
+          { userID: 12, fullName: 'Carlos Alberto Martínez López', email: 'carlos.martinez@alumnos.uta.cl', entry: 2021, specialization: 'General' },
+          { userID: 22, fullName: 'María Elena González Pérez', email: 'maria.gonzalez@alumnos.uta.cl', entry: 2022, specialization: 'General' },
+          { userID: 32, fullName: 'Leonardo Rodríguez', email: 'leonardo.rodriguez@alumnos.uta.cl', entry: 2023, specialization: 'General' },
+          { userID: 42, fullName: 'Sebastian Torres', email: 'sebastian.torres@alumnos.uta.cl', entry: 2023, specialization: 'General' },
         ]
       });
-      
-      console.log('✅ Report data loaded successfully');
-      
     } catch (error) {
-      console.error('❌ Error:', error);
-      
-      // Datos de fallback en caso de error
-      setReportData({
-        totalGraduates: 0,
-        totalStudents: 0,
-        totalClassifications: 0,
-        graduatesByYear: [],
-        graduatesBySpecialization: [],
-        recentGraduates: []
-      });
+      console.error('❌ Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const generateReport = async (reportType) => {
+  const handleGenerateReport = async (reportId, format, reportTitle) => {
     try {
       setLoading(true);
+
+      const exportData = getExportData(reportId, reportData);
       
-      console.log('📊 Generating report:', reportType);
+      if (exportData.length === 0) {
+        alert("No hay datos disponibles para generar este reporte.");
+        return;
+      }
       
-      // Simular delay de generación
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Crear contenido del reporte basado en los datos actuales
-      const reportContent = generateReportContent(reportType);
-      
-      // Crear y descargar archivo
-      const blob = new Blob([reportContent], { type: 'text/plain' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${reportType}_${new Date().toISOString().split('T')[0]}.txt`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      
-      console.log('✅ Report generated successfully');
+      if (format === 'preview' || format === 'pdf') {
+        const result = await generatePDFFromData(reportTitle, exportData, format === 'preview');
+        
+        if (format === 'preview' && result) {
+          setPdfPreviewUrl(result);
+          setModalTitle(reportTitle);
+          setIsModalOpen(true);
+        }
+
+      } else if (format === 'excel') {
+        exportToExcel(exportData, reportTitle);
+      }
       
     } catch (error) {
-      console.error('❌ Error:', error);
-      alert('Error al generar el reporte. Por favor, inténtalo de nuevo.');
+      console.error('❌ Error al generar reporte:', error);
+      alert(`Error al generar el reporte ${format.toUpperCase()}. Por favor, inténtalo de nuevo.`);
     } finally {
       setLoading(false);
     }
   };
-
-  const generateReportContent = (reportType) => {
-    const currentDate = new Date().toLocaleDateString('es-ES');
-    const dateRangeText = dateRange.startDate && dateRange.endDate 
-      ? `\nPeríodo: ${dateRange.startDate} - ${dateRange.endDate}` 
-      : '\nPeríodo: Todos los datos';
-
-    let content = `REPORTE DE GRADUADOS - ${currentDate}${dateRangeText}\n`;
-    content += '='.repeat(50) + '\n\n';
-
-    switch (reportType) {
-      case 'graduates-summary':
-        content += 'RESUMEN DE GRADUADOS\n';
-        content += `Total de Graduados: ${reportData.totalGraduates}\n`;
-        content += `Total de Estudiantes: ${reportData.totalStudents}\n`;
-        content += `Total de Clasificaciones: ${reportData.totalClassifications}\n\n`;
-        
-        content += 'DISTRIBUCIÓN POR AÑO:\n';
-        reportData.graduatesByYear.forEach(item => {
-          content += `- ${item.year}: ${item.count} graduados\n`;
-        });
-        break;
-
-      case 'graduates-by-year':
-        content += 'GRADUADOS POR AÑO\n';
-        reportData.graduatesByYear.forEach(item => {
-          content += `Año ${item.year}: ${item.count} graduados\n`;
-        });
-        break;
-
-      case 'graduates-by-specialization':
-        content += 'GRADUADOS POR ESPECIALIZACIÓN\n';
-        reportData.graduatesBySpecialization.forEach(item => {
-          content += `${item.specialization}: ${item.count} graduados\n`;
-        });
-        break;
-
-      case 'classifications-report':
-        content += 'REPORTE DE CLASIFICACIONES\n';
-        content += `Total de Clasificaciones: ${reportData.totalClassifications}\n`;
-        break;
-
-      default:
-        content += 'REPORTE GENERAL\n';
-    }
-
-    content += '\nGRADUADOS RECIENTES:\n';
-    reportData.recentGraduates.forEach(graduate => {
-      content += `- ${graduate.fullName} (${graduate.email}) - Año: ${graduate.entry}\n`;
-    });
-
-    content += '\n\n---\n';
-    content += 'Generado automáticamente por el Sistema de Gestión de Graduados\n';
-    content += `Fecha de generación: ${currentDate}`;
-
-    return content;
-  };
-
+  
   const reportTypes = [
-    {
-      id: 'graduates-summary',
-      title: 'Resumen de Graduados',
-      description: 'Estadísticas generales de graduados',
-      icon: FaUsers,
-      color: 'bg-blue-500'
-    },
-    {
-      id: 'graduates-by-year',
-      title: 'Graduados por Año',
-      description: 'Distribución de graduados por año de graduación',
-      icon: FaCalendarAlt,
-      color: 'bg-green-500'
-    },
-    {
-      id: 'graduates-by-specialization',
-      title: 'Graduados por Especialización',
-      description: 'Distribución por especialización',
-      icon: FaGraduationCap,
-      color: 'bg-purple-500'
-    },
-    {
-      id: 'classifications-report',
-      title: 'Reporte de Clasificaciones',
-      description: 'Análisis de clasificaciones de graduados',
-      icon: FaChartBar,
-      color: 'bg-orange-500'
-    }
+    { id: 'graduates-summary', title: 'Resumen de Graduados', description: 'Estadísticas generales de graduados', icon: FaUsers, color: 'bg-blue-500' },
+    { id: 'graduates-by-year', title: 'Graduados por Año', description: 'Distribución de graduados por año de graduación', icon: FaCalendarAlt, color: 'bg-green-500' },
+    { id: 'graduates-by-specialization', title: 'Graduados por Especialización', description: 'Distribución por especialización', icon: FaGraduationCap, color: 'bg-purple-500' },
+    { id: 'classifications-report', title: 'Reporte de Clasificaciones', description: 'Análisis de clasificaciones de graduados', icon: FaChartBar, color: 'bg-orange-500' }
   ];
 
   if (loading) {
@@ -236,13 +114,12 @@ const Reports = () => {
   return (
     <main className="bg-white text-orange-main min-h-screen rounded-lg p-10 shadow-md">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-orange-main sm:text-5xl">Reportes de Graduados</h1>
           <p className="mt-4 text-gray-600 font-normal">Genera reportes y estadísticas de graduados</p>
         </div>
 
-        {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-orange-main text-white p-6 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
@@ -253,7 +130,6 @@ const Reports = () => {
               <FaUsers className="h-8 w-8 text-orange-200" />
             </div>
           </div>
-
           <div className="bg-blue-500 text-white p-6 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
               <div>
@@ -263,7 +139,6 @@ const Reports = () => {
               <FaGraduationCap className="h-8 w-8 text-blue-200" />
             </div>
           </div>
-
           <div className="bg-green-500 text-white p-6 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
               <div>
@@ -273,7 +148,6 @@ const Reports = () => {
               <FaChartBar className="h-8 w-8 text-green-200" />
             </div>
           </div>
-
           <div className="bg-purple-500 text-white p-6 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
               <div>
@@ -287,7 +161,6 @@ const Reports = () => {
           </div>
         </div>
 
-        {/* Date Range Filter */}
         <div className="bg-gray-50 p-6 rounded-xl mb-8">
           <h3 className="text-lg font-semibold text-orange-main mb-4">Filtro por Rango de Fechas (Opcional)</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -316,44 +189,48 @@ const Reports = () => {
           </div>
         </div>
 
-        {/* Report Types */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {reportTypes.map((report) => {
             const IconComponent = report.icon;
             return (
               <div key={report.id} className="bg-white border-2 border-orange-main rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-start justify-between mb-4">
-                  <div className={`${report.color} text-white p-3 rounded-lg`}>
-                    <IconComponent className="h-6 w-6" />
+                  <div className={`flex items-center space-x-3`}>
+                    <div className={`${report.color} text-white p-3 rounded-lg`}>
+                      <IconComponent className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-orange-main">
+                      {report.title}
+                    </h3>
                   </div>
+
                   <button
-                    onClick={() => generateReport(report.id)}
+                    onClick={() => handleGenerateReport(report.id, 'preview', report.title)}
                     disabled={loading}
                     className="bg-orange-main text-white px-4 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 flex items-center space-x-2"
                   >
-                    <FaDownload />
-                    <span>Generar</span>
+                    <FaEye />
+                    <span>Vista Previa</span>
                   </button>
                 </div>
                 
-                <h3 className="text-xl font-semibold text-orange-main mb-2">
-                  {report.title}
-                </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-4 ml-14">
                   {report.description}
                 </p>
                 
                 <div className="flex space-x-2">
+                  
                   <button
-                    onClick={() => generateReport(report.id)}
+                    onClick={() => handleGenerateReport(report.id, 'pdf', report.title)}
                     disabled={loading}
-                    className="flex-1 bg-orange-main text-white px-4 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 flex items-center justify-center space-x-2"
+                    className="flex-1 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 flex items-center justify-center space-x-2"
                   >
                     <FaFilePdf />
                     <span>PDF</span>
                   </button>
+                 
                   <button
-                    onClick={() => generateReport(`${report.id}-excel`)}
+                    onClick={() => handleGenerateReport(report.id, 'excel', report.title)}
                     disabled={loading}
                     className="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 flex items-center justify-center space-x-2"
                   >
@@ -366,7 +243,6 @@ const Reports = () => {
           })}
         </div>
 
-        {/* Recent Graduates Table */}
         {reportData.recentGraduates.length > 0 && (
           <div className="mt-8">
             <h3 className="text-xl font-semibold text-orange-main mb-4">Graduados Recientes</h3>
@@ -395,6 +271,16 @@ const Reports = () => {
           </div>
         )}
       </div>
+      
+      <PreviewModal 
+        isOpen={isModalOpen} 
+        onClose={() => {
+          setIsModalOpen(false);
+          setPdfPreviewUrl('');
+        }} 
+        pdfUrl={pdfPreviewUrl} 
+        reportTitle={modalTitle}
+      />
     </main>
   );
 };
