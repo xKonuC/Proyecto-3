@@ -68,7 +68,7 @@ const getStudents = async (req, res) => {
           if (isGraduate) classification = 'Graduado';
           else if (isStudent) classification = 'Estudiante';
           
-          console.log(`User ${student.userID}: roles=${JSON.stringify(roles.map(r => r.roleName))}, classification=${classification}`);
+          //console.log(`User ${student.userID}: roles=${JSON.stringify(roles.map(r => r.roleName))}, classification=${classification}`);
 
           return {
             ...student,
