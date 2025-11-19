@@ -276,6 +276,7 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
         />
 
         <ChangeRoleModal
+          key={selectedStudent?.userID || 'modal-role-change'}
           isOpen={roleChangeModalOpen}
           onClose={closeRoleChangeModal}
           student={selectedStudent}

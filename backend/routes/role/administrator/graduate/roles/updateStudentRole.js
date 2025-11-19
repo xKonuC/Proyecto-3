@@ -1,15 +1,12 @@
 import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const updateStudentRole = async (req, res) => {
-  // console.log('=== updateStudentRole called ===');
-  // console.log('Request body:', req.body);
-  // console.log('Request headers:', req.headers);
-  // console.log('Request method:', req.method);
-  // console.log('Request URL:', req.url);
   try {
-    const { userID, newRoleID } = req.body;
-    
-    if (!userID || !newRoleID) {
+    // Explicitly get userID from body to avoid any confusion
+    const targetUserID = req.body.userID;
+    const newRoleID = req.body.newRoleID;
+
+    if (!targetUserID || !newRoleID) {
       return res.status(400).json({
         success: false,
         message: 'userID y newRoleID son requeridos'
@@ -22,7 +19,7 @@ const updateStudentRole = async (req, res) => {
       // Verificar que el usuario existe
       const [user] = await connection.execute(
         'SELECT userID FROM user WHERE userID = ?',
-        [userID]
+        [targetUserID]
       );
 
       if (user.length === 0) {
@@ -46,22 +43,23 @@ const updateStudentRole = async (req, res) => {
       }
 
       // Eliminar solo los roles de estudiante/graduado (4 y 5), mantener roles administrativos
+      // Usamos targetUserID explícitamente
       await connection.execute(
         'DELETE FROM userHasRole WHERE userID = ? AND roleID IN (4, 5)',
-        [userID]
+        [targetUserID]
       );
 
       // Asignar el nuevo rol
       await connection.execute(
         'INSERT INTO userHasRole (userID, roleID) VALUES (?, ?)',
-        [userID, newRoleID]
+        [targetUserID, newRoleID]
       );
 
       res.json({
         success: true,
         message: `Rol del usuario actualizado a ${role[0].name}`,
         data: {
-          userID,
+          userID: targetUserID,
           newRoleID,
           roleName: role[0].name
         }

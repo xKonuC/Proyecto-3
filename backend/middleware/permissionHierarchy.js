@@ -133,7 +133,12 @@ const verifyRoleHierarchy = (requiredPermission) => async (req, res, next) => {
     // Agregar información del usuario a la request
     req.body.authenticatedUserID = user.userID; // ID del AuthServer
     req.body.authenticatedPosgradoUserID = posgradoUserID; // ID de posgrado_db
-    req.body.userID = posgradoUserID; // Para compatibilidad con endpoints que esperan userID
+    
+    // Solo sobrescribir userID si el usuario solo puede acceder a sus propios datos
+    // o si no se proporcionó un userID (para compatibilidad)
+    if (userPermissions.canOnlyAccessOwnData || !req.body.userID) {
+      req.body.userID = posgradoUserID;
+    }
     req.body.userRole = userRole;
     req.body.userRoleID = userRoleID;
     req.body.userPermissions = userPermissions;

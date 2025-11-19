@@ -14,8 +14,16 @@ const ChangeRoleModal = ({ isOpen, onClose, student, onRoleChange }) => {
   useEffect(() => {
     if (isOpen) {
       fetchRoles();
+      // Resetear el rol seleccionado cuando se abre el modal
+      // Si el estudiante ya tiene un rol asignado, podríamos pre-seleccionarlo aquí si quisiéramos
+      // Por ahora, lo dejamos en blanco para obligar a una selección consciente
+      setSelectedRole('');
+      
+      // Si quisiéramos pre-seleccionar:
+      // if (student && student.classification === 'Graduado') setSelectedRole('5');
+      // else if (student && student.classification === 'Estudiante') setSelectedRole('4');
     }
-  }, [isOpen]);
+  }, [isOpen, student]);
 
   const fetchRoles = async () => {
     try {
@@ -160,6 +168,9 @@ const ChangeRoleModal = ({ isOpen, onClose, student, onRoleChange }) => {
             </p>
             <p className="text-sm text-gray-600">
               <strong>RUT:</strong> {student?.rut}
+            </p>
+            <p className="text-sm text-gray-600">
+              <strong>ID Interno:</strong> {student?.userID || 'No definido'}
             </p>
           </div>
 
