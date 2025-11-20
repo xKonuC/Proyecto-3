@@ -2,7 +2,6 @@ import posgradoPool from '../../../../../posgradoDbConnection.js';
 
 const updateGraduate = async (req, res) => {
   try {
-    console.log('Update graduate request body:', req.body);
     
     const { userID, ...updateData } = req.body;
     
@@ -63,9 +62,6 @@ const updateGraduate = async (req, res) => {
         }
       }
 
-      console.log('Update fields:', updateFields);
-      console.log('Update values:', updateValues);
-
       if (updateFields.length === 0) {
         return res.status(400).json({
           success: false,
@@ -76,12 +72,8 @@ const updateGraduate = async (req, res) => {
       updateValues.push(userID);
 
       const updateQuery = `UPDATE user SET ${updateFields.join(', ')} WHERE userID = ?`;
-      console.log('Update query:', updateQuery);
-      console.log('Update values with userID:', updateValues);
 
       const [result] = await connection.execute(updateQuery, updateValues);
-
-      console.log('Update result:', result);
 
       if (result.affectedRows > 0) {
         res.json({
