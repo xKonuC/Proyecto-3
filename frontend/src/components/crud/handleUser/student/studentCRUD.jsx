@@ -165,7 +165,16 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
     }
 
     const deleteService = new DeleteUtilsService(urls[0], name, showAlert, responseHandler);
-    await deleteService.execute(selectedItems);
+    // selectedItems ya contiene los userIDs directamente (números)
+    // Necesitamos convertirlos a objetos para que el servicio pueda extraer los IDs
+    const itemsAsObjects = selectedItems.map(id => ({ userID: id }));
+    await deleteService.execute(
+      {}, // params adicionales
+      itemsAsObjects, // selectedItems como objetos
+      'userID', // idPropertyName - nombre de la propiedad que contiene el ID
+      'userIDs', // idDeletedName - nombre del campo esperado por el backend
+      10 // chunkSize - tamaño del lote
+    );
   };
 
   const handleRefresh = () => {
