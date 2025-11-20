@@ -35,7 +35,7 @@ const Pagination = ({
   return (
     <div className='flex flex-col items-center md:flex-row md:justify-between mt-3'>
       <div className='flex-1 text-center md:text-start'>
-        <p className='text-gray-500 sm:text-lg'>Mostrando {numberFiltered} de {length} elementos después de aplicar los filtros.</p>
+        <p className='text-gray-500 sm:text-lg'>Mostrando {length} elementos después de aplicar los filtros.</p>
       </div>
       <div className="flex flex-1 justify-center md:justify-end space-x-1">
         <PrevPageButton onClick={onPrevPage} disabled={currentPage === 1} />
