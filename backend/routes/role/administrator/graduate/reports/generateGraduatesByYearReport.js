@@ -4,7 +4,7 @@ const generateGraduatesByYearReport = async (req, res) => {
   try {
     const { dateRange } = req.body;
     const connection = await posgradoPool.getConnection();
-    
+
     try {
       // Configurar UTF-8 en la conexión
       await connection.execute('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
@@ -54,15 +54,14 @@ const generateGraduatesByYearReport = async (req, res) => {
         graduatesByYear: graduatesByYear,
         yearTrends: yearTrends,
         generatedAt: new Date().toISOString(),
-        dateRange: dateRange || null
+        dateRange: dateRange || null,
       };
 
       res.json({
         success: true,
         data: reportData,
-        message: 'Reporte de graduados por año generado exitosamente'
+        message: 'Reporte de graduados por año generado exitosamente',
       });
-
     } finally {
       connection.release();
     }
@@ -71,18 +70,9 @@ const generateGraduatesByYearReport = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error al generar el reporte de graduados por año',
-      error: error.message
+      error: error.message,
     });
   }
 };
 
 export default generateGraduatesByYearReport;
-
-
-
-
-
-
-
-
-

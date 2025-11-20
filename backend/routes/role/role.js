@@ -1,5 +1,5 @@
 import {
-  express, administratorRoute, academicRoute, studentRoute, graduateRoute, 
+  express, administratorRoute, academicRoute, studentRoute, graduateRoute,
   verifyAdministrator, verifyAcademic, verifyStudent, verifySuperAdmin, verifyGraduate
 } from './role.modules.js';
 import { verifyRoleHierarchy, verifyCanAssignRole, verifyDataAccess } from '../../middleware/permissionHierarchy.js';

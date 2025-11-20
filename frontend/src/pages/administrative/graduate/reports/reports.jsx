@@ -1,68 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FaChartBar, FaFilePdf, FaFileExcel, FaUsers, FaGraduationCap, FaCalendarAlt, FaEye } from 'react-icons/fa';
 import PreviewModal from './previewModel';
 import { getExportData, exportToExcel, generatePDFFromData } from './reportUtils';
-import { getAccessToken } from '../../../../utils/cookieUtils';
+import useReportSummaryData from './summaryCards';
 
 const Reports = () => {
-  const [loading, setLoading] = useState(false);
-  const [reportData, setReportData] = useState({
-    totalGraduates: 0,
-    totalStudents: 0,
-    totalClassifications: 0,
-    graduatesByYear: [],
-    graduatesBySpecialization: [],
-    recentGraduates: []
-  });
+  const { loading, reportData, setLoading } = useReportSummaryData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState('');
   const [modalTitle, setModalTitle] = useState('');
   const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
-
-  useEffect(() => {
-    fetchReportData();
-  }, []);
-
-  const fetchReportData = async () => {
-    try {
-      setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setReportData({
-        totalGraduates: 15,
-        totalStudents: 8,
-        totalClassifications: 3,
-        graduatesByYear: [
-          { year: new Date().getFullYear(), count: 0 }, 
-          { year: 2023, count: 8 },
-          { year: 2022, count: 5 },
-          { year: 2021, count: 2 }
-        ],
-        graduatesBySpecialization: [
-          { specialization: 'General', count: 15 }
-        ],
-        recentGraduates: [
-          { userID: 1, fullName: 'Carlos Alberto Martínez López', email: 'carlos.martinez@alumnos.uta.cl', entry: 2021, specialization: 'General' },
-          { userID: 2, fullName: 'María Elena González Pérez', email: 'maria.gonzalez@alumnos.uta.cl', entry: 2022, specialization: 'General' },
-          { userID: 3, fullName: 'Leonardo Rodríguez', email: 'leonardo.rodriguez@alumnos.uta.cl', entry: 2023, specialization: 'General' },
-          { userID: 4, fullName: 'Sebastian Torres', email: 'sebastian.torres@alumnos.uta.cl', entry: 2023, specialization: 'General' },
-          { userID: 5, fullName: 'Ana Patricia Silva', email: 'ana.silva@alumnos.uta.cl', entry: 2022, specialization: 'General' },
-          { userID: 11, fullName: 'Carlos Alberto Martínez López', email: 'carlos.martinez@alumnos.uta.cl', entry: 2021, specialization: 'General' },
-          { userID: 21, fullName: 'María Elena González Pérez', email: 'maria.gonzalez@alumnos.uta.cl', entry: 2022, specialization: 'General' },
-          { userID: 31, fullName: 'Leonardo Rodríguez', email: 'leonardo.rodriguez@alumnos.uta.cl', entry: 2023, specialization: 'General' },
-          { userID: 41, fullName: 'Sebastian Torres', email: 'sebastian.torres@alumnos.uta.cl', entry: 2023, specialization: 'General' },
-          { userID: 12, fullName: 'Carlos Alberto Martínez López', email: 'carlos.martinez@alumnos.uta.cl', entry: 2021, specialization: 'General' },
-          { userID: 22, fullName: 'María Elena González Pérez', email: 'maria.gonzalez@alumnos.uta.cl', entry: 2022, specialization: 'General' },
-          { userID: 32, fullName: 'Leonardo Rodríguez', email: 'leonardo.rodriguez@alumnos.uta.cl', entry: 2023, specialization: 'General' },
-          { userID: 42, fullName: 'Sebastian Torres', email: 'sebastian.torres@alumnos.uta.cl', entry: 2023, specialization: 'General' },
-        ]
-      });
-    } catch (error) {
-      console.error('❌ Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGenerateReport = async (reportId, format, reportTitle) => {
     try {

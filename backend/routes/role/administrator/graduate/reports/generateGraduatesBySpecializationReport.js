@@ -4,7 +4,7 @@ const generateGraduatesBySpecializationReport = async (req, res) => {
   try {
     const { dateRange } = req.body;
     const connection = await posgradoPool.getConnection();
-    
+
     try {
       // Configurar UTF-8 en la conexión
       await connection.execute('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
@@ -68,7 +68,7 @@ const generateGraduatesBySpecializationReport = async (req, res) => {
         graduatesByWorkPlace: graduatesByWorkPlace,
         graduatesByJob: graduatesByJob,
         generatedAt: new Date().toISOString(),
-        dateRange: dateRange || null
+        dateRange: dateRange || null,
       };
 
       res.json({
@@ -76,7 +76,6 @@ const generateGraduatesBySpecializationReport = async (req, res) => {
         data: reportData,
         message: 'Reporte de graduado por especialización generado exitosamente'
       });
-
     } finally {
       connection.release();
     }
@@ -85,7 +84,7 @@ const generateGraduatesBySpecializationReport = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error al generar el reporte de graduados por especialización',
-      error: error.message
+      error: error.message,
     });
   }
 };

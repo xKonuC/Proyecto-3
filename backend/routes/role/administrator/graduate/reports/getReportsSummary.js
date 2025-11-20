@@ -3,7 +3,7 @@ import posgradoPool from '../../../../../posgradoDbConnection.js';
 const getReportsSummary = async (req, res) => {
   try {
     const connection = await posgradoPool.getConnection();
-    
+
     try {
       // Configurar UTF-8 en la conexión
       await connection.execute('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
@@ -85,10 +85,9 @@ const getReportsSummary = async (req, res) => {
           totalClassifications: classificationsCount[0].total,
           graduatesByYear: graduatesByYear,
           graduatesBySpecialization: graduatesBySpecialization,
-          recentGraduates: recentGraduates
+          recentGraduates: recentGraduates,
         }
       });
-
     } finally {
       connection.release();
     }
@@ -97,18 +96,9 @@ const getReportsSummary = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error al obtener el resumen de reportes',
-      error: error.message
+      error: error.message,
     });
   }
 };
 
 export default getReportsSummary;
-
-
-
-
-
-
-
-
-

@@ -4,7 +4,7 @@ const generateGraduatesSummaryReport = async (req, res) => {
   try {
     const { dateRange } = req.body;
     const connection = await posgradoPool.getConnection();
-    
+
     try {
       // Configurar UTF-8 en la conexión
       await connection.execute('SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci');
@@ -91,16 +91,15 @@ const generateGraduatesSummaryReport = async (req, res) => {
         distributionByCivilStatus: distributionByCivilStatus,
         graduatesList: graduatesList,
         generatedAt: new Date().toISOString(),
-        dateRange: dateRange || null
+        dateRange: dateRange || null,
       };
 
       // Por ahora retornamos JSON, pero se puede extender para generar PDF
       res.json({
         success: true,
         data: reportData,
-        message: 'Reporte generado exitosamente'
+        message: 'Reporte generado exitosamente',
       });
-
     } finally {
       connection.release();
     }
@@ -109,18 +108,9 @@ const generateGraduatesSummaryReport = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error al generar el reporte de resumen de graduados',
-      error: error.message
+      error: error.message,
     });
   }
 };
 
 export default generateGraduatesSummaryReport;
-
-
-
-
-
-
-
-
-
