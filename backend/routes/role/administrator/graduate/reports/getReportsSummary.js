@@ -35,7 +35,7 @@ const getReportsSummary = async (req, res) => {
         FROM classification
       `);
 
-      // Obtener graduados por año
+      /*/ Obtener ingresos por año
       const [graduatesByYear] = await connection.execute(`
         SELECT 
           u.entry as year,
@@ -45,6 +45,20 @@ const getReportsSummary = async (req, res) => {
         WHERE uhr.roleID = 5 AND u.entry IS NOT NULL
         GROUP BY u.entry
         ORDER BY u.entry DESC
+      `);*/
+
+      // Obtener graduados por año
+      const [graduatesByYear] = await connection.execute(`
+        SELECT
+            sht.titleYear as year,  -- Usamos la columna titleYear
+            COUNT(DISTINCT u.userID) as count
+        FROM user u
+        INNER JOIN userHasRole uhr ON u.userID = uhr.userID
+        JOIN studentHasTitle sht ON u.userID = sht.userID  -- Conexión clave
+        WHERE uhr.roleID = 5  -- Solo Graduados
+        AND sht.titleYear IS NOT NULL
+        GROUP BY year
+        ORDER BY year DESC
       `);
 
       // Obtener graduados por especialización (si existe la tabla)
@@ -67,8 +81,11 @@ const getReportsSummary = async (req, res) => {
           u.secondName,
           u.surname1,
           u.surname2,
+          u.sex,
           u.email,
           u.entry,
+          u.workplace,
+          u.job,
           CONCAT(u.firstName, ' ', IFNULL(u.secondName, ''), ' ', u.surname1, ' ', IFNULL(u.surname2, '')) as fullName
         FROM user u
         INNER JOIN userHasRole uhr ON u.userID = uhr.userID
@@ -86,7 +103,7 @@ const getReportsSummary = async (req, res) => {
           graduatesByYear: graduatesByYear,
           graduatesBySpecialization: graduatesBySpecialization,
           recentGraduates: recentGraduates,
-        }
+        },
       });
     } finally {
       connection.release();

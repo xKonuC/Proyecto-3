@@ -9,10 +9,14 @@ export const getExportData = (reportId, reportData) => {
         case 'graduates-summary':
         case 'classifications-report':
             return reportData.recentGraduates.map(g => ({
+                RUT: g.rut,
                 Nombre: g.fullName,
+                Sexo: g.sex || 'N/A',
                 Email: g.email,
                 'Año Ingreso': g.entry,
-                Especialización: g.specialization || 'N/A'
+                Especialización: g.specialization || 'N/A',
+                'Lugar de trabajo': g.workplace || 'N/A',
+                Ocupación: g.job || 'N/A'
             }));
         case 'graduates-by-year':
             return reportData.graduatesByYear.map(item => ({ Año: item.year, Graduados: item.count }));
@@ -111,7 +115,6 @@ export const generatePDFFromData = async (reportTitle, exportData, isPreview = f
         
         const xPos = (pdfWidth - textWidth) / 2;
         const yPos = pdfHeight / 4; 
-        // --- FIN Configuración ---
 
         const addWatermark = (shouldDraw) => {
             if (!shouldDraw) return;

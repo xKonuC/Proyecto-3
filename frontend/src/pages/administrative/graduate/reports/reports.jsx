@@ -197,19 +197,27 @@ const Reports = () => {
               <table className="w-full">
                 <thead className="bg-orange-main text-white">
                   <tr>
+                    <th className="px-4 py-3 text-left">RUT</th>
                     <th className="px-4 py-3 text-left">Nombre</th>
+                    <th className="px-4 py-3 text-left">Sexo</th>
                     <th className="px-4 py-3 text-left">Email</th>
                     <th className="px-4 py-3 text-left">Año de Ingreso</th>
                     <th className="px-4 py-3 text-left">Especialización</th>
+                    <th className="px-4 py-3 text-left">Lugar de Trabajo</th>
+                    <th className="px-4 py-3 text-left">Ocupación</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {reportData.recentGraduates.slice(0, 5).map((graduate, index) => (
+                  {reportData.recentGraduates.slice(0, 20).map((graduate, index) => (
                     <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                      <td className="px-4 py-3">{graduate.rut || 'N/A'}</td>
                       <td className="px-4 py-3">{graduate.fullName}</td>
+                      <td className="px-4 py-3">{graduate.sex || 'N/A'}</td>
                       <td className="px-4 py-3">{graduate.email}</td>
                       <td className="px-4 py-3">{graduate.entry}</td>
                       <td className="px-4 py-3">{graduate.specialization || 'N/A'}</td>
+                      <td className="px-4 py-3">{graduate.workplace || 'N/A'}</td>
+                      <td className="px-4 py-3">{graduate.job || 'N/A'}</td>
                     </tr>
                   ))}
                 </tbody>
