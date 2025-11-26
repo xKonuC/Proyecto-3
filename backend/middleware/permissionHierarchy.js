@@ -133,7 +133,8 @@ const verifyRoleHierarchy = (requiredPermission) => async (req, res, next) => {
     // Agregar información del usuario a la request
     req.body.authenticatedUserID = user.userID; // ID del AuthServer
     req.body.authenticatedPosgradoUserID = posgradoUserID; // ID de posgrado_db
-    req.body.userID = posgradoUserID; // Para compatibilidad con endpoints que esperan userID
+    // NO sobrescribir req.body.userID aquí porque algunos endpoints (como updateStudentRole)
+    // necesitan el userID del estudiante que se va a modificar, no del usuario autenticado
     req.body.userRole = userRole;
     req.body.userRoleID = userRoleID;
     req.body.userPermissions = userPermissions;

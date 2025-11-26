@@ -5,7 +5,8 @@ dotenv.config();
 const domain = process.env.ALLOW_DOMAIN;
 var allowlist = [
   domain,
-  'http://localhost:5173', // Vite
+  'http://localhost:5173', // Vite puerto por defecto
+  'http://localhost:5174', // Vite puerto alternativo
   'http://localhost:3000', // React
   'http://localhost',      // genérico
 ];

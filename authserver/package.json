@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
     "start:dev": "dotenv --file .env.development node src/index.js",
-    "dev": "cross-env NODE_ENV=development dotenv -e .env.local -- nodemon src/index.js"
+    "dev": "dotenv -e .env.local -- nodemon src/index.js"
   },
   "author": "",
   "license": "ISC",

@@ -45,8 +45,15 @@ const updateStudentRole = async (req, res) => {
         });
       }
 
+      // Primero, verificar roles actuales del usuario
+      const [currentRoles] = await connection.execute(
+        'SELECT roleID FROM userHasRole WHERE userID = ? AND roleID IN (4, 5)',
+        [userID]
+      );
+      // console.log('Roles actuales antes de DELETE:', currentRoles);
+
       // Eliminar solo los roles de estudiante/graduado (4 y 5), mantener roles administrativos
-      await connection.execute(
+      const deleteResult = await connection.execute(
         'DELETE FROM userHasRole WHERE userID = ? AND roleID IN (4, 5)',
         [userID]
       );

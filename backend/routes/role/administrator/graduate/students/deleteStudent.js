@@ -4,7 +4,7 @@ import authPool from '../../../../../authDbConnection.js';
 const deleteStudent = async (req, res) => {
   try {
     const { userIDs } = req.body;
-    console.log(userIDs)
+    console.log('UserIDs to delete:', userIDs);
     if (!userIDs || !Array.isArray(userIDs) || userIDs.length === 0) {
       return res.status(400).json({
         success: false,
