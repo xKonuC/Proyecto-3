@@ -45,17 +45,38 @@ const updateStudentRole = async (req, res) => {
         });
       }
 
+<<<<<<< Updated upstream
       // Eliminar solo los roles de estudiante/egresado (4 y 5), mantener roles administrativos
       await connection.execute(
+=======
+      // Primero, verificar roles actuales del usuario
+      const [currentRoles] = await connection.execute(
+        'SELECT roleID FROM userHasRole WHERE userID = ? AND roleID IN (4, 5)',
+        [userID]
+      );
+      // console.log('Roles actuales antes de DELETE:', currentRoles);
+
+      // Eliminar solo los roles de estudiante/graduado (4 y 5), mantener roles administrativos
+      const deleteResult = await connection.execute(
+>>>>>>> Stashed changes
         'DELETE FROM userHasRole WHERE userID = ? AND roleID IN (4, 5)',
         [userID]
       );
+      // console.log('DELETE result:', deleteResult);
 
       // Asignar el nuevo rol
-      await connection.execute(
+      const insertResult = await connection.execute(
         'INSERT INTO userHasRole (userID, roleID) VALUES (?, ?)',
         [userID, newRoleID]
       );
+      // console.log('INSERT result:', insertResult);
+
+      // Verificar que se realizaron los cambios
+      const [updatedRoles] = await connection.execute(
+        'SELECT roleID FROM userHasRole WHERE userID = ? AND roleID IN (4, 5)',
+        [userID]
+      );
+      // console.log('Roles actuales después de INSERT:', updatedRoles);
 
       res.json({
         success: true,

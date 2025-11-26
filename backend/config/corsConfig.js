@@ -13,28 +13,43 @@ var allowlist = [
 const corsOptions = function(req, callback){
 
   const origin = req.get('Origin');
-  const referer = req.get('Referrer');
-  const error = new Error(`ORS origin not allowed ${origin} ${referer}`);
-  let originToCheck = origin;  
+  const referer = req.get('Referer');
+  
+  console.log('Backend CORS - Origin:', origin);
+  console.log('Backend CORS - Referer:', referer);
+  console.log('Backend CORS - Allowlist:', allowlist);
 
+  // Si no hay origin ni referer (ejemplo: Postman), permitir
   if(!origin && !referer){
-    // Permitir solicitudes sin Origin ni Referer (ejemplo: Postman)
-    callback(null, { origin: true });
+    callback(null, { 
+      origin: true,
+      credentials: true 
+    });
     return;
   }
-  if(!origin){
-    if(referer){
+  
+  let originToCheck = origin;
+  
+  if(!origin && referer){
+    try {
       const refererUrl = new URL(referer);
       originToCheck = `${refererUrl.protocol}//${refererUrl.host}`;
-    }else{
-      callback(error, { origin: false});
-      return;
+    } catch (e) {
+      console.error('Backend CORS - Error parsing referer:', e);
     }
   }
+  
+  console.log('Backend CORS - Origin to check:', originToCheck);
 
   if (allowlist.indexOf(originToCheck) !== -1) {
-    callback(null, { origin: true});
+    console.log('Backend CORS - Origin allowed');
+    callback(null, { 
+      origin: true,
+      credentials: true 
+    });
   } else {
+    const error = new Error(`CORS origin not allowed: ${originToCheck}`);
+    console.error('Backend CORS - ' + error.message);
     callback(error, {origin: false});
   }  
 

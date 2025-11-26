@@ -164,8 +164,11 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
       return;
     }
 
+    // Convertir array de IDs a array de objetos con userID
+    const itemsToDelete = selectedItems.map(id => ({ userID: id }));
+    
     const deleteService = new DeleteUtilsService(urls[0], name, showAlert, responseHandler);
-    await deleteService.execute(selectedItems);
+    await deleteService.execute({}, itemsToDelete, 'userID', 'userIDs', 50);
   };
 
   const handleRefresh = () => {

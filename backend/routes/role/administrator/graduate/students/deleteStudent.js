@@ -2,9 +2,15 @@ import posgradoPool from '../../../../../posgradoDbConnection.js';
 import authPool from '../../../../../authDbConnection.js';
 
 const deleteStudent = async (req, res) => {
+  console.log('=== DELETE STUDENT CALLED ===');
+  console.log('Request body:', req.body);
   try {
     const { userIDs } = req.body;
+<<<<<<< Updated upstream
     
+=======
+    console.log('UserIDs to delete:', userIDs);
+>>>>>>> Stashed changes
     if (!userIDs || !Array.isArray(userIDs) || userIDs.length === 0) {
       return res.status(400).json({
         success: false,
