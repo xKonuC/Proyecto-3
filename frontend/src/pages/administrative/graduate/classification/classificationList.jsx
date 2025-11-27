@@ -1,3 +1,4 @@
+// frontend/src/pages/administrative/graduate/classification/classificationList.jsx
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaFilter, FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -16,20 +17,27 @@ const ClassificationList = () => {
   });
   const navigate = useNavigate();
 
+  const getClassificationName = (classification) =>
+    classification.name || classification.classificationName || '';
+
   useEffect(() => {
     fetchClassifications();
   }, []);
 
   useEffect(() => {
     let filtered = classifications.filter(classification =>
-      classification.classificationName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      classification.description.toLowerCase().includes(searchTerm.toLowerCase())
+      getClassificationName(classification).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (classification.description || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Aplicar filtros adicionales
     if (filters.dateRange) {
       const now = new Date();
-      const daysAgo = filters.dateRange === 'week' ? 7 : filters.dateRange === 'month' ? 30 : 365;
+      const daysAgo =
+        filters.dateRange === 'week'
+          ? 7
+          : filters.dateRange === 'month'
+          ? 30
+          : 365;
       const cutoffDate = new Date(now.getTime() - (daysAgo * 24 * 60 * 60 * 1000));
       
       filtered = filtered.filter(classification => {
@@ -46,11 +54,10 @@ const ClassificationList = () => {
       });
     }
 
-    // Aplicar ordenamiento
     filtered.sort((a, b) => {
       switch (filters.sortBy) {
         case 'name':
-          return a.classificationName.localeCompare(b.classificationName);
+          return getClassificationName(a).localeCompare(getClassificationName(b));
         case 'date':
           return new Date(b.createdAt) - new Date(a.createdAt);
         case 'graduates':
@@ -153,6 +160,7 @@ const ClassificationList = () => {
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('es-ES');
   };
 
@@ -233,7 +241,7 @@ const ClassificationList = () => {
                 <div className="p-4 sm:p-6 lg:p-8 w-full">
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="text-lg font-semibold text-white group-hover:text-orange-main">
-                      {classification.classificationName}
+                      {getClassificationName(classification)}
                     </h3>
                     <div className="flex space-x-2">
                       <button
@@ -328,7 +336,6 @@ const ClassificationList = () => {
               </div>
 
               <div className="space-y-4">
-                {/* Filtro por Rango de Fecha */}
                 <div>
                   <label className="block text-sm font-medium text-orange-main mb-2">
                     Rango de Fecha
@@ -345,7 +352,6 @@ const ClassificationList = () => {
                   </select>
                 </div>
 
-                {/* Filtro por Cantidad de Graduados */}
                 <div>
                   <label className="block text-sm font-medium text-orange-main mb-2">
                     Mínimo de Graduados
@@ -363,7 +369,6 @@ const ClassificationList = () => {
                   </select>
                 </div>
 
-                {/* Ordenamiento */}
                 <div>
                   <label className="block text-sm font-medium text-orange-main mb-2">
                     Ordenar por

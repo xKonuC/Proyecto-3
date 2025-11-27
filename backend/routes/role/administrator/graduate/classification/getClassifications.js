@@ -3,13 +3,13 @@ import posgradoPool from '../../../../../posgradoDbConnection.js';
 const getClassifications = async (req, res) => {
   try {
     const connection = await posgradoPool.getConnection();
-    
+
     try {
       // Obtener todas las clasificaciones con información de graduados
       const [classifications] = await connection.execute(`
         SELECT 
           c.classificationID,
-          c.name as classificationName,
+          c.name as name,
           c.description,
           c.criteria,
           c.createdAt,
@@ -53,16 +53,15 @@ const getClassifications = async (req, res) => {
 
           return {
             ...classification,
-            graduates: graduates
+            graduates: graduates,
           };
-        })
+        }),
       );
 
       res.json({
         success: true,
-        data: classificationsWithGraduates
+        data: classificationsWithGraduates,
       });
-
     } finally {
       connection.release();
     }
@@ -71,12 +70,9 @@ const getClassifications = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error al obtener las clasificaciones',
-      error: error.message
+      error: error.message,
     });
   }
 };
 
 export default getClassifications;
-
-
-
