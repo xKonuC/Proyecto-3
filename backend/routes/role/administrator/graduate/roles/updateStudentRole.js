@@ -45,7 +45,7 @@ const updateStudentRole = async (req, res) => {
       // Primero, verificar roles actuales del usuario
       const [currentRoles] = await connection.execute(
         'SELECT roleID FROM userHasRole WHERE userID = ? AND roleID IN (4, 5)',
-        [userID]
+        [targetUserID]
       );
       // console.log('Roles actuales antes de DELETE:', currentRoles);
 

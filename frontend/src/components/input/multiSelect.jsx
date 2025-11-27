@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 
-const MultiSelect = ({ selectId, placeholder, options, selectedRoles, setSelectedRoles }) => {
+const MultiSelect = ({ selectId, placeholder, options, selectedRoles, setSelectedRoles, isDisabled = false }) => {
   const handleRoleChange = (selectedValues) => {
     setSelectedRoles(selectedValues);
   };
@@ -19,6 +19,7 @@ const MultiSelect = ({ selectId, placeholder, options, selectedRoles, setSelecte
         value={selectedRoles}
         onChange={handleRoleChange}
         placeholder={placeholder}
+        isDisabled={isDisabled}
         menuPortalTarget={document.body}
         styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
       />

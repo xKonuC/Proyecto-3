@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNewItem, setSelectedRoles } from '../../../../../redux/slice/handleUser/user/userSlice';
 
@@ -18,6 +18,17 @@ import { roles } from '../../../../../utils/crudHelpers/constants';
 const StudentForm = memo(({ updateId, url, itemName, showAlert, modalOpen, closeModal, responseHandler }) => {
     const dispatch = useDispatch();
     const { newItem, selectedRoles } = useSelector((state) => state.handleUser.user);
+
+    // Auto-seleccionar el rol "Estudiante" cuando se abre el modal para crear
+    useEffect(() => {
+        if (modalOpen && !updateId) {
+            // Preseleccionar el rol "Estudiante" (roleID: 4)
+            const estudianteRole = roles.find(role => role.value === 4);
+            if (estudianteRole) {
+                dispatch(setSelectedRoles([estudianteRole]));
+            }
+        }
+    }, [modalOpen, updateId, dispatch]);
 
     // Función para manejar el envío de datos (submit)
     const handleSubmit = async (event) => {
@@ -51,6 +62,7 @@ const StudentForm = memo(({ updateId, url, itemName, showAlert, modalOpen, close
                         options={roles}
                         selectedRoles={selectedRoles}
                         setSelectedRoles={(values) => dispatch(setSelectedRoles(values))}
+                        isDisabled={true}
                     />
                 )}
                 <TextInput inputId='rut' label={'Rut*'} value={newItem.rut || ''} onChange={(e) => handleInputChange('rut', e.target.value)} placeholder={`Ingresar Rut`} />
