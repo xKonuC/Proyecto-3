@@ -1,6 +1,6 @@
 import posgradoPool from '../../../../../posgradoDbConnection.js';
 
-const updateStudent = async (req, res) => {
+const updateGraduate = async (req, res) => {
   try {
     
     const { userID, ...updateData } = req.body;
@@ -78,7 +78,7 @@ const updateStudent = async (req, res) => {
       if (result.affectedRows > 0) {
         res.json({
           success: true,
-          message: 'Estudiante actualizado exitosamente',
+          message: 'Graduado actualizado exitosamente',
           data: {
             userID,
             affectedRows: result.affectedRows
@@ -87,7 +87,7 @@ const updateStudent = async (req, res) => {
       } else {
         res.status(400).json({
           success: false,
-          message: 'No se pudo actualizar el estudiante'
+          message: 'No se pudo actualizar el graduado'
         });
       }
 
@@ -95,13 +95,13 @@ const updateStudent = async (req, res) => {
       connection.release();
     }
   } catch (error) {
-    console.error('Error updating student:', error);
+    console.error('Error updating graduate:', error);
     res.status(500).json({
       success: false,
-      message: 'Error al actualizar el estudiante',
+      message: 'Error al actualizar el graduado',
       error: error.message
     });
   }
 };
 
-export default updateStudent;
+export default updateGraduate;

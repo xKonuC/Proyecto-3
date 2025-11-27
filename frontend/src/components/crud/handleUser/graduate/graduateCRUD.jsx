@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -21,16 +21,15 @@ import useModal from '../../../modal/useModal';
 // Componentes compartidos
 import ScreenWrapper from '../../../shared/screenWrapper';
 import ItemListHeader from '../../../forms/header/itemListHeader';
-import StudentForm from './form/studentForm';
-import StudentTable from './table/studentTable';
-import ChangeRoleModal from './modal/changeRoleModal';
+import GraduateForm from './form/graduateForm';
+import GraduateTable from './table/graduateTable';
+// import ChangeRoleModal from './modal/changeRoleModal'; // Reutilizar o crear si es necesario
 
 // Constantes y utilidades
 import { clearCheckbox } from '../../../../utils/crudHelpers/handleCheckbox';
-import { MAX_LENGTH_ARRAY_NUMBER } from '../../../../utils/crudHelpers/constants';
 import { sortItems } from '../../../../utils/crudHelpers/searchFilter';
 
-const StudentCRUD = ({ name, urls, title, subtitle }) => {
+const GraduateCRUD = ({ name, urls, title, subtitle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -41,8 +40,8 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
     const [updateId, setUpdateId] = useState(null);
     const [selectAll, setSelectAll] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [roleChangeModalOpen, setRoleChangeModalOpen] = useState(false);
-    const [selectedStudent, setSelectedStudent] = useState(null);
+    // const [roleChangeModalOpen, setRoleChangeModalOpen] = useState(false);
+    // const [selectedStudent, setSelectedStudent] = useState(null);
 
   // -------------------------------Funciones Para CRUD-------------------------------
   const [fetchHandler] = useState(() => async () => {
@@ -57,9 +56,6 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
 
   // Función para manejar las respuestas de los servicios
   const responseHandler = (response) => {
-    // console.log('=== StudentCRUD responseHandler ===');
-    // console.log('Response:', response);
-    
     ResponseHandler({
       showAlert,
       navigate,
@@ -67,16 +63,11 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
       onVerification: handleVerification,
       onRenewal: handleRenewal,
       onData: (data) => {
-        // console.log('=== StudentCRUD onData ===');
-        // console.log('Data received:', data);
         if (data && data.data) {
-          // console.log('Dispatching setItems with:', data.data);
           dispatch(setItems(data.data));
         }
       },
       onSuccess: (message) => {
-        // console.log('=== StudentCRUD onSuccess ===');
-        // console.log('Success message:', message);
         showAlert({
           type: 'success',
           content: message,
@@ -116,7 +107,7 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
     }
   );
 
-  const { items, filteredItems } = useSelector((state) => state.handleUser.user);
+  const { items } = useSelector((state) => state.handleUser.user);
 
   // -------------------------------Funciones para el CRUD-------------------------------
   const handleCreate = () => {
@@ -165,77 +156,13 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
     }
 
     const deleteService = new DeleteUtilsService(urls[0], name, showAlert, responseHandler);
-    // selectedItems ya contiene los userIDs directamente (números)
-    // Necesitamos convertirlos a objetos para que el servicio pueda extraer los IDs
-    const itemsAsObjects = selectedItems.map(id => ({ userID: id }));
-    await deleteService.execute(
-      {}, // params adicionales
-      itemsAsObjects, // selectedItems como objetos
-      'userID', // idPropertyName - nombre de la propiedad que contiene el ID
-      'userIDs', // idDeletedName - nombre del campo esperado por el backend
-      10 // chunkSize - tamaño del lote
-    );
+    await deleteService.execute(selectedItems);
   };
 
   const handleRefresh = () => {
     handleFetch();
     clearCheckbox(setSelectedItems, setSelectAll);
   };
-
-  const handleExport = () => {
-    showAlert({
-      type: 'success',
-      content: 'Funcionalidad de exportación en desarrollo',
-    });
-  };
-
-  const handleSearch = (searchTerm) => {
-    dispatch(clearFilteredItems());
-    if (searchTerm.trim() === '') {
-      return;
-    }
-    // Implementar búsqueda específica para estudiantes
-    const filteredItems = sortItems(searchTerm, 'student');
-    dispatch(setItems(filteredItems));
-  };
-
-  const handleSort = (sortBy) => {
-    // Implementar ordenamiento específico para estudiantes
-    showAlert({
-      type: 'info',
-      content: `Ordenando por: ${sortBy}`,
-    });
-  };
-
-    const handleDateFilter = (dateRange) => {
-        // Implementar filtro por fechas específico para estudiantes
-        showAlert({
-            type: 'info',
-            content: `Filtrando por fechas: ${dateRange}`,
-        });
-    };
-
-    const handleRoleChange = (student) => {
-        setSelectedStudent(student);
-        setRoleChangeModalOpen(true);
-    };
-
-    const handleRoleChangeSuccess = (data) => {
-        // console.log('=== handleRoleChangeSuccess called ===');
-        // console.log('Data received:', data);
-        showAlert({
-            type: 'success',
-            content: `Rol actualizado exitosamente: ${data.roleName}`,
-        });
-        // Recargar la lista para actualizar la clasificación
-        // console.log('Calling handleFetch to reload data...');
-        handleFetch();
-    };
-
-    const closeRoleChangeModal = () => {
-        setRoleChangeModalOpen(false);
-        setSelectedStudent(null);
-    };
 
   // -------------------------------Efectos-------------------------------
   useEffect(() => {
@@ -262,18 +189,18 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
           handleDeleteSelected={handleDelete}
         />
 
-            <StudentTable
+            <GraduateTable
                 selectedItems={selectedItems}
                 setSelectedItems={setSelectedItems}
                 selectAll={selectAll}
                 setSelectAll={setSelectAll}
                 onUpdate={handleUpdate}
-                onRoleChange={handleRoleChange}
+                // onRoleChange={handleRoleChange}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
             />
 
-        <StudentForm
+        <GraduateForm
           modalOpen={modalOpen}
           closeModal={closeModal}
           updateId={updateId}
@@ -284,16 +211,15 @@ const StudentCRUD = ({ name, urls, title, subtitle }) => {
           responseHandler={responseHandler}
         />
 
-        <ChangeRoleModal
-          key={selectedStudent?.userID || 'modal-role-change'}
+        {/* <ChangeRoleModal
           isOpen={roleChangeModalOpen}
           onClose={closeRoleChangeModal}
           student={selectedStudent}
           onRoleChange={handleRoleChangeSuccess}
-        />
+        /> */}
       </ScreenWrapper>
     </>
   );
 };
 
-export default StudentCRUD;
+export default GraduateCRUD;

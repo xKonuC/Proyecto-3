@@ -23,14 +23,24 @@ const ClassificationDetail = () => {
 		fetchClassificationDetails();
 	}, [classificationId]);
 
-	useEffect(() => {
-		const filtered = graduates.filter(graduate =>
-			graduate.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			graduate.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			(graduate.workPlace || '').toLowerCase().includes(searchTerm.toLowerCase())
-		);
-		setFilteredGraduates(filtered);
-	}, [graduates, searchTerm]);
+  useEffect(() => {
+    const filtered = graduates.filter(graduate => {
+      const fullName = graduate.fullName || `${graduate.firstName || ''} ${graduate.surname1 || ''}`.trim();
+      const email = graduate.email || '';
+      const workPlace = graduate.workPlace || '';
+      const rut = graduate.rut || '';
+      
+      const term = searchTerm.toLowerCase();
+      
+      return (
+        fullName.toLowerCase().includes(term) ||
+        email.toLowerCase().includes(term) ||
+        workPlace.toLowerCase().includes(term) ||
+        rut.toLowerCase().includes(term)
+      );
+    });
+    setFilteredGraduates(filtered);
+  }, [graduates, searchTerm]);
 
 	const fetchClassificationDetails = async () => {
 		try {

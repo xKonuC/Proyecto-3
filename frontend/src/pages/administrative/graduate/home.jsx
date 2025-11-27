@@ -5,10 +5,16 @@ import { FaUserGraduate, FaList, FaChartBar, FaFileExport } from "react-icons/fa
 export const HomeGraduate = () => {
   const sectionsData = [
     {
-      title: 'Lista de Estudiantes de Magíster',
+      title: 'Lista de Estudiantes del Magíster',
       description: 'Visualiza y gestiona todos los estudiantes del programa de Magíster. Clasifica y organiza la información de los estudiantes.',
       link: '/Administrative/Graduate/Students',
       icon: <FaList size={30} />,
+    },
+    {
+      title: 'Lista de Graduados del Magíster',
+      description: 'Visualiza y gestiona todos los graduados del programa. Accede a su información académica y laboral.',
+      link: '/Administrative/Graduate/Graduates',
+      icon: <FaUserGraduate size={30} />,
     },
     {
       title: 'Clasificación de Graduados',

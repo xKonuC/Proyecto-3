@@ -6,6 +6,7 @@ import CreateClassification from '../../../pages/administrative/graduate/classif
 import ClassificationDetail from '../../../pages/administrative/graduate/classification/classificationDetail';
 import EditClassification from '../../../pages/administrative/graduate/classification/editClassification';
 import Reports from '../../../pages/administrative/graduate/reports/reports';
+import GraduatesList from '../../../pages/administrative/graduate/graduates/graduatesList';
 
 const GraduateRouter = () => {
   return (
@@ -17,6 +18,7 @@ const GraduateRouter = () => {
       <Route path="/Classification/:classificationId" element={<ClassificationDetail />} />
       <Route path="/Classification/Edit/:classificationId" element={<EditClassification />} />
       <Route path="/Reports" element={<Reports />} />
+      <Route path="/Graduates" element={<GraduatesList />} />
     </Routes>
   );
 };

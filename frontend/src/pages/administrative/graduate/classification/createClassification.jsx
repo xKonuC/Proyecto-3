@@ -293,26 +293,30 @@ const CreateClassification = () => {
 
         {/* Progress Steps */}
         <div className="mb-8">
-          <div className="flex items-center space-x-4">
-            {[1, 2, 3].map((stepNumber) => (
-              <div key={stepNumber} className="flex items-center">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                  step >= stepNumber ? 'bg-orange-main text-white' : 'bg-gray-300 text-gray-600'
+          <div className="flex items-center justify-between relative">
+            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 -z-10"></div>
+            <div className={`absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-orange-main -z-10 transition-all duration-500 ease-in-out`} style={{ width: `${((step - 1) / 2) * 100}%` }}></div>
+            
+            {[
+              { num: 1, label: 'Información Básica' },
+              { num: 2, label: 'Criterios' },
+              { num: 3, label: 'Graduados' }
+            ].map((item) => (
+              <div key={item.num} className="flex flex-col items-center bg-white px-2">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-base font-bold transition-colors duration-300 ${
+                  step >= item.num 
+                    ? 'bg-orange-main text-white border-2 border-orange-main' 
+                    : 'bg-white text-gray-400 border-2 border-gray-300'
                 }`}>
-                  {stepNumber}
+                  {item.num}
                 </div>
-                {stepNumber < 3 && (
-                  <div className={`w-16 h-1 mx-2 ${
-                    step > stepNumber ? 'bg-orange-main' : 'bg-gray-300'
-                  }`} />
-                )}
+                <span className={`mt-2 text-sm font-medium transition-colors duration-300 ${
+                  step >= item.num ? 'text-orange-main' : 'text-gray-400'
+                }`}>
+                  {item.label}
+                </span>
               </div>
             ))}
-          </div>
-          <div className="flex justify-between mt-2 text-sm text-gray-600">
-            <span>Información Básica</span>
-            <span>Criterios</span>
-            <span>Graduados</span>
           </div>
         </div>
 
