@@ -41,7 +41,7 @@ const getAccreditationExportData = (reportData) => {
 
     return graduates.map((g) => ({
         'Identificador (RUT)': g.rut,
-        'Sexo': g.sex || 'N/D',
+        'Sexo': g.sex === 'M' ? 'Masculino' : g.sex === 'F' ? 'Femenino' : 'No disponible',
 
         'Año de graduación': g.graduationYear || 'No disponible',
 
