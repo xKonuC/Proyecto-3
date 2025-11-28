@@ -4,6 +4,7 @@ import generateGraduatesSummaryReport from './generateGraduatesSummaryReport.js'
 import generateGraduatesByYearReport from './generateGraduatesByYearReport.js';
 import generateGraduatesBySpecializationReport from './generateGraduatesBySpecializationReport.js';
 import generateClassificationsReport from './generateClassificationsReport.js';
+import generateAccreditationReport from './generateAccreditationReport.js';
 
 const reportsRoute = express.Router();
 
@@ -22,5 +23,7 @@ reportsRoute.post('/graduates-by-specialization', generateGraduatesBySpecializat
 // POST /api/role/administrator/graduate/reports/classifications-report
 reportsRoute.post('/classifications-report', generateClassificationsReport);
 
-export default reportsRoute;
+// POST /api/role/administrator/graduate/reports/accreditation-report
+reportsRoute.post('/accreditation-report', generateAccreditationReport);
 
+export default reportsRoute;

@@ -11,20 +11,50 @@ export const getExportData = (reportId, reportData) => {
             return reportData.recentGraduates.map(g => ({
                 RUT: g.rut,
                 Nombre: g.fullName,
-                Sexo: g.sex || 'N/A',
+                Sexo: g.sex === 'M' ? 'Masculino'
+                    : g.sex === 'F' ? 'Femenino'
+                    : 'N/A',
                 Email: g.email,
                 'Año Ingreso': g.entry,
                 Especialización: g.specialization || 'N/A',
-                'Lugar de trabajo': g.workplace || 'N/A',
+                'Lugar de trabajo': g.workPlace || 'N/A',
                 Ocupación: g.job || 'N/A'
             }));
         case 'graduates-by-year':
             return reportData.graduatesByYear.map(item => ({ Año: item.year, Graduados: item.count }));
         case 'graduates-by-specialization':
             return reportData.graduatesBySpecialization.map(item => ({ Especialización: item.specialization, Graduados: item.count }));
+        case 'acreditacion-report':
+            return getAccreditationExportData(reportData);
         default:
             return [];
     }
+};
+
+// DATOS PARA REPORTE DE ACREDITACION
+const getAccreditationExportData = (reportData) => {
+    const graduates =
+    reportData.accreditationGraduates ||
+    reportData.graduates ||
+    reportData.recentGraduates ||
+    [];
+
+    return graduates.map((g) => ({
+        'Identificador (RUT)': g.rut,
+        'Sexo': g.sex || 'N/D',
+
+        'Año de graduación': g.graduationYear || 'No disponible',
+
+        // PRE MAGÍSTER (
+        'Situación ocupacional (pre magíster)': 'No disponible',
+        'Cargo (pre magíster)': 'No disponible',                 
+        'Lugar de trabajo (pre magíster)': 'No disponible',      
+
+        // POST MAGÍSTER 
+        'Situación ocupacional (post magíster)': 'No disponible',
+        'Cargo (post magíster)': g.job || 'No disponible',
+        'Lugar de trabajo (post magíster)': g.workplace || g.workPlace || 'No disponible',
+    }));
 };
 
 export const exportToExcel = (data, fileName) => {

@@ -84,14 +84,33 @@ const getReportsSummary = async (req, res) => {
           u.sex,
           u.email,
           u.entry,
-          u.workplace,
+          u.workPlace,
           u.job,
-          CONCAT(u.firstName, ' ', IFNULL(u.secondName, ''), ' ', u.surname1, ' ', IFNULL(u.surname2, '')) as fullName
+          MAX(sht.titleYear) AS graduationYear,
+          CONCAT(
+            u.firstName, ' ',
+            IFNULL(u.secondName, ''), ' ',
+            u.surname1, ' ',
+            IFNULL(u.surname2, '')
+          ) as fullName
         FROM user u
         INNER JOIN userHasRole uhr ON u.userID = uhr.userID
+        LEFT JOIN studentHasTitle sht ON u.userID = sht.userID
         WHERE uhr.roleID = 5
+        GROUP BY
+          u.userID,
+          u.rut,
+          u.firstName,
+          u.secondName,
+          u.surname1,
+          u.surname2,
+          u.sex,
+          u.email,
+          u.entry,
+          u.workPlace,
+          u.job
         ORDER BY u.userID DESC
-        LIMIT 10
+        LIMIT 20
       `);
 
       res.json({
