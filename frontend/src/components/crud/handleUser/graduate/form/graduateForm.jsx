@@ -33,15 +33,51 @@ const GraduateForm = memo(({ updateId, url, itemName, showAlert, modalOpen, clos
     // Función para manejar el envío de datos (submit)
     const handleSubmit = async (event) => {
         event.preventDefault();
-        let updatedItem = { ...newItem };
+        
+        // Crear copia de los datos
+        let cleanedData = { ...newItem };
+        
+        // Limpiar y validar campos numéricos
+        const numericFields = ['group', 'articulation', 'entryYear', 'graduationYear'];
+        numericFields.forEach(field => {
+            if (cleanedData[field]) {
+                const parsed = parseInt(cleanedData[field], 10);
+                if (!isNaN(parsed)) {
+                    cleanedData[field] = parsed;
+                } else {
+                    delete cleanedData[field];
+                }
+            } else {
+                delete cleanedData[field];
+            }
+        });
+        
+        // Eliminar campos vacíos de strings
+        Object.keys(cleanedData).forEach(key => {
+            if (cleanedData[key] === '' || cleanedData[key] === null || cleanedData[key] === undefined) {
+                delete cleanedData[key];
+            }
+        });
+        
+        // Eliminar campos que no deben enviarse
+        delete cleanedData.administratorID;
+        delete cleanedData.createdAt;
+        delete cleanedData.updatedAt;
+        
         if (updateId !== null) {
+            // Para actualización, usar graduateID
+            delete cleanedData.userID;
+            delete cleanedData.graduateID;
+            
             const updateService = new UpdateService(url, itemName, showAlert, responseHandler);
-            await updateService.execute({ userID: updateId, group: parseInt(newItem.group, 10), articulation: parseInt(newItem.articulation, 10), ...updatedItem });
+            await updateService.execute({ userID: updateId, ...cleanedData });
         } else {
+            // Para creación, incluir roleIDs
             const createService = new CreateService(url, itemName, showAlert, responseHandler);
-            await createService.execute(
-                { ...newItem, group: parseInt(newItem.group, 10),  articulation: parseInt(newItem.articulation, 10), roleIDs: selectedRoles.map((option) => option.value) }
-            );
+            await createService.execute({
+                ...cleanedData,
+                roleIDs: selectedRoles.map((option) => option.value)
+            });
         }
     };
 
@@ -84,12 +120,21 @@ const GraduateForm = memo(({ updateId, url, itemName, showAlert, modalOpen, clos
                 <TextInput inputId='phone' label={'Teléfono'} value={newItem.phone || ''} onChange={(e) => handleInputChange('phone', e.target.value)} placeholder={`Ingresar Teléfono`} />
                 <div className='flex gap-1 sm:gap-2'>
                     <div className='flex-1'>
-                        <TextInput inputId='entry' label={'Año de Ingreso'} value={newItem.entry || ''} onChange={(e) => handleInputChange('entry', e.target.value)} placeholder={`Año de Ingreso`} />
+                        <TextInput inputId='entryYear' label={'Año de Ingreso'} value={newItem.entryYear || ''} onChange={(e) => handleInputChange('entryYear', e.target.value)} placeholder={`Año de Ingreso`} />
                     </div>
                     <div className='flex-1'>
                         <TextInput inputId='group' label={'Grupo'} value={newItem.group || ''} onChange={(e) => handleInputChange('group', e.target.value)} placeholder={`Número de Grupo`} />
                     </div>
                 </div>
+                <div className='flex gap-1 sm:gap-2'>
+                    <div className='flex-1'>
+                        <TextInput inputId='graduationYear' label={'Año de Egreso'} value={newItem.graduationYear || ''} onChange={(e) => handleInputChange('graduationYear', e.target.value)} placeholder={`Año de Egreso`} />
+                    </div>
+                    <div className='flex-1'>
+                        <TextInput inputId='workPlace' label={'Lugar de Trabajo'} value={newItem.workPlace || ''} onChange={(e) => handleInputChange('workPlace', e.target.value)} placeholder={`Lugar de Trabajo`} />
+                    </div>
+                </div>
+                <TextInput inputId='job' label={'Cargo'} value={newItem.job || ''} onChange={(e) => handleInputChange('job', e.target.value)} placeholder={`Cargo`} />
             </FormContainer>
         </ModalCRUD>
     );

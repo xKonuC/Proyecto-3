@@ -1,8 +1,8 @@
 import posgradoPool from '../../../posgradoDbConnection.js';
 
 class CreateUserHasRole {
-  async createUserHasRole(userID, roleID) {
-    const connection = await posgradoPool.getConnection();
+  async createUserHasRole(userID, roleID, externalConnection = null) {
+    const connection = externalConnection || await posgradoPool.getConnection();
     
     try {
       console.log(`🔍 Intentando crear userHasRole: userID=${userID}, roleID=${roleID}`);
@@ -26,7 +26,9 @@ class CreateUserHasRole {
       console.error(`❌ Error creando userHasRole: userID=${userID}, roleID=${roleID}`, error);
       throw error;
     } finally {
-      connection.release();
+      if (!externalConnection) {
+        connection.release();
+      }
     }
   }
 }

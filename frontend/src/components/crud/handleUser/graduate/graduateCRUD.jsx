@@ -23,7 +23,6 @@ import ScreenWrapper from '../../../shared/screenWrapper';
 import ItemListHeader from '../../../forms/header/itemListHeader';
 import GraduateForm from './form/graduateForm';
 import GraduateTable from './table/graduateTable';
-// import ChangeRoleModal from './modal/changeRoleModal'; // Reutilizar o crear si es necesario
 
 // Constantes y utilidades
 import { clearCheckbox } from '../../../../utils/crudHelpers/handleCheckbox';
@@ -40,8 +39,6 @@ const GraduateCRUD = ({ name, urls, title, subtitle }) => {
     const [updateId, setUpdateId] = useState(null);
     const [selectAll, setSelectAll] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    // const [roleChangeModalOpen, setRoleChangeModalOpen] = useState(false);
-    // const [selectedStudent, setSelectedStudent] = useState(null);
 
   // -------------------------------Funciones Para CRUD-------------------------------
   const [fetchHandler] = useState(() => async () => {
@@ -116,7 +113,8 @@ const GraduateCRUD = ({ name, urls, title, subtitle }) => {
   };
 
   const handleUpdate = (id) => {
-    const studentToEdit = items.find(item => item.userID === id);
+    // Find by graduateID first, then fallback to userID
+    const studentToEdit = items.find(item => item.graduateID === id || item.userID === id);
     
     if (studentToEdit) {
       // Cargar los datos del estudiante en el formulario
@@ -129,16 +127,17 @@ const GraduateCRUD = ({ name, urls, title, subtitle }) => {
         surname1: studentToEdit.surname1 || '',
         surname2: studentToEdit.surname2 || '',
         phone: studentToEdit.phone || '',
-        entry: studentToEdit.entry || '',
+        entryYear: studentToEdit.entryYear || studentToEdit.entry || '',
         group: studentToEdit.group || '',
         articulation: studentToEdit.articulation || '',
         sex: studentToEdit.sex || '',
         civilStatus: studentToEdit.civilStatus || '',
         birthday: studentToEdit.birthday || '',
         address: studentToEdit.address || '',
-        workPlace: studentToEdit.workPlace || '',
+        workPlace: studentToEdit.workPlace || studentToEdit.work_place || '',
         phoneWork: studentToEdit.phoneWork || '',
-        job: studentToEdit.job || ''
+        job: studentToEdit.job || studentToEdit.jobTitle || studentToEdit.job_title || '',
+        graduationYear: studentToEdit.graduationYear || studentToEdit.graduation_year || ''
       }));
     }
     
@@ -195,7 +194,6 @@ const GraduateCRUD = ({ name, urls, title, subtitle }) => {
                 selectAll={selectAll}
                 setSelectAll={setSelectAll}
                 onUpdate={handleUpdate}
-                // onRoleChange={handleRoleChange}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
             />
@@ -210,13 +208,6 @@ const GraduateCRUD = ({ name, urls, title, subtitle }) => {
           showAlert={showAlert}
           responseHandler={responseHandler}
         />
-
-        {/* <ChangeRoleModal
-          isOpen={roleChangeModalOpen}
-          onClose={closeRoleChangeModal}
-          student={selectedStudent}
-          onRoleChange={handleRoleChangeSuccess}
-        /> */}
       </ScreenWrapper>
     </>
   );
