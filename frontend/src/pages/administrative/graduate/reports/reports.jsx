@@ -3,6 +3,7 @@ import { FaChartBar, FaFilePdf, FaFileExcel, FaUsers, FaGraduationCap, FaCalenda
 import PreviewModal from './previewModel';
 import { getExportData, exportToExcel, generatePDFFromData } from './reportUtils';
 import useReportSummaryData from './summaryCards';
+import { getAccessToken } from '../../../../utils/cookieUtils';
 
 const Reports = () => {
   const { loading, reportData, setLoading } = useReportSummaryData();
@@ -15,7 +16,32 @@ const Reports = () => {
     try {
       setLoading(true);
 
-      const exportData = getExportData(reportId, reportData);
+      let sourceData = reportData;
+
+      if (reportId === 'acreditacion-report') {
+        const token = getAccessToken();
+
+        const response = await fetch(
+          'http://localhost:5000/api/role/administrator/graduate/reports/accreditation-report',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({}),
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        sourceData = result.data;
+      }
+
+      const exportData = getExportData(reportId, sourceData);
       
       if (exportData.length === 0) {
         alert("No hay datos disponibles para generar este reporte.");
@@ -36,7 +62,7 @@ const Reports = () => {
       }
       
     } catch (error) {
-      console.error('❌ Error al generar reporte:', error);
+      console.error('Error al generar reporte:', error);
       alert(`Error al generar el reporte ${format.toUpperCase()}. Por favor, inténtalo de nuevo.`);
     } finally {
       setLoading(false);
@@ -47,7 +73,8 @@ const Reports = () => {
     { id: 'graduates-summary', title: 'Resumen de Graduados', description: 'Estadísticas generales de graduados', icon: FaUsers, color: 'bg-blue-500' },
     { id: 'graduates-by-year', title: 'Graduados por Año', description: 'Distribución de graduados por año de graduación', icon: FaCalendarAlt, color: 'bg-green-500' },
     { id: 'graduates-by-specialization', title: 'Graduados por Especialización', description: 'Distribución por especialización', icon: FaGraduationCap, color: 'bg-purple-500' },
-    { id: 'classifications-report', title: 'Reporte de Clasificaciones', description: 'Análisis de clasificaciones de graduados', icon: FaChartBar, color: 'bg-orange-500' }
+    { id: 'classifications-report', title: 'Reporte de Clasificaciones', description: 'Análisis de clasificaciones de graduados', icon: FaChartBar, color: 'bg-orange-500' },
+    { id: 'acreditacion-report', title: 'Reporte de Acreditación', description: 'Reporte de acreditación', icon: FaChartBar, color: 'bg-orange-500' },
   ];
 
   if (loading) {
@@ -202,6 +229,7 @@ const Reports = () => {
                     <th className="px-4 py-3 text-left">Sexo</th>
                     <th className="px-4 py-3 text-left">Email</th>
                     <th className="px-4 py-3 text-left">Año de Ingreso</th>
+                    <th className="px-4 py-3 text-left">Año de Graduación</th>
                     <th className="px-4 py-3 text-left">Especialización</th>
                     <th className="px-4 py-3 text-left">Lugar de Trabajo</th>
                     <th className="px-4 py-3 text-left">Ocupación</th>
@@ -212,11 +240,15 @@ const Reports = () => {
                     <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                       <td className="px-4 py-3">{graduate.rut || 'N/A'}</td>
                       <td className="px-4 py-3">{graduate.fullName}</td>
-                      <td className="px-4 py-3">{graduate.sex || 'N/A'}</td>
+                      <td className="px-4 py-3">{graduate.sex === 'M' ? 'Masculino'
+                          : graduate.sex === 'F' ? 'Femenino'
+                          : 'N/A'}
+                      </td>
                       <td className="px-4 py-3">{graduate.email}</td>
                       <td className="px-4 py-3">{graduate.entry}</td>
+                      <td className="px-4 py-3">{graduate.graduationYear || 'N/A'}</td>
                       <td className="px-4 py-3">{graduate.specialization || 'N/A'}</td>
-                      <td className="px-4 py-3">{graduate.workplace || 'N/A'}</td>
+                      <td className="px-4 py-3">{graduate.workPlace || 'N/A'}</td>
                       <td className="px-4 py-3">{graduate.job || 'N/A'}</td>
                     </tr>
                   ))}

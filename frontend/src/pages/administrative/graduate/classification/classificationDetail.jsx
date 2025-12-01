@@ -1,9 +1,9 @@
+// frontend/src/pages/administrative/graduate/classification/classificationDetail.jsx
 import React, { useState, useEffect } from 'react';
 import { FaArrowLeft, FaEdit, FaTrash, FaFilePdf, FaFileExcel, FaUserGraduate } from 'react-icons/fa';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAccessToken } from '../../../../utils/cookieUtils';
 
-// IMPORTAR las funciones autocontenidas
 import { 
     prepareClassificationExportData,
     exportClassificationToExcel, 
@@ -66,6 +66,12 @@ const ClassificationDetail = () => {
 		}
 	};
 
+  // ✅ Nombre robusto para usar en Excel/PDF y en el título
+  const exportName =
+    classification?.name ||
+    classification?.classificationName ||
+    'Clasificación sin nombre';
+
 	const handleDelete = async () => {
 		if (confirm('¿Estás seguro de que deseas eliminar esta clasificación?')) {
 			try {
@@ -89,26 +95,24 @@ const ClassificationDetail = () => {
 	};
 
 	const handleExportExcel = () => {
-        // 🚨 CORRECCIÓN DE SEGURIDAD: Sale si la clasificación aún no existe
         if (!classification) return;
 
 		const dataToExport = prepareClassificationExportData(filteredGraduates, formatDate);
 		exportClassificationToExcel(dataToExport, { 
-            name: classification.name, 
+            name: exportName,
             criteria: classification.criteria, 
             graduates: filteredGraduates 
         });
 	};
 
 	const handleExportPDF = async () => {
-        // 🚨 CORRECCIÓN DE SEGURIDAD: Sale si la clasificación aún no existe
         if (!classification) return;
 
 		const dataToExport = prepareClassificationExportData(filteredGraduates, formatDate);
 		
 		await exportClassificationToPDF(
             dataToExport, 
-            classification.name, 
+            exportName,
             classification.criteria, 
             filteredGraduates.length
         );
@@ -202,15 +206,15 @@ const ClassificationDetail = () => {
 							<FaArrowLeft size={20} />
 						</button>
 						<div>
-							<h1 className="text-3xl font-bold text-orange-main sm:text-5xl">{classification.name}</h1>
+							<h1 className="text-4xl font-bold text-orange-main sm:text-4xl">
+								{exportName}
+							</h1>
 							<p className="mt-4 text-gray-600 font-normal">{classification.description}</p>
 						</div>
 					</div>
 					
-					{/* BOTONES DE ACCIÓN (Exportar, Editar, Eliminar) */}
+					{/* BOTONES DE ACCIÓN */}
 					<div className="flex space-x-2">
-						
-						{/* Botón Exportar PDF */}
 						<button
 							onClick={handleExportPDF}
 							className="border-red-500 bg-red-500 hover:text-red-500 hover:ring-red-500 text-white px-4 py-2 rounded-xl flex items-center space-x-2 transition duration-200 hover:bg-transparent hover:ring-1 hover:font-semibold"
@@ -219,7 +223,6 @@ const ClassificationDetail = () => {
 							<span>PDF</span>
 						</button>
 
-						{/* Botón Exportar Excel */}
 						<button
 							onClick={handleExportExcel}
 							className="border-green-500 bg-green-500 hover:text-green-500 hover:ring-green-500 text-white px-4 py-2 rounded-xl flex items-center space-x-2 transition duration-200 hover:bg-transparent hover:ring-1 hover:font-semibold"
@@ -228,7 +231,6 @@ const ClassificationDetail = () => {
 							<span>Excel</span>
 						</button>
 						
-						{/* Botón Editar */}
 						<button
 							onClick={() => navigate(`/Administrative/Graduate/Classification/Edit/${classificationId}`)}
 							className="border-yellow-500 bg-yellow-500 hover:text-yellow-500 hover:ring-yellow-500 text-white px-4 py-2 rounded-xl flex items-center space-x-2 transition duration-200 hover:bg-transparent hover:ring-1 hover:font-semibold"
@@ -237,7 +239,6 @@ const ClassificationDetail = () => {
 							<span>Editar</span>
 						</button>
 						
-						{/* Botón Eliminar */}
 						<button
 							onClick={handleDelete}
 							className="border-red-500 bg-red-500 hover:text-red-500 hover:ring-red-500 text-white px-4 py-2 rounded-xl flex items-center space-x-2 transition duration-200 hover:bg-transparent hover:ring-1 hover:font-semibold"
@@ -249,7 +250,7 @@ const ClassificationDetail = () => {
 					</div>
 				</div>
 
-				{/* Classification Info */}
+				{/* Información de la clasificación */}
 				<div id="classification-info-for-export" className="bg-white rounded-lg shadow border-2 border-orange-main p-6">
 					<h3 className="text-lg font-semibold text-orange-main mb-4">Información de la Clasificación</h3>
 					
@@ -282,7 +283,7 @@ const ClassificationDetail = () => {
 					)}
 				</div>
 
-				{/* Graduates List */}
+				{/* Lista de graduados */}
 				<div id="graduates-list-for-export" className="bg-white rounded-lg shadow border-2 border-orange-main">
 					<div className="p-6 border-b-2 border-orange-main">
 						<div className="flex justify-between items-center">

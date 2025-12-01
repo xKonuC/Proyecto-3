@@ -1,3 +1,4 @@
+// frontend/src/pages/administrative/graduate/classification/classificationUtils.jsx
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf'; 
@@ -31,7 +32,6 @@ const formatCriteriaList = (criteria) => {
     }).join('; ');
 };
 
-
 export const prepareClassificationExportData = (data, dateFormatter) => {
     if (!data || data.length === 0) return [];
     
@@ -51,12 +51,15 @@ export const exportClassificationToExcel = (data, classification) => {
         return;
     }
     
-    // Extracción de datos con chequeo de nulos
-    const classificationName = classification?.name || 'Clasificación sin nombre';
+    const classificationName =
+        classification?.name ||
+        classification?.classificationName ||
+        'Clasificación sin nombre';
+
     const totalGraduates = classification?.graduates?.length || 0;
     const criteriaList = formatCriteriaList(classification?.criteria);
 
-    // 1. Preparar filas de resumen para Excel (formato AOA - Array of Arrays)
+    // 1. Filas de resumen para Excel
     const aoaSummary = [
         ['Reporte de Clasificación:', classificationName],
         ['Reporte generado el:', new Date().toLocaleDateString('es-ES')],
@@ -64,25 +67,24 @@ export const exportClassificationToExcel = (data, classification) => {
         ['Información de la Clasificación'],
         ['Total de Graduados:', totalGraduates],
         ['Criterios de Clasificación'],
-        [criteriaList], 
+        [criteriaList],
         [], 
         Object.keys(data[0]) 
     ];
 
-    // Convertir el resumen a una hoja de cálculo
     const ws = XLSX.utils.aoa_to_sheet(aoaSummary);
 
-    // Añadir la tabla de graduados a la hoja
     XLSX.utils.sheet_add_json(ws, data, { skipHeader: true, origin: "A10" });
-
 
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Clasificación");
 
-    const excelBuffer = XLSX.write(wb, { type: 'xlsx', bookType: 'xlsx', type: 'array' });
-    const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const dataBlob = new Blob(
+        [excelBuffer],
+        { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
+    );
     
-    // Usamos el nombre de clasificación seguro para el archivo
     const safeFilename = `Clasificacion_${classificationName.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().split('T')[0]}.xlsx`;
     saveAs(dataBlob, safeFilename);
 };
@@ -127,7 +129,6 @@ const formatCriteriaForPdf = (criteria) => {
             </div>`;
 };
 
-
 const createPdfContentElement = (classificationName, totalGraduates, criteria, exportData) => {
     const container = document.createElement('div');
     container.style.padding = '20px';
@@ -136,7 +137,6 @@ const createPdfContentElement = (classificationName, totalGraduates, criteria, e
     container.style.fontFamily = 'Arial, sans-serif';
     container.style.color = '#333';
 
-    // 1. Bloque del Título y Fecha
     container.innerHTML = `
         <h1 style="color: #F97316; font-size: 28px; margin-bottom: 10px; text-align: center;">
             REPORTE DE CLASIFICACIÓN: ${classificationName}
@@ -146,7 +146,6 @@ const createPdfContentElement = (classificationName, totalGraduates, criteria, e
         </p>
     `;
 
-    // 2. Bloque de Resumen CONCISO
     const summaryBlock = document.createElement('div');
     summaryBlock.style.marginBottom = '30px';
     summaryBlock.innerHTML = `
@@ -159,7 +158,6 @@ const createPdfContentElement = (classificationName, totalGraduates, criteria, e
     `;
     container.appendChild(summaryBlock);
 
-    // 3. Título de la Tabla de Graduados
     const graduatesTitle = document.createElement('h3');
     graduatesTitle.innerText = `Graduados (${exportData.length})`;
     graduatesTitle.style.fontWeight = 'bold';
@@ -169,8 +167,6 @@ const createPdfContentElement = (classificationName, totalGraduates, criteria, e
     graduatesTitle.style.marginBottom = '10px';
     container.appendChild(graduatesTitle);
 
-
-    // 4. Tabla de Graduados
     if (exportData.length > 0) {
         const headers = Object.keys(exportData[0]);
         let tableHTML = `
@@ -204,8 +200,7 @@ const createPdfContentElement = (classificationName, totalGraduates, criteria, e
 };
 
 const generatePDFFromData = async (classificationName, totalGraduates, criteria, exportData, isPreview = false) => {
-    // 🚨 CORRECCIÓN DE NULOS: Asegurar que classificationName sea una cadena antes de llamar a createPdfContentElement
-    const safeClassificationName = classificationName || 'Clasificación sin nombre';
+    const safeClassificationName = (classificationName || 'Clasificación sin nombre').toString();
     
     const input = createPdfContentElement(safeClassificationName, totalGraduates, criteria, exportData);
 
@@ -222,7 +217,6 @@ const generatePDFFromData = async (classificationName, totalGraduates, criteria,
         const pdfHeight = pdf.internal.pageSize.getHeight();
         const heightLeft = (canvas.height * pdfWidth) / canvas.width;
         
-        // --- Configuración de la Marca de Agua de TEXTO ---
         const textWatermark = "VISTA PREVIA";
         const fontSize = 70; 
 
@@ -231,8 +225,6 @@ const generatePDFFromData = async (classificationName, totalGraduates, criteria,
         
         const xPos = (pdfWidth - textWidth) / 2;
         const yPos = pdfHeight / 4; 
-        // --- FIN Configuración ---
-
 
         const addWatermark = (shouldDraw) => {
             if (!shouldDraw) return;
@@ -241,32 +233,21 @@ const generatePDFFromData = async (classificationName, totalGraduates, criteria,
             pdf.setTextColor(150, 150, 150); 
             pdf.setFontSize(fontSize);
             
-            // SOLUCIÓN FUNCIONAL DE OPACIDAD
             const gState = pdf.GState({ opacity: 0.3 }); 
             pdf.setGState(gState);
             
             pdf.saveGraphicsState();
-            
             pdf.text(textWatermark, xPos, yPos, { angle: -45 });
-            
             pdf.restoreGraphicsState();
         };
 
-        // DIBUJO: Marca de Agua (Fondo) y luego Contenido (Frente)
-
-        // 1. Dibuja el contenido/tabla
         pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, heightLeft); 
-        
-        // 2. Dibuja la marca de agua si es preview
         addWatermark(isPreview); 
 
-        // Manejo de múltiples páginas
         let currentPageOffset = pdfHeight;
         while (heightLeft - currentPageOffset > 0) {
             pdf.addPage();
-            // 1. Dibuja el contenido
             pdf.addImage(imgData, 'JPEG', 0, -currentPageOffset, pdfWidth, heightLeft);
-            // 2. Dibuja la marca de agua
             addWatermark(isPreview); 
             currentPageOffset += pdfHeight;
         }
@@ -274,12 +255,11 @@ const generatePDFFromData = async (classificationName, totalGraduates, criteria,
         if (isPreview) {
             return pdf.output('bloburl');
         } else {
-            // Usamos el nombre seguro para guardar el archivo
             pdf.save(`Clasificacion_${safeClassificationName.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`);
             return true;
         }
     } catch (error) {
-        console.error("🔴 Error CRÍTICO al generar PDF:", error);
+        console.error("Error CRÍTICO al generar PDF:", error);
         alert("Ocurrió un error al generar el PDF. Revisa la consola para más detalles.");
         return null;
     } finally {
