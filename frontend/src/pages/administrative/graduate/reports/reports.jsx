@@ -219,44 +219,67 @@ const Reports = () => {
 
         {reportData.recentGraduates.length > 0 && (
           <div className="mt-8">
-            <h3 className="text-xl font-semibold text-orange-main mb-4">Graduados Recientes</h3>
-            <div className="bg-white border-2 border-orange-main rounded-xl overflow-hidden">
-              <table className="w-full">
-                <thead className="bg-orange-main text-white">
+            <h3 className="text-xl font-semibold text-orange-main mb-4">
+              Graduados Recientes
+            </h3>
+
+            {/* 🔥 CONTENEDOR CON SCROLL HORIZONTAL */}
+            <div className="bg-white border-2 border-orange-main rounded-xl overflow-x-auto shadow-lg">
+              
+              <table className="min-w-full text-base">
+                <thead className="bg-orange-main text-white text-lg">
                   <tr>
-                    <th className="px-4 py-3 text-left">RUT</th>
-                    <th className="px-4 py-3 text-left">Nombre</th>
-                    <th className="px-4 py-3 text-left">Sexo</th>
-                    <th className="px-4 py-3 text-left">Email</th>
-                    <th className="px-4 py-3 text-left">Año de Ingreso</th>
-                    <th className="px-4 py-3 text-left">Año de Graduación</th>
-                    <th className="px-4 py-3 text-left">Especialización</th>
-                    <th className="px-4 py-3 text-left">Lugar de Trabajo</th>
-                    <th className="px-4 py-3 text-left">Ocupación</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">RUT</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Nombre</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Sexo</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Email</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Año de Ingreso</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Año de Graduación</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Especialización</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Lugar de Trabajo</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Ocupación</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {reportData.recentGraduates.slice(0, 20).map((graduate, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      <td className="px-4 py-3">{graduate.rut || 'N/A'}</td>
-                      <td className="px-4 py-3">{graduate.fullName}</td>
-                      <td className="px-4 py-3">{graduate.sex === 'M' ? 'Masculino'
-                          : graduate.sex === 'F' ? 'Femenino'
-                          : 'N/A'}
-                      </td>
-                      <td className="px-4 py-3">{graduate.email}</td>
-                      <td className="px-4 py-3">{graduate.entry}</td>
-                      <td className="px-4 py-3">{graduate.graduationYear || 'N/A'}</td>
-                      <td className="px-4 py-3">{graduate.specialization || 'N/A'}</td>
-                      <td className="px-4 py-3">{graduate.workPlace || 'N/A'}</td>
-                      <td className="px-4 py-3">{graduate.job || 'N/A'}</td>
-                    </tr>
-                  ))}
+
+                <tbody className="text-gray-900 text-lg">
+                  {reportData.recentGraduates.slice(0, 20).map((graduate, index) => {
+                    
+                    const sexLabel =
+                      graduate.sex === 'M'
+                        ? 'Masculino'
+                        : graduate.sex === 'F'
+                        ? 'Femenino'
+                        : 'N/A';
+
+                    return (
+                      <tr
+                        key={index}
+                        className={`${index % 2 === 0 ? "bg-orange-50" : "bg-white"} hover:bg-orange-100 transition-colors`}
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.rut || 'N/A'}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.fullName}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">{sexLabel}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.email}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.entry}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {graduate.graduationYear || 'No disponible'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {graduate.specialization || 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {graduate.workplace || 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.job || 'N/A'}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           </div>
         )}
+
       </div>
       
       <PreviewModal 

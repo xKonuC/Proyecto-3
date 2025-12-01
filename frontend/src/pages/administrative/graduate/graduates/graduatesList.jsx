@@ -18,5 +18,5 @@ const GraduatesList = () => {
         </>
     )
 }
-
+ 
 export default GraduatesList;

@@ -108,7 +108,11 @@ const validateGraduateData = (graduate) => {
   if (error) return error;
 
   // Email institucional
-  error = validateEmail(graduate.email, 'Email institucional');
+  error = validateEmail(graduate.email, 'Email Institucional');
+  if (error) return error;
+
+  // Email personal
+  error = validateEmail(graduate.personalEmail, 'Email Personal');
   if (error) return error;
 
   // Nombres / apellidos obligatorios
@@ -120,11 +124,11 @@ const validateGraduateData = (graduate) => {
 
   // Segundo nombre y segundo apellido: solo limitar si existen
   if (graduate.secondName && graduate.secondName.length > MAX_NAME_LENGTH) {
-    return 'El Segundo Nombre no puede exceder los 50 caracteres.';
+    return 'El Segundo Nombre no puede exceder los 20 caracteres.';
   }
 
   if (graduate.surname2 && graduate.surname2.length > MAX_NAME_LENGTH) {
-    return 'El Segundo Apellido no puede exceder los 50 caracteres.';
+    return 'El Segundo Apellido no puede exceder los 20 caracteres.';
   }
 
   // Teléfono (si se ingresa, solo números)
