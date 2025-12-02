@@ -12,7 +12,6 @@ import TbodyContent from '../../../../table/tableComponent/bodyContent';
 import { getCurrentPageItems } from '../../../../../utils/crudHelpers/paginationHelper';
 import { ActionsCell, CheckboxCell, ItemCell } from '../../../../table/tableComponent/tableComponent';
 import { isArray } from '../../../../../utils/crudHelpers/utils';
-import { getStatusColor, getClassificationColor } from '../../../../../utils/statusHelpers';
 
 // Constantes
 import { ITEMS_PER_PAGE } from '../../../../../utils/crudHelpers/constants';
@@ -43,35 +42,39 @@ const GraduateTable = (props) => {
         <>
             <th className={theadContentDiv}>RUT</th>
             <th className={`${theadContentDiv} text-left`}>Nombre Completo</th>
-            <th className={theadContentDiv}>Estado</th>
-            <th className={theadContentDiv}>Clasificación</th>
+            <th className={theadContentDiv}>Email</th>
             <th className={theadContentDiv}>Año Ingreso</th>
+            <th className={theadContentDiv}>Año Egreso</th>
+            <th className={theadContentDiv}>Lugar de Trabajo</th>
+            <th className={theadContentDiv}>Cargo</th>
         </>
     );
 
     const tbodyContent = (
         <TbodyContent
             itemsLength={Array.isArray(currentItems) ? currentItems.length : 0}
-            length={6}
+            length={8}
             isLoading={false}
         >
-            {Array.isArray(currentItems) && currentItems.map((item) => (
-                <tr key={item.userID} className={tbodyContentTr}>
-                    <CheckboxCell
-                        id={item.userID}
-                        checked={selectedItems.includes(item.userID)}
-                        onChange={(e) => {
-                            let newSelectedItems;
-                            if (e.target.checked) {
-                                newSelectedItems = [...selectedItems, item.userID];
-                            } else {
-                                newSelectedItems = selectedItems.filter(id => id !== item.userID);
-                            }
-                            setSelectedItems(newSelectedItems);
-                            setSelectAll(newSelectedItems.length === currentItems.length);
-                        }}
-                    />
-                    <ItemCell value={item.rut} />
+            {Array.isArray(currentItems) && currentItems.map((item) => {
+                const itemId = item.graduateID || item.userID;
+                return (
+                    <tr key={itemId} className={tbodyContentTr}>
+                        <CheckboxCell
+                            id={itemId}
+                            checked={selectedItems.includes(itemId)}
+                            onChange={(e) => {
+                                let newSelectedItems;
+                                if (e.target.checked) {
+                                    newSelectedItems = [...selectedItems, itemId];
+                                } else {
+                                    newSelectedItems = selectedItems.filter(id => id !== itemId);
+                                }
+                                setSelectedItems(newSelectedItems);
+                                setSelectAll(newSelectedItems.length === currentItems.length);
+                            }}
+                        />
+                        <ItemCell value={item.rut} />
                         <td className={`${tbodyContentTd} text-left`}>
                             <div className="flex items-center">
                                 <div className="flex-shrink-0 h-8 w-8">
@@ -83,34 +86,28 @@ const GraduateTable = (props) => {
                                     <div className="text-sm font-medium text-gray-900">
                                         {item.fullName || `${item.firstName || ''} ${item.surname1 || ''}`.trim() || 'Sin nombre'}
                                     </div>
-                                    <div className="text-sm text-gray-500">{item.email || 'Sin email'}</div>
                                 </div>
                             </div>
                         </td>
-                    <td className={tbodyContentTd}>
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(item.status || 'Graduado')}`}>
-                            {item.status || 'Graduado'}
-                        </span>
-                    </td>
-                    <td className={tbodyContentTd}>
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getClassificationColor(item.classification || 'Sin clasificar')}`}>
-                            {item.classification || 'Sin clasificar'}
-                        </span>
-                    </td>
-                    <ItemCell value={item.entry || 'N/A'} />
-                    <ActionsCell>
-                        <div className="flex gap-1">
-                            <StyledButton
-                                onClick={() => onUpdate(item.userID)}
-                                className={tbodyContentButton}
-                                title="Editar"
-                            >
-                                <EditIcon />
-                            </StyledButton>
-                        </div>
-                    </ActionsCell>
-                </tr>
-            ))}
+                        <ItemCell value={item.email || 'Sin email'} />
+                        <ItemCell value={item.entryYear || item.entry || 'N/A'} />
+                        <ItemCell value={item.graduationYear || item.graduation_year || 'N/A'} />
+                        <ItemCell value={item.workPlace || item.work_place || 'N/A'} />
+                        <ItemCell value={item.job || item.jobTitle || item.job_title || 'N/A'} />
+                        <ActionsCell>
+                            <div className="flex gap-1">
+                                <StyledButton
+                                    onClick={() => onUpdate(itemId)}
+                                    className={tbodyContentButton}
+                                    title="Editar"
+                                >
+                                    <EditIcon />
+                                </StyledButton>
+                            </div>
+                        </ActionsCell>
+                    </tr>
+                );
+            })}
         </TbodyContent>
     );
 
@@ -120,10 +117,10 @@ const GraduateTable = (props) => {
                 theadContent={theadContent}
                 tbodyContent={tbodyContent}
                 selectAll={selectAll}
-                    onChange={(e) => {
-                        setSelectAll(e.target.checked);
-                        setSelectedItems(e.target.checked ? currentItems.map(item => item.userID) : []);
-                    }}
+                onChange={(e) => {
+                    setSelectAll(e.target.checked);
+                    setSelectedItems(e.target.checked ? currentItems.map(item => item.graduateID || item.userID) : []);
+                }}
             />
             <PaginationButtons
                 currentPage={currentPage}
