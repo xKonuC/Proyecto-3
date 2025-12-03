@@ -157,7 +157,4 @@ class GraduateModel {
 }
 
 export default GraduateModel;
-<<<<<<< HEAD
-=======
 	
->>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3

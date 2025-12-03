@@ -255,20 +255,11 @@ class GraduateController {
       try {
         // Obtener el graduado actual para obtener el userID
         const graduate = await GraduateModel.findById(id);
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3
         if (!graduate) {
           await connection.rollback();
           return res.status(404).json({
             success: false,
-<<<<<<< HEAD
-            message: 'Graduado no encontrado'
-=======
             message: 'Graduado no encontrado',
->>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3
           });
         }
 
@@ -315,32 +306,18 @@ class GraduateController {
         res.json({
           success: true,
           message: 'Graduado actualizado exitosamente',
-<<<<<<< HEAD
-          data: updatedGraduate
-        });
-
-=======
           data: updatedGraduate,
         });
->>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3
       } catch (error) {
         await connection.rollback();
         throw error;
       }
-<<<<<<< HEAD
-
-=======
->>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3
     } catch (error) {
       console.error('Error updating graduate:', error);
       res.status(500).json({
         success: false,
         message: 'Error al actualizar el graduado',
-<<<<<<< HEAD
-        error: error.message
-=======
         error: error.message,
->>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3
       });
     } finally {
       if (connection) connection.release();
@@ -355,32 +332,20 @@ class GraduateController {
       if (result === 0) {
         return res.status(404).json({
           success: false,
-<<<<<<< HEAD
-          message: 'Graduado no encontrado'
-=======
           message: 'Graduado no encontrado',
->>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3
         });
       }
 
       res.json({
         success: true,
-<<<<<<< HEAD
-        message: 'Graduado eliminado exitosamente'
-=======
         message: 'Graduado eliminado exitosamente',
->>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3
       });
     } catch (error) {
       console.error('Error deleting graduate:', error);
       res.status(500).json({
         success: false,
         message: 'Error al eliminar el graduado',
-<<<<<<< HEAD
-        error: error.message
-=======
         error: error.message,
->>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3
       });
     }
   }
