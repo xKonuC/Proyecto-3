@@ -12,4 +12,8 @@ graduatesRoute.post('/', GraduateController.createGraduate);
 graduatesRoute.put('/:id', GraduateController.updateGraduate);
 graduatesRoute.delete('/:id', GraduateController.deleteGraduate);
 
+<<<<<<< HEAD
 export default graduatesRoute;
+=======
+export default graduatesRoute;
+>>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3

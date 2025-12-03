@@ -49,4 +49,8 @@ INSERT INTO `graduate`
 VALUES
 (100, '15.123.456-K', 'Hernan', 'Antonio', 'Diaz', 'Castro', 'hernan.diaz@alumnos.uta.cl', 'Tech Solutions', 'Desarrollador Senior', 2020, 2023),
 (101, '16.987.654-3', 'Javiera', 'Ignacia', 'Rojas', 'Soto', 'javiera.rojas@alumnos.uta.cl', 'Hospital Regional', 'Enfermera Jefe', 2021, 2023)
+<<<<<<< HEAD
 ON DUPLICATE KEY UPDATE graduationYear = VALUES(graduationYear);
+=======
+ON DUPLICATE KEY UPDATE graduationYear = VALUES(graduationYear);
+>>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3

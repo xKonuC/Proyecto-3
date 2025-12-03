@@ -56,4 +56,8 @@ const GraduateService = {
   }
 };
 
+<<<<<<< HEAD
 export default GraduateService;
+=======
+export default GraduateService;
+>>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3

@@ -16,4 +16,8 @@ routes.use(
   graduatesRoute,
 );
 
+<<<<<<< HEAD
 export default routes;
+=======
+export default routes;
+>>>>>>> c98ce8ccd65bda4ebabc9fcc45e29e80f6436df3
