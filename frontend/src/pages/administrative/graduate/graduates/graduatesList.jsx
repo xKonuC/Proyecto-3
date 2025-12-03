@@ -1,13 +1,14 @@
+import React from "react";
 import GraduateCRUD from '../../../../components/crud/handleUser/graduate/graduateCRUD';
 import StudentNavbar from '../../../../components/crud/handleUser/student/navbar/studentNavbar'; // Reutilizamos navbar de estudiante por ahora
 
 const GraduatesList = () => {
     const urls = [
-        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/graduates',
-        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/graduates',
-        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/graduates',
-        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/graduates',
-        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/graduates',
+        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/role/administrator/graduate/graduates',
+        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/role/administrator/graduate/graduates',
+        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/role/administrator/graduate/graduates',
+        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/role/administrator/graduate/graduates',
+        import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/role/administrator/graduate/graduates',
     ];
 
     return (
@@ -18,8 +19,4 @@ const GraduatesList = () => {
     )
 }
 
-<<<<<<< HEAD
 export default GraduatesList;
-=======
-export default GraduatesList;
->>>>>>> parent of 744847d (Revert "update")

@@ -10,13 +10,6 @@ export const handleErrorResponse = ({ error, customMessage, showAlert }) => {
       return;
     }
     
-    // Manejar conflictos (duplicados)
-    if (status === 409) {
-      const errorMessage = data?.message || 'El registro ya existe';
-      showAlert({ type: 'error', content: errorMessage});
-      return;
-    }
-    
     // Manejar otros errores HTTP
     const errorMessage = data?.message || data || `Error ${status}`;
     showAlert({ type: 'error', content: `${customMessage || errorMessage}`});

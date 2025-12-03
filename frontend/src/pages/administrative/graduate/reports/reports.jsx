@@ -42,15 +42,15 @@ const Reports = () => {
       }
 
       const exportData = getExportData(reportId, sourceData);
-      
+
       if (exportData.length === 0) {
         alert("No hay datos disponibles para generar este reporte.");
         return;
       }
-      
+
       if (format === 'preview' || format === 'pdf') {
         const result = await generatePDFFromData(reportTitle, exportData, format === 'preview');
-        
+
         if (format === 'preview' && result) {
           setPdfPreviewUrl(result);
           setModalTitle(reportTitle);
@@ -60,7 +60,7 @@ const Reports = () => {
       } else if (format === 'excel') {
         exportToExcel(exportData, reportTitle);
       }
-      
+
     } catch (error) {
       console.error('Error al generar reporte:', error);
       alert(`Error al generar el reporte ${format.toUpperCase()}. Por favor, inténtalo de nuevo.`);
@@ -68,7 +68,7 @@ const Reports = () => {
       setLoading(false);
     }
   };
-  
+
   const reportTypes = [
     { id: 'graduates-summary', title: 'Resumen de Graduados', description: 'Estadísticas generales de graduados', icon: FaUsers, color: 'bg-blue-500' },
     { id: 'graduates-by-year', title: 'Graduados por Año', description: 'Distribución de graduados por año de graduación', icon: FaCalendarAlt, color: 'bg-green-500' },
@@ -88,51 +88,36 @@ const Reports = () => {
   return (
     <main className="bg-white text-orange-main min-h-screen rounded-lg p-10 shadow-md">
       <div className="max-w-7xl mx-auto">
-        
+
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-orange-main sm:text-5xl">Reportes de Graduados</h1>
+          <h1 className="text-3xl font-bold text-orange-main sm:text-5xl">Reportes de Graduados</h1>
           <p className="mt-4 text-gray-600 font-normal">Genera reportes y estadísticas de graduados</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          
           <div className="bg-orange-main text-white p-6 rounded-xl shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-orange-200 text-lg font-medium">Total Graduados</p>
-                <p className="text-4xl font-bold">{reportData.totalGraduates}</p>
-              </div>
-              <FaUsers className="h-8 w-8 text-orange-200" />
-            </div>
+            <p className="text-orange-200 text-lg font-medium">Total Graduados</p>
+            <p className="text-4xl font-bold">{reportData.totalGraduates}</p>
           </div>
+
           <div className="bg-blue-500 text-white p-6 rounded-xl shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-200 text-lg font-medium">Total Estudiantes</p>
-                <p className="text-4xl font-bold">{reportData.totalStudents}</p>
-              </div>
-              <FaGraduationCap className="h-8 w-8 text-blue-200" />
-            </div>
+            <p className="text-blue-200 text-lg font-medium">Total Estudiantes</p>
+            <p className="text-4xl font-bold">{reportData.totalStudents}</p>
           </div>
+
           <div className="bg-green-500 text-white p-6 rounded-xl shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-200 text-lg font-medium">Clasificaciones</p>
-                <p className="text-4xl font-bold">{reportData.totalClassifications}</p>
-              </div>
-              <FaChartBar className="h-8 w-8 text-green-200" />
-            </div>
+            <p className="text-green-200 text-lg font-medium">Clasificaciones</p>
+            <p className="text-4xl font-bold">{reportData.totalClassifications}</p>
           </div>
+
           <div className="bg-purple-500 text-white p-6 rounded-xl shadow-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-200 text-lg font-medium">Este Año</p>
-                <p className="text-4xl font-bold">
-                  {reportData.graduatesByYear.find(item => item.year === new Date().getFullYear())?.count || 0}
-                </p>
-              </div>
-              <FaCalendarAlt className="h-8 w-8 text-purple-200" />
-            </div>
+            <p className="text-purple-200 text-lg font-medium">Este Año</p>
+            <p className="text-4xl font-bold">
+              {reportData.graduatesByYear.find(item => item.year === new Date().getFullYear())?.count || 0}
+            </p>
           </div>
+
         </div>
 
         <div className="bg-gray-50 p-6 rounded-xl mb-8">
@@ -187,26 +172,26 @@ const Reports = () => {
                     <span>Vista Previa</span>
                   </button>
                 </div>
-                
-                <p className="text-gray-600 text-xl mb-4 ml-14">
+
+                <p className="text-xl text-gray-600 mb-4 ml-14">
                   {report.description}
                 </p>
-                
+
                 <div className="flex space-x-2">
-                  
+
                   <button
                     onClick={() => handleGenerateReport(report.id, 'pdf', report.title)}
                     disabled={loading}
-                    className="flex-1 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 flex items-center justify-center space-x-2"
+                    className="text-xl flex-1 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 flex items-center justify-center space-x-2"
                   >
                     <FaFilePdf />
                     <span>PDF</span>
                   </button>
-                 
+
                   <button
                     onClick={() => handleGenerateReport(report.id, 'excel', report.title)}
                     disabled={loading}
-                    className="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 flex items-center justify-center space-x-2"
+                    className="text-xl flex-1 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 flex items-center justify-center space-x-2"
                   >
                     <FaFileExcel />
                     <span>Excel</span>
@@ -217,67 +202,80 @@ const Reports = () => {
           })}
         </div>
 
+        {/* TABLA DE GRADUADOS RECIENTES */}
         {reportData.recentGraduates.length > 0 && (
-          <div className="mt-8">
-<<<<<<< HEAD
-            <h3 className="text-xl font-semibold text-orange-main mb-4">Graduados Recientes</h3>
-            <div className="bg-white border-2 border-orange-main rounded-xl overflow-hidden">
-              <table className="w-full">
-                <thead className="bg-orange-main text-white">
-=======
-            <h3 className="text-4xl font-semibold text-orange-main mb-4">
+          <div className="mt-12">
+            <h3 className="text-3xl font-bold text-orange-main mb-4">
               Graduados Recientes
             </h3>
 
-            {/* 🔥 CONTENEDOR CON SCROLL HORIZONTAL */}
             <div className="bg-white border-2 border-orange-main rounded-xl overflow-x-auto shadow-lg">
-              
-              <table className="min-w-full text-base">
-                <thead className="bg-orange-main text-white text-lg">
->>>>>>> parent of 744847d (Revert "update")
+
+              <table className="min-w-full text-lg">
+                <thead className="bg-orange-main text-white text-xl">
                   <tr>
-                    <th className="px-4 py-3 text-left">RUT</th>
-                    <th className="px-4 py-3 text-left">Nombre</th>
-                    <th className="px-4 py-3 text-left">Sexo</th>
-                    <th className="px-4 py-3 text-left">Email</th>
-                    <th className="px-4 py-3 text-left">Año de Ingreso</th>
-                    <th className="px-4 py-3 text-left">Año de Graduación</th>
-                    <th className="px-4 py-3 text-left">Especialización</th>
-                    <th className="px-4 py-3 text-left">Lugar de Trabajo</th>
-                    <th className="px-4 py-3 text-left">Ocupación</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">RUT</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Nombre</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Sexo</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Email</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Año Ingreso</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Año Graduación</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Especialización</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Lugar Trabajo</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Ocupación</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {reportData.recentGraduates.slice(0, 20).map((graduate, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      <td className="px-4 py-3">{graduate.rut || 'N/A'}</td>
-                      <td className="px-4 py-3">{graduate.fullName}</td>
-                      <td className="px-4 py-3">{graduate.sex === 'M' ? 'Masculino'
-                          : graduate.sex === 'F' ? 'Femenino'
-                          : 'N/A'}
-                      </td>
-                      <td className="px-4 py-3">{graduate.email}</td>
-                      <td className="px-4 py-3">{graduate.entry}</td>
-                      <td className="px-4 py-3">{graduate.graduationYear || 'N/A'}</td>
-                      <td className="px-4 py-3">{graduate.specialization || 'N/A'}</td>
-                      <td className="px-4 py-3">{graduate.workPlace || 'N/A'}</td>
-                      <td className="px-4 py-3">{graduate.job || 'N/A'}</td>
-                    </tr>
-                  ))}
+
+                <tbody className="text-gray-900 text-lg">
+                  {reportData.recentGraduates.slice(0, 10).map((graduate, index) => {
+
+                    const sexLabel =
+                      graduate.sex === 'M'
+                        ? 'Masculino'
+                        : graduate.sex === 'F'
+                        ? 'Femenino'
+                        : 'N/A';
+
+                    return (
+                      <tr 
+                        key={index} 
+                        className={`${index % 2 === 0 ? "bg-orange-50" : "bg-white"} hover:bg-orange-100 transition`}
+                      >
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.rut || 'N/A'}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.fullName}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">{sexLabel}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.email}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.entry}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {graduate.graduationYear || 'No disponible'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {graduate.specialization || 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          {graduate.workplace || 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">{graduate.job || 'N/A'}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
+
             </div>
           </div>
         )}
+
       </div>
-      
+
+      {/* MODAL DE PREVIEW PDF */}
       <PreviewModal 
-        isOpen={isModalOpen} 
+        isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
           setPdfPreviewUrl('');
-        }} 
-        pdfUrl={pdfPreviewUrl} 
+        }}
+        pdfUrl={pdfPreviewUrl}
         reportTitle={modalTitle}
       />
     </main>

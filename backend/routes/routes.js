@@ -9,3 +9,4 @@ routes.use(
   validateToken,
   roleRoute,
 );
+export default routes;
