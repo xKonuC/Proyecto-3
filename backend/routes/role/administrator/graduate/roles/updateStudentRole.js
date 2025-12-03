@@ -1,5 +1,4 @@
 import posgradoPool from '../../../../../posgradoDbConnection.js';
-import GraduateModel from '../../../../../models/Graduate.js';
 
 const updateStudentRole = async (req, res) => {
   try {
@@ -17,16 +16,13 @@ const updateStudentRole = async (req, res) => {
     const connection = await posgradoPool.getConnection();
     
     try {
-      await connection.beginTransaction();
-
       // Verificar que el usuario existe
       const [user] = await connection.execute(
-        'SELECT * FROM user WHERE userID = ?',
+        'SELECT userID FROM user WHERE userID = ?',
         [targetUserID]
       );
 
       if (user.length === 0) {
-        await connection.rollback();
         return res.status(404).json({
           success: false,
           message: 'Usuario no encontrado'
@@ -40,53 +36,10 @@ const updateStudentRole = async (req, res) => {
       );
 
       if (role.length === 0) {
-        await connection.rollback();
         return res.status(404).json({
           success: false,
           message: 'Rol no encontrado'
         });
-      }
-
-      // Si el nuevo rol es Graduado (5), verificar y crear registro en graduate si no existe
-      if (parseInt(newRoleID) === 5) {
-        console.log('🔍 Rol de Graduado detectado. Verificando existencia en tabla graduate...');
-        const existingGraduate = await GraduateModel.findByUserId(targetUserID, connection);
-        
-        if (!existingGraduate) {
-          console.log('⚠️ Usuario no existe en tabla graduate. Creando registro...');
-          
-          const userData = user[0];
-          const currentYear = new Date().getFullYear();
-          
-          const graduateData = {
-            userID: userData.userID,
-            rut: userData.rut,
-            firstName: userData.firstName,
-            secondName: userData.secondName,
-            surname1: userData.surname1,
-            surname2: userData.surname2,
-            email: userData.email,
-            workPlace: null,
-            job: null,
-            entryYear: userData.entry || currentYear, // Usar user.entry si existe, sino año actual
-            graduationYear: null
-          };
-          
-          await GraduateModel.create(graduateData, connection);
-          console.log('✅ Registro de graduado creado automáticamente.');
-        } else {
-          console.log('✅ El usuario ya existe en la tabla graduate.');
-        }
-      } else {
-        // Si el nuevo rol NO es Graduado, verificar si existe en graduate y eliminarlo
-        console.log('🔍 Nuevo rol no es Graduado. Verificando si existe registro en graduate para eliminar...');
-        const existingGraduate = await GraduateModel.findByUserId(targetUserID, connection);
-        
-        if (existingGraduate) {
-          console.log(`⚠️ Eliminando registro de graduado (ID: ${existingGraduate.graduateID}) porque el usuario ya no tiene rol de graduado...`);
-          await GraduateModel.delete(existingGraduate.graduateID, connection);
-          console.log('✅ Registro de graduado eliminado.');
-        }
       }
 
       // Primero, verificar roles actuales del usuario
@@ -104,24 +57,10 @@ const updateStudentRole = async (req, res) => {
       );
 
       // Asignar el nuevo rol
-      // Si el nuevo rol es Graduado (5), asignamos también Estudiante (4)
-      if (parseInt(newRoleID) === 5) {
-        await connection.execute(
-          'INSERT INTO userHasRole (userID, roleID) VALUES (?, ?)',
-          [targetUserID, 4]
-        );
-        await connection.execute(
-          'INSERT INTO userHasRole (userID, roleID) VALUES (?, ?)',
-          [targetUserID, 5]
-        );
-      } else {
-        await connection.execute(
-          'INSERT INTO userHasRole (userID, roleID) VALUES (?, ?)',
-          [targetUserID, newRoleID]
-        );
-      }
-
-      await connection.commit();
+      await connection.execute(
+        'INSERT INTO userHasRole (userID, roleID) VALUES (?, ?)',
+        [targetUserID, newRoleID]
+      );
 
       res.json({
         success: true,
@@ -133,9 +72,6 @@ const updateStudentRole = async (req, res) => {
         }
       });
 
-    } catch (error) {
-      await connection.rollback();
-      throw error;
     } finally {
       connection.release();
     }

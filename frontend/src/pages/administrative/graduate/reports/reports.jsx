@@ -90,7 +90,7 @@ const Reports = () => {
       <div className="max-w-7xl mx-auto">
         
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-orange-main sm:text-5xl">Reportes de Graduados</h1>
+          <h1 className="text-3xl font-bold text-orange-main sm:text-5xl">Reportes de Graduados</h1>
           <p className="mt-4 text-gray-600 font-normal">Genera reportes y estadísticas de graduados</p>
         </div>
 
@@ -98,8 +98,8 @@ const Reports = () => {
           <div className="bg-orange-main text-white p-6 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-orange-200 text-lg font-medium">Total Graduados</p>
-                <p className="text-4xl font-bold">{reportData.totalGraduates}</p>
+                <p className="text-orange-200 text-sm font-medium">Total Graduados</p>
+                <p className="text-3xl font-bold">{reportData.totalGraduates}</p>
               </div>
               <FaUsers className="h-8 w-8 text-orange-200" />
             </div>
@@ -107,8 +107,8 @@ const Reports = () => {
           <div className="bg-blue-500 text-white p-6 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-200 text-lg font-medium">Total Estudiantes</p>
-                <p className="text-4xl font-bold">{reportData.totalStudents}</p>
+                <p className="text-blue-200 text-sm font-medium">Total Estudiantes</p>
+                <p className="text-3xl font-bold">{reportData.totalStudents}</p>
               </div>
               <FaGraduationCap className="h-8 w-8 text-blue-200" />
             </div>
@@ -116,8 +116,8 @@ const Reports = () => {
           <div className="bg-green-500 text-white p-6 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-200 text-lg font-medium">Clasificaciones</p>
-                <p className="text-4xl font-bold">{reportData.totalClassifications}</p>
+                <p className="text-green-200 text-sm font-medium">Clasificaciones</p>
+                <p className="text-3xl font-bold">{reportData.totalClassifications}</p>
               </div>
               <FaChartBar className="h-8 w-8 text-green-200" />
             </div>
@@ -125,8 +125,8 @@ const Reports = () => {
           <div className="bg-purple-500 text-white p-6 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-200 text-lg font-medium">Este Año</p>
-                <p className="text-4xl font-bold">
+                <p className="text-purple-200 text-sm font-medium">Este Año</p>
+                <p className="text-3xl font-bold">
                   {reportData.graduatesByYear.find(item => item.year === new Date().getFullYear())?.count || 0}
                 </p>
               </div>
@@ -173,7 +173,7 @@ const Reports = () => {
                     <div className={`${report.color} text-white p-3 rounded-lg`}>
                       <IconComponent className="h-6 w-6" />
                     </div>
-                    <h3 className="text-2xl font-semibold text-orange-main">
+                    <h3 className="text-xl font-semibold text-orange-main">
                       {report.title}
                     </h3>
                   </div>
@@ -188,7 +188,7 @@ const Reports = () => {
                   </button>
                 </div>
                 
-                <p className="text-gray-600 text-xl mb-4 ml-14">
+                <p className="text-gray-600 mb-4 ml-14">
                   {report.description}
                 </p>
                 
@@ -219,7 +219,7 @@ const Reports = () => {
 
         {reportData.recentGraduates.length > 0 && (
           <div className="mt-8">
-            <h3 className="text-4xl font-semibold text-orange-main mb-4">
+            <h3 className="text-xl font-semibold text-orange-main mb-4">
               Graduados Recientes
             </h3>
 

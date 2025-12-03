@@ -15,6 +15,137 @@ import MultiSelect from '../../../../input/multiSelect';
 // Constantes y utilidades
 import { roles } from '../../../../../utils/crudHelpers/constants';
 
+const MAX_NAME_LENGTH = 20;
+
+// VALIDACION DE RUT
+const validateRut = (rut) => {
+  if (!rut || typeof rut !== 'string') {
+    return 'El RUT es obligatorio.';
+  }
+
+  /*const cleanRut = rut.replace(/\./g, '').replace(/-/g, '').toUpperCase();
+
+  if (!/^[0-9]+[0-9K]$/.test(cleanRut)) {
+    return 'El RUT debe tener un formato válido (ej: 12.345.678-9).';
+  }
+
+  const body = cleanRut.slice(0, -1);
+  const dv = cleanRut.slice(-1);
+
+  let sum = 0;
+  let multiplier = 2;
+
+  for (let i = body.length - 1; i >= 0; i--) {
+    sum += parseInt(body[i], 10) * multiplier;
+    multiplier = multiplier === 7 ? 2 : multiplier + 1;
+  }
+
+  const expectedDigit = 11 - (sum % 11);
+  let dvCalc;
+
+  if (expectedDigit === 11) dvCalc = '0';
+  else if (expectedDigit === 10) dvCalc = 'K';
+  else dvCalc = String(expectedDigit);
+
+  if (dvCalc !== dv) {
+    return 'El RUT ingresado no es válido.';
+  }*/
+
+  const cleanRut = rut.trim();
+
+  const regex = /^(\d{1,3}(?:\.\d{3})*|\d+)-([\dkK])$/;
+  if (!regex.test(cleanRut)) {
+    return 'El RUT debe tener un formato válido (ej: 12.345.678-9).';
+  }
+
+  return '';
+};
+
+// VALIDAR FORMATO EMAIL
+const validateEmail = (email, fieldName = 'Email') => {
+  if (!email) {
+    return `${fieldName} es obligatorio.`;
+  }
+
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!regex.test(email)) {
+    return `${fieldName} no tiene un formato válido.`;
+  }
+
+  return '';
+};
+
+// TEXTO MAXIMO PARA NOMBRES
+const validateNameLength = (value, fieldName, maxLength = MAX_NAME_LENGTH) => {
+  if (!value || !value.trim()) {
+    return `${fieldName} es obligatorio.`;
+  }
+
+  if (value.length > maxLength) {
+    return `${fieldName} no puede exceder los ${maxLength} caracteres.`;
+  }
+
+  return '';
+};
+
+// VALIDACION PARA SOLO NUMEROS
+const validateNumericField = (value, fieldName) => {
+  if (!value) {
+    return `${fieldName} es obligatorio.`;
+  }
+
+  if (!/^\d+$/.test(String(value))) {
+    return `${fieldName} solo debe contener números.`;
+  }
+
+  return '';
+};
+
+// VALIDACIONES PARA EL FORMULARIO
+const validateGraduateData = (graduate) => {
+  // RUT
+  let error = validateRut(graduate.rut);
+  if (error) return error;
+
+  // Email institucional
+  error = validateEmail(graduate.email, 'Email Institucional');
+  if (error) return error;
+
+  // Email personal
+  error = validateEmail(graduate.personalEmail, 'Email Personal');
+  if (error) return error;
+
+  // Nombres / apellidos obligatorios
+  error = validateNameLength(graduate.firstName, 'Primer Nombre', MAX_NAME_LENGTH);
+  if (error) return error;
+
+  error = validateNameLength(graduate.surname1, 'Primer Apellido', MAX_NAME_LENGTH);
+  if (error) return error;
+
+  // Segundo nombre y segundo apellido: solo limitar si existen
+  if (graduate.secondName && graduate.secondName.length > MAX_NAME_LENGTH) {
+    return 'El Segundo Nombre no puede exceder los 20 caracteres.';
+  }
+
+  if (graduate.surname2 && graduate.surname2.length > MAX_NAME_LENGTH) {
+    return 'El Segundo Apellido no puede exceder los 20 caracteres.';
+  }
+
+  // Teléfono (si se ingresa, solo números)
+  if (graduate.phone) {
+    error = validateNumericField(graduate.phone, 'Teléfono');
+    if (error) return error;
+  }
+
+  // Año de ingreso (si se ingresa, solo números)
+  if (graduate.entry) {
+    error = validateNumericField(graduate.entry, 'Año de ingreso');
+    if (error) return error;
+  }
+
+  return '';
+};
+
 const GraduateForm = memo(({ updateId, url, itemName, showAlert, modalOpen, closeModal, responseHandler }) => {
     const dispatch = useDispatch();
     const { newItem, selectedRoles } = useSelector((state) => state.handleUser.user);
@@ -30,60 +161,72 @@ const GraduateForm = memo(({ updateId, url, itemName, showAlert, modalOpen, clos
         }
     }, [modalOpen, updateId, dispatch]);
 
+    const handleInputChange = useCallback(
+        (field, value) => {
+        let processedValue = value;
+
+        // Teléfono solo números
+        if (field === 'phone') {
+            processedValue = value.replace(/\D/g, '');
+        }
+
+        // Año de ingreso solo números
+        if (field === 'entry') {
+            processedValue = value.replace(/\D/g, '');
+        }
+
+        // Limitar longitud de nombres y apellidos
+        if (['firstName', 'secondName', 'surname1', 'surname2'].includes(field)) {
+            if (processedValue.length > MAX_NAME_LENGTH) {
+            processedValue = processedValue.slice(0, MAX_NAME_LENGTH);
+            }
+        }
+
+        dispatch(setNewItem({ [field]: processedValue }));
+        },
+        [dispatch],
+    );
+
     // Función para manejar el envío de datos (submit)
     const handleSubmit = async (event) => {
         event.preventDefault();
-        
-        // Crear copia de los datos
-        let cleanedData = { ...newItem };
-        
-        // Limpiar y validar campos numéricos
-        const numericFields = ['group', 'articulation', 'entryYear', 'graduationYear'];
-        numericFields.forEach(field => {
-            if (cleanedData[field]) {
-                const parsed = parseInt(cleanedData[field], 10);
-                if (!isNaN(parsed)) {
-                    cleanedData[field] = parsed;
-                } else {
-                    delete cleanedData[field];
-                }
-            } else {
-                delete cleanedData[field];
-            }
+        const error = validateGraduateData(newItem);
+        if (error) {
+        showAlert({
+            type: 'error',
+            content: error,
         });
-        
-        // Eliminar campos vacíos de strings
-        Object.keys(cleanedData).forEach(key => {
-            if (cleanedData[key] === '' || cleanedData[key] === null || cleanedData[key] === undefined) {
-                delete cleanedData[key];
-            }
-        });
-        
-        // Eliminar campos que no deben enviarse
-        delete cleanedData.administratorID;
-        delete cleanedData.createdAt;
-        delete cleanedData.updatedAt;
-        
+        return;
+        }
+
+        let updatedItem = { ...newItem };
+
+        try {
         if (updateId !== null) {
-            // Para actualización, usar graduateID
-            delete cleanedData.userID;
-            delete cleanedData.graduateID;
-            
             const updateService = new UpdateService(url, itemName, showAlert, responseHandler);
-            await updateService.execute({ userID: updateId, ...cleanedData });
+            await updateService.execute({
+            userID: updateId,
+            group: parseInt(newItem.group, 10),
+            articulation: parseInt(newItem.articulation, 10),
+            ...updatedItem,
+            });
         } else {
-            // Para creación, incluir roleIDs
             const createService = new CreateService(url, itemName, showAlert, responseHandler);
             await createService.execute({
-                ...cleanedData,
-                roleIDs: selectedRoles.map((option) => option.value)
+            ...newItem,
+            group: parseInt(newItem.group, 10),
+            articulation: parseInt(newItem.articulation, 10),
+            roleIDs: selectedRoles.map((option) => option.value),
             });
+        }
+        } catch (err) {
+        console.error('Error al guardar graduado:', err);
         }
     };
 
-    const handleInputChange = useCallback((field, value) => {
+    /*const handleInputChange = useCallback((field, value) => {
         dispatch(setNewItem({ [field]: value }));
-    }, [dispatch]);
+    }, [dispatch]);*/
 
     return (
         <ModalCRUD isOpen={modalOpen}>
@@ -120,22 +263,13 @@ const GraduateForm = memo(({ updateId, url, itemName, showAlert, modalOpen, clos
                 <TextInput inputId='phone' label={'Teléfono'} value={newItem.phone || ''} onChange={(e) => handleInputChange('phone', e.target.value)} placeholder={`Ingresar Teléfono`} />
                 <div className='flex gap-1 sm:gap-2'>
                     <div className='flex-1'>
-                        <TextInput inputId='entryYear' label={'Año de Ingreso'} value={newItem.entryYear || ''} onChange={(e) => handleInputChange('entryYear', e.target.value)} placeholder={`Año de Ingreso`} />
+                        <TextInput inputId='entry' label={'Año de Ingreso'} value={newItem.entry || ''} onChange={(e) => handleInputChange('entry', e.target.value)} placeholder={`Año de Ingreso`} />
                     </div>
                     <div className='flex-1'>
                         <TextInput inputId='group' label={'Grupo'} value={newItem.group || ''} onChange={(e) => handleInputChange('group', e.target.value)} placeholder={`Número de Grupo`} />
                     </div>
                 </div>
-                <div className='flex gap-1 sm:gap-2'>
-                    <div className='flex-1'>
-                        <TextInput inputId='graduationYear' label={'Año de Egreso'} value={newItem.graduationYear || ''} onChange={(e) => handleInputChange('graduationYear', e.target.value)} placeholder={`Año de Egreso`} />
-                    </div>
-                    <div className='flex-1'>
-                        <TextInput inputId='workPlace' label={'Lugar de Trabajo'} value={newItem.workPlace || ''} onChange={(e) => handleInputChange('workPlace', e.target.value)} placeholder={`Lugar de Trabajo`} />
-                    </div>
-                </div>
-                <TextInput inputId='job' label={'Cargo'} value={newItem.job || ''} onChange={(e) => handleInputChange('job', e.target.value)} placeholder={`Cargo`} />
-            </FormContainer>
+            </FormContainer> 
         </ModalCRUD>
     );
 });
