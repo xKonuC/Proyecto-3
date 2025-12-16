@@ -35,26 +35,14 @@ const getReportsSummary = async (req, res) => {
         FROM classification
       `);
 
-      /*/ Obtener ingresos por año
-      const [graduatesByYear] = await connection.execute(`
-        SELECT 
-          u.entry as year,
-          COUNT(*) as count
-        FROM user u
-        INNER JOIN userHasRole uhr ON u.userID = uhr.userID
-        WHERE uhr.roleID = 5 AND u.entry IS NOT NULL
-        GROUP BY u.entry
-        ORDER BY u.entry DESC
-      `);*/
-
       // Obtener graduados por año
       const [graduatesByYear] = await connection.execute(`
         SELECT
-            sht.titleYear as year,  -- Usamos la columna titleYear
+            sht.titleYear as year,  
             COUNT(DISTINCT u.userID) as count
         FROM user u
         INNER JOIN userHasRole uhr ON u.userID = uhr.userID
-        JOIN studentHasTitle sht ON u.userID = sht.userID  -- Conexión clave
+        JOIN studentHasTitle sht ON u.userID = sht.userID
         WHERE uhr.roleID = 5  -- Solo Graduados
         AND sht.titleYear IS NOT NULL
         GROUP BY year
@@ -110,7 +98,6 @@ const getReportsSummary = async (req, res) => {
           u.workPlace,
           u.job
         ORDER BY u.userID DESC
-        LIMIT 20
       `);
 
       res.json({
@@ -119,9 +106,9 @@ const getReportsSummary = async (req, res) => {
           totalGraduates: graduatesCount[0].total,
           totalStudents: studentsCount[0].total,
           totalClassifications: classificationsCount[0].total,
-          graduatesByYear: graduatesByYear,
-          graduatesBySpecialization: graduatesBySpecialization,
-          recentGraduates: recentGraduates,
+          graduatesByYear,
+          graduatesBySpecialization,
+          recentGraduates,
         },
       });
     } finally {

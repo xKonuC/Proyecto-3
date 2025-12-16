@@ -12,6 +12,6 @@ export default class CreateService extends CrudService {
       error,
       customMessage: `Error creating ${this.itemName}`,
       showAlert: this.showAlert,
-    });
+    }); 
   }
 }

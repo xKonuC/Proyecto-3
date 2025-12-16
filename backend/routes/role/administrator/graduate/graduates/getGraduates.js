@@ -1,10 +1,8 @@
 import posgradoPool from '../../../../../posgradoDbConnection.js';
-import authPool from '../../../../../authDbConnection.js';
 
 const getGraduates = async (req, res) => {
   try {
     const connection = await posgradoPool.getConnection();
-    const authConnection = await authPool.getConnection();
 
     try {
       // Configurar UTF-8 en la conexión
@@ -14,10 +12,10 @@ const getGraduates = async (req, res) => {
       await connection.execute('SET character_set_connection = utf8mb4');
       await connection.execute('SET character_set_results = utf8mb4');
       await connection.execute('SET sql_mode = ""');
-      
-      // Obtener graduados
+
+      // ✅ 1) Obtener graduados + año de graduación (MAX titleYear)
       const [graduates] = await connection.execute(`
-        SELECT DISTINCT
+        SELECT
           u.userID,
           u.rut,
           u.firstName,
@@ -27,6 +25,7 @@ const getGraduates = async (req, res) => {
           u.email,
           u.personalEmail,
           u.phone,
+          u.phoneWork,
           u.entry,
           u.workPlace,
           u.job,
@@ -36,50 +35,95 @@ const getGraduates = async (req, res) => {
           u.civilStatus,
           u.birthday,
           u.address,
-          CONCAT(u.firstName, ' ', IFNULL(u.secondName, ''), ' ', u.surname1, ' ', IFNULL(u.surname2, '')) as fullName
+          MAX(sht.titleYear) AS graduationYear,
+          CONCAT(
+            u.firstName, ' ',
+            IFNULL(u.secondName, ''), ' ',
+            u.surname1, ' ',
+            IFNULL(u.surname2, '')
+          ) AS fullName
         FROM user u
         INNER JOIN userHasRole uhr ON u.userID = uhr.userID
-        WHERE u.userID IS NOT NULL 
-        AND uhr.roleID = 5  -- Rol Graduado (5)
+        LEFT JOIN studentHasTitle sht ON u.userID = sht.userID
+        WHERE u.userID IS NOT NULL
+          AND uhr.roleID = 5
+        GROUP BY
+          u.userID,
+          u.rut,
+          u.firstName,
+          u.secondName,
+          u.surname1,
+          u.surname2,
+          u.email,
+          u.personalEmail,
+          u.phone,
+          u.phoneWork,
+          u.entry,
+          u.workPlace,
+          u.job,
+          u.articulation,
+          u.\`group\`,
+          u.sex,
+          u.civilStatus,
+          u.birthday,
+          u.address
         ORDER BY u.firstName, u.surname1
       `);
 
-      // Procesar graduados para mantener consistencia con la estructura de estudiantes
-      const processedGraduates = await Promise.all(
-        graduates.map(async (graduate) => {
-          // Obtener roles reales del usuario
-          const [roles] = await connection.execute(`
-            SELECT r.name as roleName, r.name as roleDescription
-            FROM userHasRole uhr
-            JOIN role r ON uhr.roleID = r.roleID
-            WHERE uhr.userID = ?
-          `, [graduate.userID]);
+      // ✅ 2) Traer roles de TODOS en una sola query
+      const userIds = graduates.map(g => g.userID);
+      let rolesByUserId = {};
 
-          return {
-            ...graduate,
-            roles: roles,
-            status: 'Graduado',
-            classification: 'Graduado'
-          };
-        })
-      );
+      if (userIds.length > 0) {
+        const placeholders = userIds.map(() => '?').join(',');
+
+        const [rolesRows] = await connection.execute(
+          `
+          SELECT
+            uhr.userID,
+            r.name as roleName,
+            r.name as roleDescription
+          FROM userHasRole uhr
+          JOIN role r ON uhr.roleID = r.roleID
+          WHERE uhr.userID IN (${placeholders})
+          `,
+          userIds
+        );
+
+        // Agrupar roles por userID
+        for (const row of rolesRows) {
+          if (!rolesByUserId[row.userID]) rolesByUserId[row.userID] = [];
+          rolesByUserId[row.userID].push({
+            roleName: row.roleName,
+            roleDescription: row.roleDescription,
+          });
+        }
+      }
+
+      // ✅ 3) Estructura final igual a la tuya, pero con graduationYear y phoneWork
+      const processedGraduates = graduates.map((graduate) => ({
+        ...graduate,
+        roles: rolesByUserId[graduate.userID] || [],
+        status: 'Graduado',
+        classification: 'Graduado',
+        graduationYear: graduate.graduationYear || null, // deja null si no hay
+      }));
 
       res.json({
         success: true,
         data: processedGraduates,
-        total: processedGraduates.length
+        total: processedGraduates.length,
       });
 
     } finally {
       connection.release();
-      authConnection.release();
     }
   } catch (error) {
     console.error('Error getting graduates:', error);
     res.status(500).json({
       success: false,
       message: 'Error al obtener la lista de graduados',
-      error: error.message
+      error: error.message,
     });
   }
 };

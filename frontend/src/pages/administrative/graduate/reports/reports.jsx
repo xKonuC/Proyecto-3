@@ -70,11 +70,11 @@ const Reports = () => {
   };
 
   const reportTypes = [
+    { id: 'acreditacion-report', title: 'Reporte de Acreditación', description: 'Reporte de acreditación', icon: FaChartBar, color: 'bg-orange-500' },
     { id: 'graduates-summary', title: 'Resumen de Graduados', description: 'Estadísticas generales de graduados', icon: FaUsers, color: 'bg-blue-500' },
     { id: 'graduates-by-year', title: 'Graduados por Año', description: 'Distribución de graduados por año de graduación', icon: FaCalendarAlt, color: 'bg-green-500' },
-    { id: 'graduates-by-specialization', title: 'Graduados por Especialización', description: 'Distribución por especialización', icon: FaGraduationCap, color: 'bg-purple-500' },
-    { id: 'classifications-report', title: 'Reporte de Clasificaciones', description: 'Análisis de clasificaciones de graduados', icon: FaChartBar, color: 'bg-orange-500' },
-    { id: 'acreditacion-report', title: 'Reporte de Acreditación', description: 'Reporte de acreditación', icon: FaChartBar, color: 'bg-orange-500' },
+    { id: 'graduates-by-specialization', title: 'Graduados por Línea de formación', description: 'Distribución por línea de formación del graduado', icon: FaGraduationCap, color: 'bg-purple-500' },
+    { id: 'classifications-report', title: 'Reporte de Clasificaciones', description: 'Análisis de clasificaciones de graduados', icon: FaChartBar, color: 'bg-orange-500' }, 
   ];
 
   if (loading) {
@@ -220,7 +220,7 @@ const Reports = () => {
                     <th className="px-6 py-4 text-left whitespace-nowrap">Email</th>
                     <th className="px-6 py-4 text-left whitespace-nowrap">Año Ingreso</th>
                     <th className="px-6 py-4 text-left whitespace-nowrap">Año Graduación</th>
-                    <th className="px-6 py-4 text-left whitespace-nowrap">Especialización</th>
+                    <th className="px-6 py-4 text-left whitespace-nowrap">Línea de formación</th>
                     <th className="px-6 py-4 text-left whitespace-nowrap">Lugar Trabajo</th>
                     <th className="px-6 py-4 text-left whitespace-nowrap">Ocupación</th>
                   </tr>
