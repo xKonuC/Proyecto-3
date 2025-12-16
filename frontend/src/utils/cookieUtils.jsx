@@ -3,6 +3,10 @@ import Cookies from 'js-cookie';
 // Obtener datos de la cookie
 export const getAccessToken = () => Cookies.get('access_token');
 export const getRefreshToken = () => Cookies.get('refresh_token');
+export const getIsGraduateAccess = () => {
+  const cookieData = Cookies.get('isGraduateAccess');
+  return cookieData === 'true';
+};
 export const getIsAdminAccess = () => {
   const cookieData = Cookies.get('isAdminAccess');
   return cookieData === 'true';
@@ -37,6 +41,7 @@ export const getUserHasPermission = () => {
 // Guardar datos en la cookie
 export const setAccessToken = (access_token) => Cookies.set('access_token', access_token);
 export const setRefreshToken = (refresh_token) => Cookies.set('refresh_token', refresh_token);
+export const setIsGraduateAccess = (isGraduateAccess) => Cookies.set('isGraduateAccess', isGraduateAccess);
 export const setIsAdminAccess = (isAdminAccess) => Cookies.set('isAdminAccess', isAdminAccess);
 
 export const setTemplateTemplateOverview = (templateTemplateOverview) => {

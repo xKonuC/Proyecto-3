@@ -15,7 +15,8 @@ import RecoverPasswordButton from './recoverPassword/recoverPasswordButton';
 // Utilidades
 import { deniedSession, getSession } from '../../../utils/sessionHelpers';
 import { isPasswordValid } from '../../../utils/validationUtils';
-import { setAccessToken, setRefreshToken, setIsAdminAccess as setIsAdminSession } from '../../../utils/cookieUtils';
+import { setAccessToken, setRefreshToken, setIsGraduateAccess, setIsAdminAccess as setIsHigherSession } from '../../../utils/cookieUtils';
+
 
 const UserIcon = (
   <svg
@@ -40,10 +41,13 @@ const HandleLogin = () => {
   });
 
   // Función para manejar el retorno del url para el inicio de sesión
-  const verifyAdministrative = () => {
+  const verifyHigherRole = () => {
     const middlewareBaseURL = import.meta.env.VITE_MIDDLEWARE_URL_BASE;
 
-    return isAdminAccess ? middlewareBaseURL + '/auth/administrative/signinWithEmail' : middlewareBaseURL + '/auth/student/signinWithEmail';
+    // return isAdminAccess ? middlewareBaseURL + '/auth/administrative/signinWithEmail' : middlewareBaseURL + '/auth/graduate/signinWithEmail' :  middlewareBaseURL + '/auth/student/signinWithEmail';
+    return isAdminAccess ? middlewareBaseURL + '/auth/administrative/signinWithEmail'
+    : isGraduateAccess ? middlewareBaseURL + '/auth/graduate/signinWithEmail'
+    : middlewareBaseURL + '/auth/student/signinWithEmail';
   };
 
   // Función para manejar el inicio de sesión del usuario
@@ -57,7 +61,7 @@ const HandleLogin = () => {
       });
       return;
     }
-    const url = verifyAdministrative();
+    const url = verifyHigherRole();
     const createService = new AuthCreateService(url, 'User',
       showAlert,
       responseHandler);
@@ -94,8 +98,12 @@ const HandleLogin = () => {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
       if (isAdminAccess) {
-        setIsAdminSession(true);
+        setIsHigherSession(true);
         navigate("/Administrative");
+      }
+      else if (isGraduateAccess) {
+        setIsHigherSession(true);
+        navigate("/Graduate");
       }
       else {
         navigate("/Dashboard");
@@ -126,6 +134,12 @@ const HandleLogin = () => {
 
   // -------------------------------Funciones de Extra-------------------------------
   const [isAdminAccess, setIsAdminAccess] = useState(false);
+  const [isGraduateAccess, setIsGraduateAccess] = useState(false);
+
+
+  const handleGraduateAccessToggle = () => {
+    setIsGraduateAccess(!isGraduateAccess);
+  };
 
   const handleAdminAccessToggle = () => {
     setIsAdminAccess(!isAdminAccess);
@@ -138,6 +152,7 @@ const HandleLogin = () => {
       <LoginContainer
         handleSubmit={handleLogin}
         isAdminAccess={isAdminAccess}
+        isGraduateAccess={isGraduateAccess}
         showAlert={showAlert}
       >
         <div className="mb-4">
@@ -171,6 +186,17 @@ const HandleLogin = () => {
             className="form-checkbox h-5 w-5 rounded border-orange-second text-orange-main transition duration-150 ease-in-out"
           />
           <label htmlFor="adminAccess" className="ml-2 text-center text-sm sm:text-md text-gray-600">Acceso a Sistema Administrativo</label>
+        </div>
+        <div className="ml-1 flex items-center justify-start">
+          <input
+            id="graduateAccess"
+            name="graduateAccess"
+            type="checkbox"
+            checked={isGraduateAccess}
+            onChange={handleGraduateAccessToggle}
+            className="form-checkbox h-5 w-5 rounded border-orange-second text-orange-main transition duration-150 ease-in-out"
+          />
+          <label htmlFor="graduateAccess" className="ml-2 text-center text-sm sm:text-md text-gray-600">Acceso a Graduados</label>
         </div>
       </LoginContainer>
     </>

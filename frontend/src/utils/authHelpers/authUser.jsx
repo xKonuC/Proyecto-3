@@ -1,4 +1,4 @@
-import { setAccessToken, setIsAdminAccess, setRefreshToken } from "../cookieUtils";
+import { setAccessToken, setIsGraduateAccess, setIsAdminAccess, setRefreshToken } from "../cookieUtils";
 import { decryptData, verifyData } from "../securityUtils";
 
 class AuthUser {
@@ -8,7 +8,7 @@ class AuthUser {
 }
 
 class AuthUser_MySql extends AuthUser {
-    authUser(session, isAdminAccess, navigate, showAlert) {
+    authUser(session, isGraduateAccess, isAdminAccess, navigate, showAlert) {
         if (session) {
             showAlert({
                 type: 'verification',
@@ -28,6 +28,10 @@ class AuthUser_MySql extends AuthUser {
             if (isAdminAccess) {
                 setIsAdminAccess(true);
                 navigate("/Administrative");
+            }
+            else if (isGraduateAccess) {
+                setIsGraduateAccess(true);
+                navigate("/Graduate");
             }
             else {
                 navigate("/Dashboard");

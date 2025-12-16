@@ -3,6 +3,7 @@ import {
 } from './auth.modules.js';
 import validateLoginPassword from '../../validations/auth/validateLoginPassword/validateLoginPassword.js';
 import signinStudent from './signinStudent/signinStudent.js';
+import signinGraduate from './signinGraduate/signinGraduate.js';
 
 const authRoute = express.Router();
 
@@ -23,6 +24,12 @@ authRoute.post(
   validateEmail,
   validateLoginPassword,
   signinStudent,
+);
+authRoute.post(
+  '/graduate/signinWithEmail',
+  validateEmail,
+  validateLoginPassword,
+  signinGraduate,
 );
 authRoute.get('/signinWithGoogle', signinWithGoogle);
 authRoute.get('/administrative/signinWithGoogle', signinWithGoogleAdministrative);
