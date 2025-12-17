@@ -253,7 +253,7 @@ const Reports = () => {
                           {graduate.specialization || 'N/A'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          {graduate.workplace || 'N/A'}
+                          {graduate.workPlace || 'N/A'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">{graduate.job || 'N/A'}</td>
                       </tr>
