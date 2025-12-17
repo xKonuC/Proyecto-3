@@ -5,9 +5,9 @@ export const HomeStudent = () => {
 
     const sectionsData = [
         {
-            title: 'Escoger Línea de Formación',
-            description: 'Explora y elige entre una variedad de líneas de formación diseñadas para adaptarse a tus intereses y objetivos académicos. Encuentra la línea que mejor se ajuste a tus necesidades y comienza tu viaje educativo de manera informada y motivadora.',
-            link: '/Dashboard/Specialization/',
+            title: 'Actualizar mi información',
+            description: 'actualizar mi informacion personal y académica, asegurando que mis datos estén siempre al día para una mejor gestión de mi trayectoria educativa.',
+            link: '/Dashboard/Profile',
             icon: (
                 <MdSchool className="h-10 w-10" />
             ),
@@ -36,5 +36,5 @@ export const HomeStudent = () => {
             description={"Bienvenido al Panel de Administración para estudiantes. Aquí podrás gestionar todos los aspectos relacionados con tu Linea de Formación, cursos electivos y procesos de evaluación, asegurando que tengas toda la información y recursos necesarios para una experiencia educativa enriquecedora y exitosa."}
             sections={sectionsData}
         />
-    )
-}
+    );
+};
