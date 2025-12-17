@@ -15,8 +15,8 @@ import RecoverPasswordButton from './recoverPassword/recoverPasswordButton';
 // Utilidades
 import { deniedSession, getSession } from '../../../utils/sessionHelpers';
 import { isPasswordValid } from '../../../utils/validationUtils';
-import { setAccessToken, setRefreshToken, setIsGraduateAccess, setIsAdminAccess as setIsHigherSession } from '../../../utils/cookieUtils';
-
+import { setAccessToken, setRefreshToken, setIsAdminAccess as setIsAdminSession } from '../../../utils/cookieUtils';
+import { setIsGraduateAccess as setIsGraduateSession } from '../../../utils/cookieUtils';
 
 const UserIcon = (
   <svg
@@ -98,11 +98,11 @@ const HandleLogin = () => {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
       if (isAdminAccess) {
-        setIsHigherSession(true);
+        setIsAdminSession(true);
         navigate("/Administrative");
       }
       else if (isGraduateAccess) {
-        setIsHigherSession(true);
+        setIsGraduateSession(true);
         navigate("/Graduate");
       }
       else {
