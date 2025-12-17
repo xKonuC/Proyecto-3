@@ -29,8 +29,8 @@ export const HomeGraduate = () => {
       icon: <FaChartBar size={30} />,
     },
     {
-      title: 'Exportar Datos',
-      description: 'Exporta información de graduados en diferentes formatos (Excel, PDF, CSV) para análisis externos.',
+      title: 'Importar Datos',
+      description: 'Importar información de graduados en formatos (Excel, CSV) para la carga de datos masiva.',
       link: '/Administrative/Graduate/Export',
       icon: <FaFileExport size={30} />,
     },
