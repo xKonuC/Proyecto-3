@@ -10,7 +10,7 @@ const roleRoute = express.Router();
 roleRoute.use('/administrator', verifyRoleHierarchy('canManageUsers'), administratorRoute);
 roleRoute.use('/academic', verifyRoleHierarchy('canManageAcademic'), academicRoute);
 roleRoute.use('/student', verifyStudent, studentRoute);
-roleRoute.use('/graduate', verifyRoleHierarchy('canManageGraduates'), graduateRoute);
+roleRoute.use('/graduate', verifyGraduate, graduateRoute);
 
 // Rutas específicas para SuperAdmin
 roleRoute.use('/superadmin', verifySuperAdmin, administratorRoute);

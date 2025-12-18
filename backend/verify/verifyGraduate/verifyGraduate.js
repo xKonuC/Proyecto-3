@@ -17,6 +17,7 @@ const verifyGraduate = async (req, res, next) => {
         return res.status(403).json({ errorDenied: 'No tienes permiso para ingresar' });
       }
       req.body.graduateID = data.userID;
+      req.body.userID = data.userID;
       req.body.userRole = 'Graduado';
       next();
     } else {
