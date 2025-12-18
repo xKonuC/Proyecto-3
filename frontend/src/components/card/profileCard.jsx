@@ -25,7 +25,7 @@ const options = [
   { label: `Articulación`, value: 'articulation' },
 ];
 
-const ProfileCard = ({ item }) => {
+const ProfileCard = ({ item, passwordUrl }) => {
   return (
     <div className="w-5/6 md:w-4/6 relative h-1/3 lg:h-72 overflow-hidden rounded-xl border bg-white shadow border-gray-100 p-4 sm:p-6 lg:p-8" >
       <span className="absolute inset-x-0 bottom-0 h-3">
@@ -82,7 +82,7 @@ const ProfileCard = ({ item }) => {
       </dl>
 
       <div className="mt-2 sm:mt-6">
-        <PasswordCRUD />
+        <PasswordCRUD url={passwordUrl} />
       </div>
     </div>
   );

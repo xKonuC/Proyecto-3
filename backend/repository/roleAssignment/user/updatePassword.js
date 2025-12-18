@@ -8,7 +8,7 @@ class UpdatePassword {
         Authorization: `Bearer ${access_token}`, ...origin,
       },
     };
-    const result = await axios.post(`${process.env.AUTHSERVER_URL}/mailer/addPassword`, {
+    const result = await axios.post(`${process.env.AUTHSERVER_URL}/auth/mailer/addPassword`, {
       id, password,
     }, config);
     return result.data;

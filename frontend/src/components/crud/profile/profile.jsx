@@ -13,7 +13,7 @@ import ProfileCard from '../../card/profileCard';
 import IconOnlyAlert from '../../alert/iconOnlyAlert'
 import { getUser, setUser } from '../../../utils/cookieUtils';
 
-const ProfileCRUD = ({ name, urls, title, subtitle }) => {
+const ProfileCRUD = ({ name, urls, title, subtitle, passwordUrl }) => {
   const navigate = useNavigate();
 
   const [alertComponent, showAlert] = HandleAlert();
@@ -99,7 +99,7 @@ const ProfileCRUD = ({ name, urls, title, subtitle }) => {
         {(isLoading && items) ? (
           <IconOnlyAlert />
         ) : (
-          <ProfileCard item={items} />
+          <ProfileCard item={items} passwordUrl={passwordUrl} />
         )}
       </div>
 

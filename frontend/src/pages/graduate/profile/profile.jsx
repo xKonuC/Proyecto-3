@@ -15,7 +15,13 @@ const Profile = () => {
                 Llenar formulario de seguimiento
              </a>
         </div>
-        <ProfileCRUD name={'Usuario'} urls={urls} title={`Bienvenido a gestión de usuarios`} subtitle={'CRUD de Usuarios'} />
+        <ProfileCRUD 
+            name={'Usuario'} 
+            urls={urls} 
+            title={`Bienvenido a gestión de usuarios`} 
+            subtitle={'CRUD de Usuarios'} 
+            passwordUrl={import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/role/graduate/user/updatePassword'}
+        />
     </div>
   );
 };

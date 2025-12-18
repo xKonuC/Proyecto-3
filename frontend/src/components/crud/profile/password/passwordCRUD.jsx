@@ -37,7 +37,9 @@ const getPasswordRequirementsText = () => {
   );
 };
 
-const PasswordCRUD = () => {
+const PasswordCRUD = ({
+  url = import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/role/student/user/updatePassword'
+}) => {
   const [itemName] = useState('Usuario');
   // Estado local del componente
   const navigate = useNavigate();
@@ -60,7 +62,6 @@ const PasswordCRUD = () => {
       });
       return;
     }
-    const url = import.meta.env.VITE_MIDDLEWARE_URL_BASE + '/role/student/user/updatePassword';
     const updateService = new UpdateService(url, itemName, showAlert, responseHandler);
     await updateService.execute({ ...newItem });
   };
